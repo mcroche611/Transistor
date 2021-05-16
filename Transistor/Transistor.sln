@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30523.141
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transistor", "Transistor.csproj", "{79698D3D-E816-4519-8A1C-210CCA9426A4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{79698D3D-E816-4519-8A1C-210CCA9426A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79698D3D-E816-4519-8A1C-210CCA9426A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79698D3D-E816-4519-8A1C-210CCA9426A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79698D3D-E816-4519-8A1C-210CCA9426A4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FD7CAAFA-4D3B-473A-8A4B-1277CDFA62C6}
+	EndGlobalSection
+EndGlobal
