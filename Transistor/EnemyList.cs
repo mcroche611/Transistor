@@ -19,7 +19,7 @@ namespace Transistor
             pri = null;
         }
 
-        public void InsertaFinal(Enemy e)
+        public void Append(Enemy e)
         {
             // Si la lista está vacía
             if (pri == null)
@@ -75,21 +75,21 @@ namespace Transistor
                 return aux.dato;
         }
 
-        public bool BorraElto(Enemy e)
+        public bool Delete(Enemy e)
         {
             Nodo aux = pri;
-            Nodo prev = null;
+            Nodo ant = null;
 
             while (aux.dato != e && aux.sig != null)
             {
-                prev = aux;
+                ant = aux;
                 aux = aux.sig;
             }
 
             if (aux.dato == e)
             {
-                if (prev != null)
-                    prev.sig = aux.sig;
+                if (ant != null)
+                    ant.sig = aux.sig;
                 else
                     pri = aux.sig;
                 return true;

@@ -6,26 +6,39 @@ namespace Transistor
 {
     class Enemy: Character
     {
-
+        public Enemy(Battlefield field, Coor pos):base(field, pos)
+        {
+           
+        }
     }
 
     class Creep: Enemy
     {
+        public Creep(Battlefield field, Coor pos) : base(field, pos)
+        {
+
+        }
 
     }
 
-    class Snapshot: Enemy
+    class Snapshot : Enemy
     {
-
+        public Snapshot(Battlefield field, Coor pos) : base(field, pos)
+        {
+        }
     }
 
-    class Jerk: Enemy
+    class Jerk : Enemy
     {
-
+        public Jerk(Battlefield field, Coor pos) : base(field, pos)
+        {
+        }
     }
 
-    class Fetch: Enemy
+    class Fetch : Enemy
     {
-
+        public Fetch(Battlefield field, Coor pos) : base(field, pos)
+        {
+        }
     }
 }
