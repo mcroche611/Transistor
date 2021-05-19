@@ -2,24 +2,25 @@
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace Transistor
 {
-    class ProjectileList
+    class ListaCoor
     {
         private class Nodo
         {
-            public Projectile dato;
+            public Coor dato;
             public Nodo sig;
         }
 
         Nodo pri;
 
-        public ProjectileList()
+        public ListaCoor()
         {
             pri = null;
         }
 
-        public void InsertaFinal(Projectile e)
+        public void InsertaFinal(Coor e)
         {
             // Si la lista está vacía
             if (pri == null)
@@ -45,7 +46,7 @@ namespace Transistor
             }
         }
 
-        private Nodo nEsimoNodo(int n)
+        private Nodo nEsimoNodo(int n) 
         {
             if (n < 0)
             {
@@ -65,7 +66,7 @@ namespace Transistor
             }
         }
 
-        public Projectile nEsimo(int n)
+        public Coor nEsimo(int n) 
         {
             Nodo aux = nEsimoNodo(n);
 
@@ -75,7 +76,7 @@ namespace Transistor
                 return aux.dato;
         }
 
-        public bool BorraElto(Projectile e)
+        public bool BorraElto(Coor e)
         {
             Nodo aux = pri;
             Nodo prev = null;
@@ -99,10 +100,7 @@ namespace Transistor
                 return false;
             }
             else
-            {
                 return false;
-            }
         }
     }
-
 }
