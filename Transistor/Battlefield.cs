@@ -12,6 +12,9 @@ namespace Transistor
         int numRows, numCols;
 
         EnemyList enemyList;
+        Player red;
+        ProjectileList projectileList;
+
         private ConsoleColor[] colors = {ConsoleColor.Black, ConsoleColor.DarkBlue, ConsoleColor.DarkGreen,
                 ConsoleColor.DarkCyan, ConsoleColor.DarkRed, ConsoleColor.DarkMagenta,
                 ConsoleColor.DarkYellow, ConsoleColor.Gray, ConsoleColor.DarkGray, ConsoleColor.Blue,
@@ -92,7 +95,7 @@ namespace Transistor
                     tile = Tile.BorderWall;
                     break;
                 case 'R':
-                    //jugador
+                        red = new Player(this, new Coor(row, col));
                     break;
                 case 'C':
                     {
@@ -103,19 +106,21 @@ namespace Transistor
                 case 'S':
                     {
                         Snapshot enemy = new Snapshot(this, new Coor(row, col));
+                        enemyList.Append(enemy);
                         break;
                     }
                 case 'J':
                     {
                         Jerk enemy = new Jerk(this, new Coor(row, col));
+                        enemyList.Append(enemy);
                         break;
                     }
                 case 'F':
                     {
                         Fetch enemy = new Fetch(this, new Coor(row, col));
+                        enemyList.Append(enemy);
                         break;
                     }
-                    // add enemies and player :TODO
             }
         }
 
@@ -131,7 +136,7 @@ namespace Transistor
             }
             else
             {
-                // execute one by one Turn :TODO
+                // TODO: execute one by one Turn 
             }
         }
 
@@ -147,11 +152,22 @@ namespace Transistor
                 Console.WriteLine();
             }
 
-            //Ahora dibujamos los personajes
-            for (int k = 0; k < enemyList.Count(); k++) // Add CuentaEltos to EnemyList :TODO
+            // Dibuja al jugador
+            Console.BackgroundColor = red.color;
+            Console.Write(red.symbols); // TODO: GetSymbols()
+
+            // Dibuja los enemigos
+            for (int k = 0; k < enemyList.Count(); k++) // TODO: Add CuentaEltos to EnemyList 
             {
                 Enemy enemy = enemyList.nEsimo(k);
-                PrintCharacters(enemy, k); // Recorrer la lista de enemigos y pasar el objeto :TODO
+                PrintEnemy(enemy, k); // TODO: Recorrer la lista de enemigos y pasar el objeto 
+            }
+
+            // Dibuja los proyectiles
+            for (int k = 0; k < projectileList.Count(); k++) // TODO: Add CuentaEltos to EnemyList 
+            {
+                Projectile projectile = projectileList.nEsimo(k);
+                PrintAttacks(projectile, k); // TODO: Recorrer la lista de enemigos y pasar el objeto 
             }
 
             Console.SetCursorPosition(0, numRows + 2);
@@ -183,67 +199,71 @@ namespace Transistor
             switch (tile)
             {
                 case Tile.Empty:
-                    Console.BackgroundColor = ConsoleColor.White;
+                    Console.BackgroundColor = ConsoleColor.Black;
                     Console.Write("  ");
                     break;
                 case Tile.Wall:
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("**");
-                    break;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write("  ");
+                    break; 
                 case Tile.BorderWall:
-                    Console.BackgroundColor = ConsoleColor.Blue;
+                    Console.BackgroundColor = ConsoleColor.White;
                     Console.Write("  ");
                     break;
             }
         }
 
-        private void PrintCharacters(Character c, int num)
+        private void PrintEnemy(Character c, int num)
         {
             Console.SetCursorPosition(2 * c.pos.col, c.pos.fil);
-            Console.BackgroundColor = colors[num]; // crear array de colores :TODO
+            //Console.BackgroundColor = colors[num]; 
             Console.ForegroundColor = ConsoleColor.White;
 
-            if (num == 0) 
-            {
-                Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = c.color;
+            Console.Write(c.symbols); //TODO: GetSymbols()
 
-                if (c.dir.col == 0 && c.dir.fil == 1)
-                {
-                    Console.Write("|@"); // "@→"
-                }
-                else if (c.dir.col == 0 && c.dir.fil == -1)
-                {
-                    Console.Write("@@");  // "←@"
-                }
-                else if (c.dir.col == 1 && c.dir.fil == 0)
-                {
-                    Console.Write("@|"); // "@↑"
-                }
-                else if (c.dir.col == -1 && c.dir.fil == 0)
-                {
-                    Console.Write("||");  // "@↓"
-                }
-                else 
-                {
-                    Console.Write("<>"); // "@@"
-                }
-            }
-            else //if (c) Recorrer lista de enemigos para dibujar cada uno :TODO
-            {
-                Console.Write("ºº");
-            }
+
+            //if (num == 0) 
+            //{
+            //    Console.ForegroundColor = ConsoleColor.Black;
+
+            //    if (c.dir.col == 0 && c.dir.fil == 1)
+            //    {
+            //        Console.Write("|@"); // "@→"
+            //    }
+            //    else if (c.dir.col == 0 && c.dir.fil == -1)
+            //    {
+            //        Console.Write("@@");  // "←@"
+            //    }
+            //    else if (c.dir.col == 1 && c.dir.fil == 0)
+            //    {
+            //        Console.Write("@|"); // "@↑"
+            //    }
+            //    else if (c.dir.col == -1 && c.dir.fil == 0)
+            //    {
+            //        Console.Write("||");  // "@↓"
+            //    }
+            //    else 
+            //    {
+            //        Console.Write("<>"); // "@@"
+            //    }
+            //}
+            //else //if (c) Recorrer lista de enemigos para dibujar cada uno
+            //{
+            //    Console.Write("ºº");
+            //}
 
             Console.BackgroundColor = ConsoleColor.Black;
         }
 
-        private void PrintAttacks()
+        private void PrintAttacks(Projectile projectile, int k)
         {
-            // Recorrer lista de proyectiles para dibujar cada uno :TODO
+            // TODO: Recorrer lista de proyectiles para dibujar cada uno 
         }
 
         private void PrintTurn()
         {
-            // Dibujar la barra de Turn() :TODO
+            // TODO: Dibujar la barra de Turn()
         }
     }
 }

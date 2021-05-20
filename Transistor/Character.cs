@@ -6,7 +6,9 @@ namespace Transistor
 {
     class Character 
     {
-        public Coor pos, dir;
+        public Coor pos, dir; // TODO: make public variables into get set properties
+        public string symbols;
+        public ConsoleColor color;
         protected int life;
         protected int coolDown;
         protected Battlefield field;

@@ -6,7 +6,7 @@ namespace Transistor
 {
     class Projectile
     {
-
+        // pos, dir, symbols, etc
     }
 
     class Laser: Projectile
