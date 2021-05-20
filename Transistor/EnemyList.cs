@@ -103,5 +103,10 @@ namespace Transistor
                 return false;
             }
         }
+
+        public int Count()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

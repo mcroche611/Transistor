@@ -12,6 +12,11 @@ namespace Transistor
         int numRows, numCols;
 
         EnemyList enemyList;
+        private ConsoleColor[] colors = {ConsoleColor.Black, ConsoleColor.DarkBlue, ConsoleColor.DarkGreen,
+                ConsoleColor.DarkCyan, ConsoleColor.DarkRed, ConsoleColor.DarkMagenta,
+                ConsoleColor.DarkYellow, ConsoleColor.Gray, ConsoleColor.DarkGray, ConsoleColor.Blue,
+                ConsoleColor.Green, ConsoleColor.Cyan, ConsoleColor.Red, ConsoleColor.Magenta, ConsoleColor.Yellow, ConsoleColor.White};
+
 
         public Battlefield(string file)
         {
@@ -90,12 +95,26 @@ namespace Transistor
                     //jugador
                     break;
                 case 'C':
-                    Creep enemy = new Creep(this, new Coor(row, col));
-                    enemyList.Append(enemy);
-                    break;
+                    {
+                        Creep enemy = new Creep(this, new Coor(row, col));
+                        enemyList.Append(enemy);
+                        break;
+                    }
                 case 'S':
-                    Snapshot enemy2 = new Snapshot(this, new Coor(row, col));
-                    break;
+                    {
+                        Snapshot enemy = new Snapshot(this, new Coor(row, col));
+                        break;
+                    }
+                case 'J':
+                    {
+                        Jerk enemy = new Jerk(this, new Coor(row, col));
+                        break;
+                    }
+                case 'F':
+                    {
+                        Fetch enemy = new Fetch(this, new Coor(row, col));
+                        break;
+                    }
                     // add enemies and player :TODO
             }
         }
@@ -129,9 +148,10 @@ namespace Transistor
             }
 
             //Ahora dibujamos los personajes
-            for (int k = 0; k < CountEnemies(); k++) // Add CuentaEltos to EnemyList :TODO
+            for (int k = 0; k < enemyList.Count(); k++) // Add CuentaEltos to EnemyList :TODO
             {
-                PrintCharacters(c, k); // Recorrer la lista de enemigos y pasar el objeto :TODO
+                Enemy enemy = enemyList.nEsimo(k);
+                PrintCharacters(enemy, k); // Recorrer la lista de enemigos y pasar el objeto :TODO
             }
 
             Console.SetCursorPosition(0, numRows + 2);
@@ -189,23 +209,23 @@ namespace Transistor
 
                 if (c.dir.col == 0 && c.dir.fil == 1)
                 {
-                    Console.Write("|@");
+                    Console.Write("|@"); // "@→"
                 }
                 else if (c.dir.col == 0 && c.dir.fil == -1)
                 {
-                    Console.Write("@@");
+                    Console.Write("@@");  // "←@"
                 }
                 else if (c.dir.col == 1 && c.dir.fil == 0)
                 {
-                    Console.Write("@|");
+                    Console.Write("@|"); // "@↑"
                 }
                 else if (c.dir.col == -1 && c.dir.fil == 0)
                 {
-                    Console.Write("||");
+                    Console.Write("||");  // "@↓"
                 }
                 else 
                 {
-                    Console.Write("<>");
+                    Console.Write("<>"); // "@@"
                 }
             }
             else //if (c) Recorrer lista de enemigos para dibujar cada uno :TODO

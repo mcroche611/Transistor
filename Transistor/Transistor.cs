@@ -9,12 +9,16 @@ namespace Transistor
     class Transistor
     {
         TurnMode mode;
-        Player red = new Player();
-        EnemyList enemies = new EnemyList();
-        Battlefield field = new Battlefield("nivel1");
+
+        EnemyList enemies;
+        Battlefield field;
+        Player red;
 
         void Run()
         {
+            field = new Battlefield("nivel1");
+            red = new Player(field, new Coor());
+            enemies = new EnemyList();
 
         }
 
