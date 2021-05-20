@@ -6,7 +6,7 @@ namespace Transistor
 {
     class Character 
     {
-        Coor pos, dir;
+        public Coor pos, dir;
         int life;
         int coolDown;
 
