@@ -8,12 +8,12 @@ namespace Transistor
     {
         public void TestBattlefieldLoadLevel()
         {
-            Battlefield bf = new Battlefield("nivel1.txt");
+            Battlefield bf = new Battlefield("Transistor.txt");
             
         }
         public void TestBattlefieldShowNormal()
         {
-            Battlefield bf = new Battlefield("nivel1.txt");
+            Battlefield bf = new Battlefield("Transistor.txt");
             bf.Show(TurnMode.normal);
 
         }

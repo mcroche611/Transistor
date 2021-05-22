@@ -12,11 +12,11 @@ namespace Transistor
             {
                 if (Dir.col == 0 && Dir.fil == 1)
                 {
-                    return ("@→");
+                    return ("@>");
                 }
                 else if (Dir.col == 0 && Dir.fil == -1)
                 {
-                    return ("←@");
+                    return ("<@");
                 }
                 else if (Dir.col == 1 && Dir.fil == 0)
                 {
@@ -36,6 +36,7 @@ namespace Transistor
 
         public Player(Battlefield field, Coor pos) : base(field, pos)
         {
+            dir = new Coor(0, 1);
             Color = ConsoleColor.DarkRed;
         }
 

@@ -15,14 +15,12 @@ namespace Transistor
         Player red;
         ProjectileList projectileList;
 
-        private ConsoleColor[] colors = {ConsoleColor.Black, ConsoleColor.DarkBlue, ConsoleColor.DarkGreen,
-                ConsoleColor.DarkCyan, ConsoleColor.DarkRed, ConsoleColor.DarkMagenta,
-                ConsoleColor.DarkYellow, ConsoleColor.Gray, ConsoleColor.DarkGray, ConsoleColor.Blue,
-                ConsoleColor.Green, ConsoleColor.Cyan, ConsoleColor.Red, ConsoleColor.Magenta, ConsoleColor.Yellow, ConsoleColor.White};
-
 
         public Battlefield(string file)
         {
+            enemyList = new EnemyList();
+            projectileList = new ProjectileList();
+
             StreamReader streamReader = new StreamReader(file);
 
             bool levelComplete = false;
@@ -81,8 +79,6 @@ namespace Transistor
 
         private void CharToTileAndCharacter(char symbol, ref Tile tile, int row, int col)
         {
-            enemyList = new EnemyList();
-
             switch (symbol)
             {
                 case '0':
@@ -153,21 +149,20 @@ namespace Transistor
             }
 
             // Dibuja al jugador
-            Console.BackgroundColor = red.Color;
-            Console.Write(red.Symbols); // TODO: GetSymbols()
+            PrintCharacter(red);
 
             // Dibuja los enemigos
             for (int k = 0; k < enemyList.Count(); k++) // TODO: Add CuentaEltos to EnemyList 
             {
                 Enemy enemy = enemyList.nEsimo(k);
-                PrintEnemy(enemy, k); // TODO: Recorrer la lista de enemigos y pasar el objeto 
+                PrintCharacter(enemy); // TODO: Recorrer la lista de enemigos y pasar el objeto 
             }
 
             // Dibuja los proyectiles
             for (int k = 0; k < projectileList.Count(); k++) // TODO: Add CuentaEltos to EnemyList 
             {
                 Projectile projectile = projectileList.nEsimo(k);
-                PrintAttacks(projectile, k); // TODO: Recorrer la lista de enemigos y pasar el objeto 
+                PrintAttacks(projectile); // TODO: Recorrer la lista de enemigos y pasar el objeto 
             }
 
             Console.SetCursorPosition(0, numRows + 2);
@@ -203,7 +198,7 @@ namespace Transistor
                     Console.Write("  ");
                     break;
                 case Tile.Wall:
-                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.BackgroundColor = ConsoleColor.White;
                     Console.Write("  ");
                     break; 
                 case Tile.BorderWall:
@@ -213,52 +208,26 @@ namespace Transistor
             }
         }
 
-        private void PrintEnemy(Character c, int num)
+        private void PrintCharacter(Character c)
         {
             Console.SetCursorPosition(2 * c.Pos.col, c.Pos.fil);
-            //Console.BackgroundColor = colors[num]; 
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.White; //TODO: Add property foreground color
 
             Console.BackgroundColor = c.Color;
-            Console.Write(c.Symbols); //TODO: GetSymbols()
-
-
-            //if (num == 0) 
-            //{
-            //    Console.ForegroundColor = ConsoleColor.Black;
-
-            //    if (c.dir.col == 0 && c.dir.fil == 1)
-            //    {
-            //        Console.Write("|@"); // "@→"
-            //    }
-            //    else if (c.dir.col == 0 && c.dir.fil == -1)
-            //    {
-            //        Console.Write("@@");  // "←@"
-            //    }
-            //    else if (c.dir.col == 1 && c.dir.fil == 0)
-            //    {
-            //        Console.Write("@|"); // "@↑"
-            //    }
-            //    else if (c.dir.col == -1 && c.dir.fil == 0)
-            //    {
-            //        Console.Write("||");  // "@↓"
-            //    }
-            //    else 
-            //    {
-            //        Console.Write("<>"); // "@@"
-            //    }
-            //}
-            //else //if (c) Recorrer lista de enemigos para dibujar cada uno
-            //{
-            //    Console.Write("ºº");
-            //}
+            Console.Write(c.Symbols);
 
             Console.BackgroundColor = ConsoleColor.Black;
         }
 
-        private void PrintAttacks(Projectile projectile, int k)
+        private void PrintAttacks(Projectile p)
         {
-            // TODO: Recorrer lista de proyectiles para dibujar cada uno 
+            Console.SetCursorPosition(2 * p.Pos.col, p.Pos.fil);
+            Console.ForegroundColor = p.FgColor;
+
+            Console.BackgroundColor = p.BgColor;
+            Console.Write(p.Symbols);
+
+            Console.BackgroundColor = ConsoleColor.Black;
         }
 
         private void PrintTurn()

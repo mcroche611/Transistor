@@ -106,7 +106,23 @@ namespace Transistor
 
         internal int Count()
         {
-            throw new NotImplementedException();
+            int numEltos = 0;
+
+            if (pri != null)
+            {
+                //Primer nodo
+                numEltos++;
+
+                //Recorre el resto de nodos
+                Nodo aux = pri;
+                while (aux.sig != null)
+                {
+                    aux = aux.sig;
+                    numEltos++;
+                }
+            }
+
+            return numEltos;
         }
     }
 
