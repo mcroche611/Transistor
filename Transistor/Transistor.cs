@@ -22,7 +22,7 @@ namespace Transistor
 
         }
 
-        void ReadInput()
+        void ReadInput(TurnMode mode)
         {
 
         }

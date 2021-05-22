@@ -17,5 +17,13 @@ namespace Transistor
             bf.Show(TurnMode.normal);
 
         }
+        public void TestList()
+        {
+            List<Character> lista = new List<Character>();
+            foreach( Character c in lista)
+            {
+
+            }
+        }
     }
 }

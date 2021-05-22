@@ -50,7 +50,7 @@ namespace Transistor
             set => bgColor = value;
         }
 
-        public void Move()
+        public virtual void Move()
         {
             Pos += Dir;
         }
@@ -93,6 +93,11 @@ namespace Transistor
             Symbols = "**";
             FgColor = ConsoleColor.Black;
             BgColor = ConsoleColor.Magenta;
+        }
+
+        public override void Move()
+        {
+            // No se mueve
         }
     }
 

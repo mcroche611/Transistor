@@ -152,17 +152,17 @@ namespace Transistor
             PrintCharacter(red);
 
             // Dibuja los enemigos
-            for (int k = 0; k < enemyList.Count(); k++) // TODO: Add CuentaEltos to EnemyList 
+            for (int k = 0; k < enemyList.Count(); k++) 
             {
                 Enemy enemy = enemyList.nEsimo(k);
-                PrintCharacter(enemy); // TODO: Recorrer la lista de enemigos y pasar el objeto 
+                PrintCharacter(enemy); 
             }
 
             // Dibuja los proyectiles
-            for (int k = 0; k < projectileList.Count(); k++) // TODO: Add CuentaEltos to EnemyList 
+            for (int k = 0; k < projectileList.Count(); k++)
             {
                 Projectile projectile = projectileList.nEsimo(k);
-                PrintAttacks(projectile); // TODO: Recorrer la lista de enemigos y pasar el objeto 
+                PrintAttacks(projectile); 
             }
 
             Console.SetCursorPosition(0, numRows + 2);
