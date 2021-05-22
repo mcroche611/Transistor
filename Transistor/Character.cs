@@ -6,17 +6,43 @@ namespace Transistor
 {
     class Character 
     {
-        public Coor pos, dir; // TODO: make public variables into get set properties
-        public string symbols;
-        public ConsoleColor color;
+        protected Coor dir;
+        protected Coor pos;
+        protected string symbols;
+        private ConsoleColor color;
         protected int life;
         protected int coolDown;
         protected Battlefield field;
+        
+
+        public virtual Coor Pos
+        {
+            get => pos; 
+            set => pos = value;
+        }
+
+        public virtual Coor Dir
+        {
+            get => dir; 
+            set => dir = value;
+        }
+
+        public virtual string Symbols
+        {
+            get => symbols; 
+            set => symbols = value;
+        }
+
+        public ConsoleColor Color
+        {
+            get => color;
+            set => color = value;
+        }
 
         public Character(Battlefield field, Coor pos)
         {
             this.field = field;
-            this.pos = pos;
+            Pos = pos;
         }
 
         bool Next(Coor dir, out Coor newPos)

@@ -153,8 +153,8 @@ namespace Transistor
             }
 
             // Dibuja al jugador
-            Console.BackgroundColor = red.color;
-            Console.Write(red.symbols); // TODO: GetSymbols()
+            Console.BackgroundColor = red.Color;
+            Console.Write(red.Symbols); // TODO: GetSymbols()
 
             // Dibuja los enemigos
             for (int k = 0; k < enemyList.Count(); k++) // TODO: Add CuentaEltos to EnemyList 
@@ -215,12 +215,12 @@ namespace Transistor
 
         private void PrintEnemy(Character c, int num)
         {
-            Console.SetCursorPosition(2 * c.pos.col, c.pos.fil);
+            Console.SetCursorPosition(2 * c.Pos.col, c.Pos.fil);
             //Console.BackgroundColor = colors[num]; 
             Console.ForegroundColor = ConsoleColor.White;
 
-            Console.BackgroundColor = c.color;
-            Console.Write(c.symbols); //TODO: GetSymbols()
+            Console.BackgroundColor = c.Color;
+            Console.Write(c.Symbols); //TODO: GetSymbols()
 
 
             //if (num == 0) 

@@ -16,8 +16,8 @@ namespace Transistor
     {
         public Creep(Battlefield field, Coor pos) : base(field, pos)
         {
-            symbols = "^^";
-            color = ConsoleColor.Yellow;
+            Symbols = "^^";
+            Color = ConsoleColor.Yellow;
         }
 
     }
@@ -26,8 +26,8 @@ namespace Transistor
     {
         public Snapshot(Battlefield field, Coor pos) : base(field, pos)
         {
-            symbols = "##";
-            color = ConsoleColor.Green;
+            Symbols = "##";
+            Color = ConsoleColor.Green;
         }
     }
 
@@ -35,8 +35,8 @@ namespace Transistor
     {
         public Jerk(Battlefield field, Coor pos) : base(field, pos)
         {
-            symbols = "&&";
-            color = ConsoleColor.DarkCyan;
+            Symbols = "&&";
+            Color = ConsoleColor.DarkCyan;
         }
     }
 
@@ -44,8 +44,8 @@ namespace Transistor
     {
         public Fetch(Battlefield field, Coor pos) : base(field, pos)
         {
-            symbols = "!!";
-            color = ConsoleColor.Red;
+            Symbols = "!!";
+            Color = ConsoleColor.Red;
         }
     }
 }
