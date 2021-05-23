@@ -45,12 +45,21 @@ namespace Transistor
             Pos = pos;
         }
 
-        bool Next(Coor dir, out Coor newPos)
+        public virtual bool Next(out Coor newPos)
         {
-            throw new NotImplementedException();            
+            newPos = Pos + Dir;
+
+            bool possible = field.tile[newPos.fil, newPos.col] == Battlefield.Tile.Empty;
+
+            if (possible)
+            {
+                possible = !IsEnemy() && !IsProjectile();
+            }
+
+            return possible;
         }
 
-        void Move(TurnMode mode, Coor dir)
+        public virtual void Move(TurnMode mode, Coor dir)
         {
             
         }

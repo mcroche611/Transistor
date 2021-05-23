@@ -40,6 +40,15 @@ namespace Transistor
             Color = ConsoleColor.DarkRed;
         }
 
-        
+        public override void Move(TurnMode mode, Coor dir)
+        {
+            if (Next(out Coor newPos))
+            {
+                //if (field.tile[Pos.fil, Pos.col] == Battlefield.Tile.Empty) // isn't this already checked????
+                {
+                    Pos = newPos;
+                }
+            }
+        }
     }
 }

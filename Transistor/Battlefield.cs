@@ -7,8 +7,8 @@ namespace Transistor
 {
     class Battlefield
     {
-        enum Tile { Empty, Wall, BorderWall };
-        Tile[,] tile; //matriz de casillas del nivel.
+        public enum Tile { Empty, Wall, BorderWall };
+        public Tile[,] tile; //matriz de casillas del nivel.
         int numRows, numCols;
 
         EnemyList enemyList;
