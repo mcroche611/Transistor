@@ -11,9 +11,9 @@ namespace Transistor
         public Tile[,] tile; //matriz de casillas del nivel.
         int numRows, numCols;
 
-        EnemyList enemyList;
+        public EnemyList enemyList; //TODO: Crear Get()
         Player red;
-        ProjectileList projectileList;
+        public ProjectileList projectileList;
 
 
         public Battlefield(string file)
@@ -91,7 +91,7 @@ namespace Transistor
                     tile = Tile.BorderWall;
                     break;
                 case 'R':
-                        red = new Player(this, new Coor(row, col));
+                    red = new Player(this, new Coor(row, col));
                     break;
                 case 'C':
                     {
@@ -152,17 +152,17 @@ namespace Transistor
             PrintCharacter(red);
 
             // Dibuja los enemigos
-            for (int k = 0; k < enemyList.Count(); k++) 
+            for (int k = 0; k < enemyList.Count(); k++)
             {
                 Enemy enemy = enemyList.nEsimo(k);
-                PrintCharacter(enemy); 
+                PrintCharacter(enemy);
             }
 
             // Dibuja los proyectiles
             for (int k = 0; k < projectileList.Count(); k++)
             {
                 Projectile projectile = projectileList.nEsimo(k);
-                PrintAttacks(projectile); 
+                PrintAttacks(projectile);
             }
 
             Console.SetCursorPosition(0, numRows + 2);
@@ -200,7 +200,7 @@ namespace Transistor
                 case Tile.Wall:
                     Console.BackgroundColor = ConsoleColor.White;
                     Console.Write("  ");
-                    break; 
+                    break;
                 case Tile.BorderWall:
                     Console.BackgroundColor = ConsoleColor.White;
                     Console.Write("  ");
@@ -233,6 +233,11 @@ namespace Transistor
         private void PrintTurn()
         {
             // TODO: Dibujar la barra de Turn()
+        }
+
+        public Player GetPlayer()
+        {
+            return red;
         }
     }
 }

@@ -53,13 +53,13 @@ namespace Transistor
 
             if (possible)
             {
-                possible = !IsEnemy() && !IsProjectile();
+                possible = !field.enemyList.IsEnemy(newPos) && !field.projectileList.IsProjectile(newPos);
             }
 
             return possible;
         }
 
-        public virtual void Move(TurnMode mode, Coor dir)
+        public virtual void Move(TurnMode mode)
         {
             
         }

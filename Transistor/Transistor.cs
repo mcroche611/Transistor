@@ -10,44 +10,66 @@ namespace Transistor
     {
         TurnMode mode;
 
-        EnemyList enemies;
         Battlefield field;
-        Player red;
 
-        void Run()
+        public void Run()
         {
-            field = new Battlefield("nivel1");
-            red = new Player(field, new Coor());
-            enemies = new EnemyList();
+            Console.CursorVisible = false;
 
-        }
+            field = new Battlefield("Transistor.txt");
 
-        void ReadInput(TurnMode mode)
-        {
-            if (mode == TurnMode.normal)
+            bool playing = true;
+            int lap = 200;
+            mode = TurnMode.normal;
+
+            //Bucle principal de juego
+            while (playing)
             {
-                ReadInputBattle();
+                // input de usuario
+                if (ReadInput(mode))
+                    field.GetPlayer().Move(mode);
+                field.Show(mode);
+                // retardo
+                System.Threading.Thread.Sleep(lap);
             }
         }
 
-        private void ReadInputBattle()
+        bool ReadInput(TurnMode mode)
         {
+            bool dirInput = false;
+
+            if (mode == TurnMode.normal)
+            {
+                dirInput= ReadInputBattle();
+            }
+
+            return dirInput;
+        }
+
+        private bool ReadInputBattle()
+        {
+            bool dirInput = false;
+
             if (Console.KeyAvailable)
             {
                 string tecla = Console.ReadKey().Key.ToString();
                 switch (tecla)
                 {
                     case "LeftArrow":
-                        red.Dir = new Coor(-1, 0);
+                        field.GetPlayer().Dir = new Coor(0, -1);
+                        dirInput = true;
                         break;
                     case "RightArrow":
-                        red.Dir = new Coor(1, 0);
+                        field.GetPlayer().Dir = new Coor(0, 1);
+                        dirInput = true;
                         break;
                     case "UpArrow":
-                        red.Dir = new Coor(0, 1);
+                        field.GetPlayer().Dir = new Coor(-1, 0);
+                        dirInput = true;
                         break;
                     case "DownArrow":
-                        red.Dir = new Coor(0, -1);
+                        field.GetPlayer().Dir = new Coor(1, 0);
+                        dirInput = true;
                         break;
                     case "P":
                         //Pause
@@ -74,6 +96,8 @@ namespace Transistor
                         break;
                 }
             }
+
+            return dirInput;
         }
 
         private void ReadInputTurn()

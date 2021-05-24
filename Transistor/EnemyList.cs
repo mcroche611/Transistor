@@ -124,5 +124,21 @@ namespace Transistor
 
             return numEltos;
         }
+
+        public bool IsEnemy(Coor pos)
+        {
+            Nodo aux = pri;
+            bool found = false;
+
+            while (aux != null && !found)
+            {
+                if (aux.dato.Pos != pos)
+                    aux = aux.sig;
+                else
+                    found = true;
+            }
+
+            return found;
+        }
     }
 }
