@@ -45,7 +45,7 @@ namespace Transistor
 
         public override void Move(TurnMode mode)
         {
-            if (field.Red.Pos != Pos && mode == TurnMode.normal)
+            if (field.Red.Pos != Pos && mode == TurnMode.Normal)
             {
                 base.Move(mode);
             }
@@ -66,7 +66,7 @@ namespace Transistor
             {
                 base.Move(mode); //note-to-self: rn they are dumb and run and will shoot straight into walls.
             }
-            else if (mode != TurnMode.normal)
+            else if (mode != TurnMode.Normal)
             {
                 // que no se mueva
             }

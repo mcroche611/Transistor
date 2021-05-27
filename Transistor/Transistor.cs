@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Transistor
 {
-    enum TurnMode { normal, plan, run }
+    enum TurnMode { Normal, Plan, Run }
 
     class Transistor
     {
@@ -20,7 +20,7 @@ namespace Transistor
 
             bool playing = true;
             int lap = 200;
-            mode = TurnMode.normal;
+            mode = TurnMode.Normal;
 
             //Bucle principal de juego
             while (playing)
@@ -38,7 +38,7 @@ namespace Transistor
         {
             bool dirInput = false;
 
-            if (mode == TurnMode.normal)
+            if (mode == TurnMode.Normal)
             {
                 dirInput= ReadInputBattle();
             }

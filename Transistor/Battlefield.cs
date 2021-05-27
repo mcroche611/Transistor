@@ -125,11 +125,11 @@ namespace Transistor
 
         public void Show(TurnMode mode) //Llama a uno u otro renderizado de pantalla.
         {
-            if (mode == TurnMode.normal)
+            if (mode == TurnMode.Normal)
             {
                 ShowBattle();
             }
-            else if (mode == TurnMode.plan)
+            else if (mode == TurnMode.Plan)
             {
                 ShowTurn();
             }
