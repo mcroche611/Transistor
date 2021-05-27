@@ -6,11 +6,9 @@ namespace Transistor
 {
     class Enemy: Character
     {
-        int speed;
-
         public Enemy(Battlefield field, Coor pos):base(field, pos)
         {
-           
+
         }
 
         public override Coor Dir
@@ -45,7 +43,7 @@ namespace Transistor
 
         public override void Move(TurnMode mode)
         {
-            if (field.Red.Pos != Pos && mode == TurnMode.Normal)
+            if (mode == TurnMode.Normal && field.Red.Pos != Pos)
             {
                 base.Move(mode);
             }
@@ -58,6 +56,7 @@ namespace Transistor
         {
             Symbols = "^^";
             Color = ConsoleColor.Yellow;
+            Speed = 2; // igual a Player
         }
 
         public override void Move(TurnMode mode)
@@ -87,6 +86,7 @@ namespace Transistor
             Symbols = "##";
             Color = ConsoleColor.Green;
             coolDown = 50;
+            Speed = 2; // igual a Player
         }
 
         public override Coor Dir 
@@ -138,6 +138,7 @@ namespace Transistor
             if (coolDown <= 0)
             {
                 dirPred = field.Red.Dir;
+                coolDown = 50;
             }
             else
             {
@@ -154,9 +155,10 @@ namespace Transistor
         {
             Symbols = "&&";
             Color = ConsoleColor.DarkCyan;
+            Speed = 4; // doble que Player
         }
 
-        //TODO: Move básico pero algo más lento que el jugador
+        // Move() básico
     }
 
     class Fetch : Enemy
@@ -165,8 +167,9 @@ namespace Transistor
         {
             Symbols = "!!";
             Color = ConsoleColor.Red;
+            Speed = 1; // mitad que Player
         }
 
-        //TODO: Move básico pero más rápido que el jugador y con coolDown cada vez que alcanza al jugador
+        // Move() básico
     }
 }

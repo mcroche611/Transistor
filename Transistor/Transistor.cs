@@ -20,17 +20,24 @@ namespace Transistor
 
             bool playing = true;
             int lap = 200;
+            int counter = 0;
             mode = TurnMode.Normal;
 
             //Bucle principal de juego
             while (playing)
             {
                 // input de usuario
-                if (ReadInput(mode))
-                    field.GetPlayer().Move(mode);
+                if (counter % field.Red.Speed == 0)
+                {
+                    if (ReadInput(mode))
+                        field.GetPlayer().Move(mode);
+                }
+                //TODO: Recorrer lista de enemigos y moverlos
+
                 field.Show(mode);
                 // retardo
                 System.Threading.Thread.Sleep(lap);
+                counter++;
             }
         }
 

@@ -38,6 +38,7 @@ namespace Transistor
         {
             dir = new Coor(0, 1);
             Color = ConsoleColor.DarkRed;
+            Speed = 2;
         }
 
         public override bool Next(out Coor newPos)

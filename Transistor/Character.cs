@@ -11,6 +11,7 @@ namespace Transistor
         protected string symbols;
         private ConsoleColor color;
         protected int life;
+        protected int speed;
         protected int coolDown;
         protected Battlefield field;
         
@@ -37,6 +38,12 @@ namespace Transistor
         {
             get => color;
             set => color = value;
+        }
+
+        public int Speed
+        {
+            get => speed; 
+            set => speed = value;
         }
 
         public Character(Battlefield field, Coor pos)
