@@ -20,13 +20,13 @@ namespace Transistor
             Pos = pos;
         }
 
-        internal Coor Pos
+        public Coor Pos
         {
             get => pos;
             set => pos = value;
         }
 
-        internal Coor Dir
+        public Coor Dir
         {
             get => dir;
             set => dir = value;

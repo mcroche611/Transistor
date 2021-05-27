@@ -49,19 +49,17 @@ namespace Transistor
         {
             newPos = Pos + Dir;
 
-            bool possible = field.tile[newPos.fil, newPos.col] == Battlefield.Tile.Empty;
-
-            if (possible)
-            {
-                possible = !field.enemyList.IsEnemy(newPos) && !field.projectileList.IsProjectile(newPos);
-            }
+            bool possible = field.tile[newPos.row, newPos.col] == Battlefield.Tile.Empty;
 
             return possible;
         }
 
         public virtual void Move(TurnMode mode)
         {
-            
+            if (Next(out Coor newPos))
+            {
+                Pos = newPos;
+            }
         }
 
         void Attack(TurnMode mode, char attackMode)

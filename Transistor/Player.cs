@@ -10,19 +10,19 @@ namespace Transistor
         {
             get
             {
-                if (Dir.col == 1 && Dir.fil == 0)
+                if (Dir.col == 1 && Dir.row == 0)
                 {
                     return ("@>");
                 }
-                else if (Dir.col == -1 && Dir.fil == 0)
+                else if (Dir.col == -1 && Dir.row == 0)
                 {
                     return ("<@");
                 }
-                else if (Dir.col == 0 && Dir.fil == -1)
+                else if (Dir.col == 0 && Dir.row == -1)
                 {
                     return ("@↑");
                 }
-                else if (Dir.col == 0 && Dir.fil == 1)
+                else if (Dir.col == 0 && Dir.row == 1)
                 {
                     return ("@↓");
                 }
@@ -40,15 +40,21 @@ namespace Transistor
             Color = ConsoleColor.DarkRed;
         }
 
+        public override bool Next(out Coor newPos)
+        {
+            bool possible = base.Next(out newPos); 
+
+            if (possible)
+            {
+                possible = !field.EnemyList.IsEnemy(newPos) && !field.ProjectileList.IsProjectile(newPos);
+            }
+
+            return possible;
+        }
+
         public override void Move(TurnMode mode)
         {
-            if (Next(out Coor newPos))
-            {
-                //if (field.tile[Pos.fil, Pos.col] == Battlefield.Tile.Empty) // isn't this already checked????
-                {
-                    Pos = newPos;
-                }
-            }
+            base.Move(mode);
         }
     }
 }

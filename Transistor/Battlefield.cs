@@ -11,10 +11,13 @@ namespace Transistor
         public Tile[,] tile; //matriz de casillas del nivel.
         int numRows, numCols;
 
-        public EnemyList enemyList; //TODO: Crear Get()
+        EnemyList enemyList; 
         Player red;
-        public ProjectileList projectileList;
+        ProjectileList projectileList;
 
+        internal EnemyList EnemyList { get => enemyList;}
+        internal Player Red { get => red;}
+        internal ProjectileList ProjectileList { get => projectileList;}
 
         public Battlefield(string file)
         {
@@ -96,25 +99,25 @@ namespace Transistor
                 case 'C':
                     {
                         Creep enemy = new Creep(this, new Coor(row, col));
-                        enemyList.Append(enemy);
+                        EnemyList.Append(enemy);
                         break;
                     }
                 case 'S':
                     {
                         Snapshot enemy = new Snapshot(this, new Coor(row, col));
-                        enemyList.Append(enemy);
+                        EnemyList.Append(enemy);
                         break;
                     }
                 case 'J':
                     {
                         Jerk enemy = new Jerk(this, new Coor(row, col));
-                        enemyList.Append(enemy);
+                        EnemyList.Append(enemy);
                         break;
                     }
                 case 'F':
                     {
                         Fetch enemy = new Fetch(this, new Coor(row, col));
-                        enemyList.Append(enemy);
+                        EnemyList.Append(enemy);
                         break;
                     }
             }
@@ -149,19 +152,19 @@ namespace Transistor
             }
 
             // Dibuja al jugador
-            PrintCharacter(red);
+            PrintCharacter(Red);
 
             // Dibuja los enemigos
-            for (int k = 0; k < enemyList.Count(); k++)
+            for (int k = 0; k < EnemyList.Count(); k++)
             {
-                Enemy enemy = enemyList.nEsimo(k);
+                Enemy enemy = EnemyList.nEsimo(k);
                 PrintCharacter(enemy);
             }
 
             // Dibuja los proyectiles
-            for (int k = 0; k < projectileList.Count(); k++)
+            for (int k = 0; k < ProjectileList.Count(); k++)
             {
-                Projectile projectile = projectileList.nEsimo(k);
+                Projectile projectile = ProjectileList.nEsimo(k);
                 PrintAttacks(projectile);
             }
 
@@ -210,7 +213,7 @@ namespace Transistor
 
         private void PrintCharacter(Character c)
         {
-            Console.SetCursorPosition(2 * c.Pos.col, c.Pos.fil);
+            Console.SetCursorPosition(2 * c.Pos.col, c.Pos.row);
             Console.ForegroundColor = ConsoleColor.White; //TODO: Add property foreground color
 
             Console.BackgroundColor = c.Color;
@@ -221,7 +224,7 @@ namespace Transistor
 
         private void PrintAttacks(Projectile p)
         {
-            Console.SetCursorPosition(2 * p.Pos.col, p.Pos.fil);
+            Console.SetCursorPosition(2 * p.Pos.col, p.Pos.row);
             Console.ForegroundColor = p.FgColor;
 
             Console.BackgroundColor = p.BgColor;
@@ -237,7 +240,7 @@ namespace Transistor
 
         public Player GetPlayer()
         {
-            return red;
+            return Red;
         }
     }
 }
