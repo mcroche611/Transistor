@@ -19,22 +19,22 @@ namespace Transistor
                 {
                     if (field.Red.Pos.col > Pos.col)
                     {
-                        return new Coor(-1, 0); //left
+                        return new Coor(0, 1); //right
                     }
                     else
                     {
-                        return new Coor(1, 0); //right
+                        return new Coor(0, -1); //left                        
                     }
                 }
                 else
                 {
                     if (field.Red.Pos.row > Pos.row)
                     {
-                        return new Coor(0, -1); //up
+                        return new Coor(1, 0); //down
                     }
                     else
                     {
-                        return new Coor(0, 1); //down
+                        return new Coor(-1, 0); //up
                     }
                 }
             }
@@ -47,6 +47,18 @@ namespace Transistor
             {
                 base.Move(mode);
             }
+        }
+
+        public override bool Next(out Coor newPos)
+        {
+            bool possible = base.Next(out newPos);
+
+            if (possible)
+            {
+                possible = !(field.Red.Pos == newPos) && !field.EnemyList.IsEnemy(newPos); // && !field.ProjectileList.IsProjectile(newPos);
+            }
+
+            return possible;
         }
     }
 
@@ -87,6 +99,7 @@ namespace Transistor
             Color = ConsoleColor.Green;
             coolDown = 50;
             Speed = 2; // igual a Player
+            dirPred = new Coor(0, 0);
         }
 
         public override Coor Dir 

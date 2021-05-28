@@ -148,7 +148,7 @@ namespace Transistor
                 {
                     PrintTile(tile[i, j], i, j);
                 }
-                Console.WriteLine();
+                //Console.WriteLine();
             }
 
             // Dibuja al jugador
@@ -184,6 +184,16 @@ namespace Transistor
             //}
         }
 
+        public void MoveEnemies(TurnMode mode= TurnMode.Normal)
+        {
+            
+            for (int k = 0; k < EnemyList.Count(); k++)
+            {
+                Enemy enemy = EnemyList.nEsimo(k);
+                enemy.Move(mode);
+            }
+        }
+
         private void ShowTurn()
         {
 
@@ -191,35 +201,41 @@ namespace Transistor
 
         private void PrintTile(Tile tile, int row, int col)
         {
-            Console.SetCursorPosition(2 * col, row);
-            Console.BackgroundColor = ConsoleColor.Black;
-
-            switch (tile)
+            if (!ElementInPos(new Coor(row, col)))
             {
-                case Tile.Empty:
-                    Console.BackgroundColor = ConsoleColor.Black;
-                    Console.Write("  ");
-                    break;
-                case Tile.Wall:
-                    Console.BackgroundColor = ConsoleColor.White;
-                    Console.Write("  ");
-                    break;
-                case Tile.BorderWall:
-                    Console.BackgroundColor = ConsoleColor.White;
-                    Console.Write("  ");
-                    break;
+                Console.SetCursorPosition(2 * col, row);
+                Console.BackgroundColor = ConsoleColor.Black;
+
+                switch (tile)
+                {
+                    case Tile.Empty:
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write("  ");
+                        break;
+                    case Tile.Wall:
+                        Console.BackgroundColor = ConsoleColor.White;
+                        Console.Write("  ");
+                        break;
+                    case Tile.BorderWall:
+                        Console.BackgroundColor = ConsoleColor.White;
+                        Console.Write("  ");
+                        break;
+                }
             }
         }
 
         private void PrintCharacter(Character c)
         {
-            Console.SetCursorPosition(2 * c.Pos.col, c.Pos.row);
-            Console.ForegroundColor = ConsoleColor.White; //TODO: Add property foreground color
+            if (c.PosChanged)
+            {
+                Console.SetCursorPosition(2 * c.Pos.col, c.Pos.row);
+                Console.ForegroundColor = ConsoleColor.White; //TODO: Add property foreground color
 
-            Console.BackgroundColor = c.Color;
-            Console.Write(c.Symbols);
-
-            Console.BackgroundColor = ConsoleColor.Black;
+                Console.BackgroundColor = c.Color;
+                Console.Write(c.Symbols);
+                c.Painted();
+                Console.BackgroundColor = ConsoleColor.Black;
+            }
         }
 
         private void PrintAttacks(Projectile p)
@@ -231,6 +247,20 @@ namespace Transistor
             Console.Write(p.Symbols);
 
             Console.BackgroundColor = ConsoleColor.Black;
+        }
+
+        private bool ElementInPos(Coor pos)
+        {
+            bool elementFound = false;
+            elementFound = red.Pos == pos;
+            if (!elementFound)
+            {
+                elementFound = enemyList.IsEnemy(pos);
+                if (!elementFound)
+                    elementFound = projectileList.IsProjectile(pos);
+            }
+
+            return elementFound;
         }
 
         private void PrintTurn()

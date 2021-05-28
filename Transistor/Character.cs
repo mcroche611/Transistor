@@ -14,12 +14,17 @@ namespace Transistor
         protected int speed;
         protected int coolDown;
         protected Battlefield field;
+        bool posChanged = true;
         
 
         public virtual Coor Pos
         {
-            get => pos; 
-            set => pos = value;
+            get => pos;
+            set
+            {
+                pos = value;
+                posChanged = true;
+            }
         }
 
         public virtual Coor Dir
@@ -50,6 +55,7 @@ namespace Transistor
         {
             this.field = field;
             Pos = pos;
+            this.dir = new Coor(0, 0);
         }
 
         public virtual bool Next(out Coor newPos)
@@ -67,6 +73,16 @@ namespace Transistor
             {
                 Pos = newPos;
             }
+        }
+
+        public void Painted()
+        {
+            posChanged = false;
+        }
+
+        public bool PosChanged
+        {
+            get => posChanged ;
         }
 
         void Attack(TurnMode mode, char attackMode)

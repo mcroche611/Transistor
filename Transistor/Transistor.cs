@@ -9,17 +9,17 @@ namespace Transistor
     class Transistor
     {
         TurnMode mode;
-
+        const int LapTime = 20;
         Battlefield field;
 
         public void Run()
         {
             Console.CursorVisible = false;
 
-            field = new Battlefield("Transistor.txt");
+            field = new Battlefield("Transistor2.txt");
 
             bool playing = true;
-            int lap = 200;
+            
             int counter = 0;
             mode = TurnMode.Normal;
 
@@ -32,11 +32,11 @@ namespace Transistor
                     if (ReadInput(mode))
                         field.GetPlayer().Move(mode);
                 }
-                //TODO: Recorrer lista de enemigos y moverlos
+                field.MoveEnemies(mode);
 
                 field.Show(mode);
                 // retardo
-                System.Threading.Thread.Sleep(lap);
+                System.Threading.Thread.Sleep(LapTime);
                 counter++;
             }
         }

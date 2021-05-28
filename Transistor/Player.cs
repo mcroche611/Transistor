@@ -47,7 +47,7 @@ namespace Transistor
 
             if (possible)
             {
-                possible = !field.EnemyList.IsEnemy(newPos) && !field.ProjectileList.IsProjectile(newPos);
+                possible = !field.EnemyList.IsEnemy(newPos);
             }
 
             return possible;
