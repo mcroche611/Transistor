@@ -108,25 +108,25 @@ namespace Transistor
             {
                 if (Math.Abs(field.Red.Pos.col - Pos.col) > Math.Abs(field.Red.Pos.row - Pos.row)) //si está más lejos del jugador por x que por y
                 {
-                    if (Math.Abs(field.Red.Pos.col - Pos.col) > minDistance)
+                    if ((Math.Abs(field.Red.Pos.col - Pos.col) > minDistance) && (field.Red.Pos.col != Pos.col && field.Red.Pos.row != Pos.row)) //si no está ya en línea con el jugador
                     {
                         return dirPred; //sigue en la dirección a la que cree que va el jugador
                     }
-                    else
+                    else //si la distancia mínima es menor que la distancia al jugador, se aleja
                     {
-                        if (field.Red.Pos.col > Pos.col) //si la distancia mínima es menor que la distancia al jugador, se aleja
+                        if (field.Red.Pos.col > Pos.col)
                         {
-                            return new Coor(-1, 0); //left
+                            return new Coor(1, 0); //right
                         }
                         else
                         {
-                            return new Coor(1, 0); //right
+                            return new Coor(-1, 0); //left
                         }
                     }
                 }
                 else
                 {
-                    if (Math.Abs(field.Red.Pos.row - Pos.row) > minDistance)
+                    if ((Math.Abs(field.Red.Pos.row - Pos.row) > minDistance) && (field.Red.Pos.col != Pos.col && field.Red.Pos.row != Pos.row)) //si no está ya en línea con el jugador
                     {
                         return dirPred; //sigue en la dirección a la que cree que va el jugador
                     }
@@ -134,11 +134,11 @@ namespace Transistor
                     {
                         if (field.Red.Pos.col > Pos.col) //si la distancia mínima es menor que la distancia al jugador, se aleja
                         {
-                            return new Coor(0, 1); //down
+                            return new Coor(0, -1); //up
                         }
                         else
                         {
-                            return new Coor(0, -1); //up
+                            return new Coor(0, 1); //down
                         }
                     }
                 }
@@ -151,9 +151,9 @@ namespace Transistor
             if (coolDown <= 0)
             {
                 dirPred = field.Red.Dir;
-                coolDown = 50;
+                coolDown = 20;
             }
-            else
+            
             {
                 coolDown -= 10;
             }
