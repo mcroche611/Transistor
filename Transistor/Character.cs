@@ -55,7 +55,7 @@ namespace Transistor
         {
             this.field = field;
             Pos = pos;
-            this.dir = new Coor(0, 0);
+            this.dir = Coor.ZERO;
         }
 
         public virtual bool Next(out Coor newPos)
@@ -85,7 +85,7 @@ namespace Transistor
             get => posChanged ;
         }
 
-        void Attack(TurnMode mode, char attackMode)
+        public virtual void Attack(TurnMode mode, char attackMode)
         {
 
         }

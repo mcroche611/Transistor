@@ -17,24 +17,24 @@ namespace Transistor
             {
                 if (Math.Abs(field.Red.Pos.col - Pos.col) > Math.Abs(field.Red.Pos.row - Pos.row)) //si está más lejos del jugador por x que por y
                 {
-                    if (field.Red.Pos.col > Pos.col)
+                    if (field.Red.Pos.row > Pos.row)
                     {
-                        return new Coor(0, 1); //right
+                        return Coor.DOWN;
                     }
                     else
                     {
-                        return new Coor(0, -1); //left                        
+                        return Coor.UP;
                     }
                 }
                 else
                 {
-                    if (field.Red.Pos.row > Pos.row)
+                    if (field.Red.Pos.col > Pos.col)
                     {
-                        return new Coor(1, 0); //down
+                        return Coor.RIGHT;
                     }
                     else
                     {
-                        return new Coor(-1, 0); //up
+                        return Coor.LEFT;             
                     }
                 }
             }
@@ -108,37 +108,51 @@ namespace Transistor
             {
                 if (Math.Abs(field.Red.Pos.col - Pos.col) > Math.Abs(field.Red.Pos.row - Pos.row)) //si está más lejos del jugador por x que por y
                 {
-                    if ((Math.Abs(field.Red.Pos.col - Pos.col) > minDistance) && (field.Red.Pos.col != Pos.col && field.Red.Pos.row != Pos.row)) //si no está ya en línea con el jugador
+                    if ((Math.Abs(field.Red.Pos.col - Pos.col) > minDistance)) //si está a suficiente distancia
                     {
-                        return dirPred; //sigue en la dirección a la que cree que va el jugador
+                        if (field.Red.Pos.col == Pos.col || field.Red.Pos.row == Pos.row) //si está en línea con el jugador
+                        {
+                            return Coor.ZERO;
+                        }
+                        else
+                        {
+                            return dirPred; //sigue en la dirección a la que cree que va el jugador
+                        }
                     }
                     else //si la distancia mínima es menor que la distancia al jugador, se aleja
                     {
                         if (field.Red.Pos.col > Pos.col)
                         {
-                            return new Coor(1, 0); //right
+                            return Coor.RIGHT;
                         }
                         else
                         {
-                            return new Coor(-1, 0); //left
+                            return Coor.LEFT;
                         }
                     }
                 }
                 else
                 {
-                    if ((Math.Abs(field.Red.Pos.row - Pos.row) > minDistance) && (field.Red.Pos.col != Pos.col && field.Red.Pos.row != Pos.row)) //si no está ya en línea con el jugador
+                    if ((Math.Abs(field.Red.Pos.row - Pos.row) > minDistance))  //si está a suficiente distancia 
                     {
-                        return dirPred; //sigue en la dirección a la que cree que va el jugador
-                    }
-                    else
-                    {
-                        if (field.Red.Pos.col > Pos.col) //si la distancia mínima es menor que la distancia al jugador, se aleja
+                        if (field.Red.Pos.row == Pos.row || field.Red.Pos.col == Pos.col) //si está en línea con el jugador
                         {
-                            return new Coor(0, -1); //up
+                            return Coor.ZERO;
                         }
                         else
                         {
-                            return new Coor(0, 1); //down
+                            return dirPred; //sigue en la dirección a la que cree que va el jugador
+                        }
+                    }
+                    else //si la distancia mínima es menor que la distancia al jugador, se aleja
+                    {
+                        if (field.Red.Pos.row > Pos.row) 
+                        {
+                            return Coor.UP; 
+                        }
+                        else
+                        {
+                            return Coor.DOWN;
                         }
                     }
                 }

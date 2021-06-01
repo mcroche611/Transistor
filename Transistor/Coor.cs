@@ -6,6 +6,12 @@ namespace Transistor
 {
     class Coor
     {
+        public static Coor ZERO = new Coor(0, 0);
+        public static Coor LEFT = new Coor(0, -1);
+        public static Coor RIGHT = new Coor(0, 1);
+        public static Coor UP = new Coor(-1, 0);
+        public static Coor DOWN = new Coor(1, 0);
+
         // fila y columna (como propiedades)
         public int row { get; set; }
         public int col { get; set; }
