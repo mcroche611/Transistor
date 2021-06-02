@@ -15,28 +15,32 @@ namespace Transistor
         {
             get
             {
+                Coor realDir;
+
                 if (Math.Abs(field.Red.Pos.col - Pos.col) > Math.Abs(field.Red.Pos.row - Pos.row)) //si está más lejos del jugador por x que por y
                 {
-                    if (field.Red.Pos.col > Pos.col)
+                    if (field.Red.Pos.row > Pos.row)
                     {
-                        return Coor.RIGHT;
+                        realDir = Coor.DOWN;
                     }
                     else
                     {
-                        return Coor.LEFT;
+                        realDir = Coor.UP;
                     }
                 }
                 else
                 {
-                    if (field.Red.Pos.row > Pos.row)
+                    if (field.Red.Pos.col > Pos.col)
                     {
-                        return Coor.DOWN;
+                        realDir = Coor.RIGHT;
                     }
                     else
                     {
-                        return Coor.UP;          
+                        realDir = Coor.LEFT;
                     }
                 }
+
+                return realDir;
             }
             set => dir = value;
         }
@@ -97,13 +101,13 @@ namespace Transistor
                 {
                     Laser laser;
 
-                    if (field.Red.Pos.col > Pos.col) //Creep a la izquierda de Player
+                    if (field.Red.Pos.col > Pos.col) //Creep por encima de Player
                     {
-                        laser = new Laser(field, Pos, Coor.RIGHT);
+                        laser = new Laser(field, Pos, Coor.DOWN);
                     }
                     else
                     {
-                        laser = new Laser(field, Pos, Coor.LEFT);
+                        laser = new Laser(field, Pos, Coor.UP);
                     }
 
                     coolDown = 2;
@@ -113,18 +117,22 @@ namespace Transistor
                 {
                     Projectile laser;
 
-                    if (field.Red.Pos.row > Pos.row) //Creep por encima de Player
+                    if (field.Red.Pos.row > Pos.row) //Creep a la derecha de Player
                     {
-                        laser = new Laser(field, Pos, Coor.UP);
+                        laser = new Laser(field, Pos, Coor.LEFT);
                     }
                     else
                     {
-                        laser = new Laser(field, Pos, Coor.DOWN);
+                        laser = new Laser(field, Pos, Coor.RIGHT);
                     }
 
                     coolDown = 2;
                     field.ProjectileList.Append(laser);
                 }
+            }
+            else
+            {
+                coolDown--;
             }
         }
     }
@@ -148,28 +156,30 @@ namespace Transistor
         { 
             get
             {
+                Coor realDir;
+
                 if (Math.Abs(field.Red.Pos.col - Pos.col) > Math.Abs(field.Red.Pos.row - Pos.row)) //si está más lejos del jugador por x que por y
                 {
                     if ((Math.Abs(field.Red.Pos.col - Pos.col) > minDistance)) //si está a suficiente distancia
                     {
                         if (field.Red.Pos.col == Pos.col || field.Red.Pos.row == Pos.row) //si está en línea con el jugador
                         {
-                            return Coor.ZERO;
+                            realDir = Coor.ZERO;
                         }
                         else
                         {
-                            return dirPred; //sigue en la dirección a la que cree que va el jugador
+                            realDir = dirPred; //sigue en la dirección a la que cree que va el jugador
                         }
                     }
                     else //si la distancia mínima es menor que la distancia al jugador, se aleja
                     {
                         if (field.Red.Pos.col > Pos.col)
                         {
-                            return Coor.LEFT;
+                            realDir = Coor.LEFT;
                         }
                         else
                         {
-                            return Coor.RIGHT;
+                            realDir = Coor.RIGHT;
                         }
                     }
                 }
@@ -179,25 +189,27 @@ namespace Transistor
                     {
                         if (field.Red.Pos.row == Pos.row || field.Red.Pos.col == Pos.col) //si está en línea con el jugador
                         {
-                            return Coor.ZERO;
+                            realDir = Coor.ZERO;
                         }
                         else
                         {
-                            return dirPred; //sigue en la dirección a la que cree que va el jugador
+                            realDir = dirPred; //sigue en la dirección a la que cree que va el jugador
                         }
                     }
                     else //si la distancia mínima es menor que la distancia al jugador, se aleja
                     {
                         if (field.Red.Pos.row > Pos.row) 
                         {
-                            return Coor.DOWN; 
+                            realDir = Coor.DOWN; 
                         }
                         else
                         {
-                            return Coor.UP;
+                            realDir = Coor.UP;
                         }
                     }
                 }
+
+                return realDir;
             }
             set => dir = value; 
         }
