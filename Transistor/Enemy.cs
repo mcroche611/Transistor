@@ -86,6 +86,45 @@ namespace Transistor
                 //TODO: que no se mueva y al tiempo que ataque al jugador (y que aunque se mueva el Jugador, no vuelva a moverse hasta pasado un tiempo)
             }
         }
+
+        public override void Attack(TurnMode mode, char attackMode)
+        {
+            if (coolDown <= 0)
+            {
+                if (field.Red.Pos.col == Pos.col) //misma columna
+                {
+                    Laser laser;
+
+                    if (field.Red.Pos.col > Pos.col) //Creep a la izquierda de Player
+                    {
+                        laser = new Laser(field, Pos + Coor.LEFT);
+                    }
+                    else
+                    {
+                        laser = new Laser(field, Pos + Coor.RIGHT);
+                    }
+
+                    coolDown = 2;
+                    field.ProjectileList.Append(laser);
+                }
+                else if (field.Red.Pos.row == Pos.row)
+                {
+                    Projectile laser;
+
+                    if (field.Red.Pos.row > Pos.row) //Creep por encima de Player
+                    {
+                        laser = new Laser(field, Pos + Coor.DOWN);
+                    }
+                    else
+                    {
+                        laser = new Laser(field, Pos + Coor.UP);
+                    }
+
+                    coolDown = 2;
+                    field.ProjectileList.Append(laser);
+                }
+            }
+        }
     }
 
     class Snapshot : Enemy
@@ -99,7 +138,7 @@ namespace Transistor
             Color = ConsoleColor.Green;
             coolDown = 50;
             Speed = 2; // igual a Player
-            dirPred = new Coor(0, 0);
+            dirPred = Coor.ZERO;
         }
 
         public override Coor Dir 
@@ -165,14 +204,53 @@ namespace Transistor
             if (coolDown <= 0)
             {
                 dirPred = field.Red.Dir;
-                coolDown = 20;
+                coolDown = 2;
             }
-            
+            else
             {
-                coolDown -= 10;
+                coolDown--;
             }
 
             base.Move(mode);
+        }
+
+        public override void Attack(TurnMode mode, char attackMode)
+        {
+            if (coolDown <= 0)
+            {
+                if (field.Red.Pos.col == Pos.col) //misma columna
+                {
+                    Shot shot;
+
+                    if (field.Red.Pos.col > Pos.col) //Creep a la izquierda de Player
+                    {
+                        shot = new Shot(field, Pos + Coor.LEFT);
+                    }
+                    else
+                    {
+                        shot = new Shot(field, Pos + Coor.RIGHT);
+                    }
+
+                    coolDown = 2;
+                    field.ProjectileList.Append(shot);
+                }
+                else if (field.Red.Pos.row == Pos.row)
+                {
+                    Shot shot;
+
+                    if (field.Red.Pos.row > Pos.row) //Creep por encima de Player
+                    {
+                        shot = new Shot(field, Pos + Coor.DOWN);
+                    }
+                    else
+                    {
+                        shot = new Shot(field, Pos + Coor.UP);
+                    }
+
+                    coolDown = 2;
+                    field.ProjectileList.Append(shot);
+                }
+            }
         }
     }
 
@@ -186,6 +264,30 @@ namespace Transistor
         }
 
         // Move() básico
+
+        public override void Attack(TurnMode mode, char attackMode)
+        {
+            Coor newPos = new Coor();
+
+            int range = 2; //TODO: dónde se debería inicializar?
+            int i = 0;
+
+            //Chequeo del jugador en un área en rombo
+            for (int j = -range; j <= range; j++)
+            {
+                for (int k = i; k <= Math.Abs(i); k++)
+                {
+                    newPos = Pos + new Coor(j, k);
+
+                    if (newPos == field.Red.Pos)
+                    {
+                        //InflictDamage(); //TODO: implementar método
+                    }
+
+                    i--;
+                }
+            }
+        }
     }
 
     class Fetch : Enemy
@@ -198,5 +300,21 @@ namespace Transistor
         }
 
         // Move() básico
+
+        public override void Attack(TurnMode mode, char attackMode)
+        {
+            if (coolDown <= 0 && Next(out Coor newPos)) //coolDown transcurrido y obtenemos la siguiente posición
+            {
+                if (newPos == field.Red.Pos)
+                {
+                    //InflictDamage(); //TODO: crear el método
+                    coolDown = 3;
+                }
+            }
+            else if (coolDown > 0)
+            {
+                coolDown--;
+            }
+        }
     }
 }
