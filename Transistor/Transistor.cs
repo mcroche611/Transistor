@@ -15,9 +15,14 @@ namespace Transistor
         public void Run()
         {
             Console.CursorVisible = false;
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Clear();
 
             field = new Battlefield("Transistor2.txt");
-
+            TurnDisplay turnDisplay = new TurnDisplay(field.numRows, field.numCols);
+            CaptionDisplay captionDisplay= new CaptionDisplay(field.numRows, field.numCols);
+            float turnPercentage = 100f;
             bool playing = true;
             
             int counter = 0;
@@ -35,6 +40,14 @@ namespace Transistor
                 field.MoveEnemies(mode);
 
                 field.Show(mode);
+
+                turnDisplay.Show(TurnMode.Normal, turnPercentage, 2,4,0,3);
+                turnPercentage -= 0.5f;
+                if (turnPercentage <= 0)
+                    turnPercentage = 100;
+
+                captionDisplay.Show();
+                
                 // retardo
                 System.Threading.Thread.Sleep(LapTime);
                 counter++;

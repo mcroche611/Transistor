@@ -9,7 +9,7 @@ namespace Transistor
     {
         public enum Tile { Empty, Wall, BorderWall };
         public Tile[,] tile; //matriz de casillas del nivel.
-        int numRows, numCols;
+        public int numRows, numCols; //OJO
 
         EnemyList enemyList; 
         Player red;
