@@ -184,13 +184,21 @@ namespace Transistor
             //}
         }
 
-        public void MoveEnemies(TurnMode mode= TurnMode.Normal)
+        public void MoveEnemies(TurnMode mode = TurnMode.Normal)
         {
-            
             for (int k = 0; k < EnemyList.Count(); k++)
             {
                 Enemy enemy = EnemyList.nEsimo(k);
                 enemy.Move(mode);
+            }
+        }
+
+        public void EnemiesAttack(TurnMode mode = TurnMode.Normal)
+        {
+            for (int k = 0; k < EnemyList.Count(); k++)
+            {
+                Enemy enemy = EnemyList.nEsimo(k);
+                enemy.Attack(mode, ' ');
             }
         }
 

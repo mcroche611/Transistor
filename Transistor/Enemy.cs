@@ -17,24 +17,24 @@ namespace Transistor
             {
                 if (Math.Abs(field.Red.Pos.col - Pos.col) > Math.Abs(field.Red.Pos.row - Pos.row)) //si está más lejos del jugador por x que por y
                 {
-                    if (field.Red.Pos.row > Pos.row)
-                    {
-                        return Coor.DOWN;
-                    }
-                    else
-                    {
-                        return Coor.UP;
-                    }
-                }
-                else
-                {
                     if (field.Red.Pos.col > Pos.col)
                     {
                         return Coor.RIGHT;
                     }
                     else
                     {
-                        return Coor.LEFT;             
+                        return Coor.LEFT;
+                    }
+                }
+                else
+                {
+                    if (field.Red.Pos.row > Pos.row)
+                    {
+                        return Coor.DOWN;
+                    }
+                    else
+                    {
+                        return Coor.UP;          
                     }
                 }
             }
@@ -268,12 +268,17 @@ namespace Transistor
         private int Range(int maxRange, Coor dir)
         {
             int newRange = 0;
+            bool outOfBoard = false;
 
-            for (int i = 0; i <= maxRange; i++)
+            while (newRange <= maxRange && !outOfBoard)
             {
-                if (NextDir(dir, Pos + new Coor(dir.row * i, dir.col * i)))
+                if (NextDir(dir, Pos + new Coor(dir.row * newRange, dir.col * newRange)))
                 {
                     newRange++;
+                }
+                else
+                {
+                    outOfBoard = true;
                 }
             }
 

@@ -33,6 +33,7 @@ namespace Transistor
                         field.GetPlayer().Move(mode);
                 }
                 field.MoveEnemies(mode);
+                field.EnemiesAttack(mode);
 
                 field.Show(mode);
                 // retardo
