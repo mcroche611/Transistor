@@ -14,10 +14,11 @@ namespace Transistor
         protected Battlefield field;
         
 
-        public Projectile(Battlefield field, Coor pos)
+        public Projectile(Battlefield field, Coor pos, Coor dir)
         {
             this.field = field;
             Pos = pos;
+            Dir = dir;
         }
 
         public Coor Pos
@@ -50,15 +51,25 @@ namespace Transistor
             set => bgColor = value;
         }
 
+        public virtual bool Next(out Coor newPos)
+        {
+            newPos = Pos + Dir;
+
+            bool possible = field.tile[newPos.row, newPos.col] == Battlefield.Tile.Empty;
+
+            return possible;
+        }
+
         public virtual void Move()
         {
-            Pos += Dir;
+            if (Next(out Coor newPos))
+                Pos = newPos;
         }
     }
 
     class Laser: Projectile
     {
-        public Laser(Battlefield field, Coor pos) : base(field, pos)
+        public Laser(Battlefield field, Coor pos, Coor dir) : base(field, pos, dir)
         {
             Symbols = "||";
             FgColor = ConsoleColor.White;
@@ -68,7 +79,7 @@ namespace Transistor
 
     class Shot: Projectile
     {
-        public Shot(Battlefield field, Coor pos) : base(field, pos)
+        public Shot(Battlefield field, Coor pos, Coor dir) : base(field, pos, dir)
         {
             Symbols = "##";
             FgColor = ConsoleColor.White;
@@ -78,7 +89,7 @@ namespace Transistor
 
     class Beam: Projectile
     {
-        public Beam(Battlefield field, Coor pos) : base(field, pos)
+        public Beam(Battlefield field, Coor pos, Coor dir) : base(field, pos, dir)
         {
             Symbols = "^^";
             FgColor = ConsoleColor.Black;
@@ -88,7 +99,7 @@ namespace Transistor
 
     class Load: Projectile
     {
-        public Load(Battlefield field, Coor pos) : base(field, pos)
+        public Load(Battlefield field, Coor pos, Coor dir) : base(field, pos, dir)
         {
             Symbols = "**";
             FgColor = ConsoleColor.Black;
@@ -103,7 +114,7 @@ namespace Transistor
 
     class Bullet: Projectile
     {
-        public Bullet(Battlefield field, Coor pos) : base(field, pos)
+        public Bullet(Battlefield field, Coor pos, Coor dir) : base(field, pos, dir)
         {
             Symbols = "**";
             FgColor = ConsoleColor.White;

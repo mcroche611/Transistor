@@ -36,6 +36,7 @@ namespace Transistor
 
         public Player(Battlefield field, Coor pos) : base(field, pos)
         {
+            life = 100;
             dir = Coor.RIGHT;
             Color = ConsoleColor.DarkRed;
             Speed = 2;

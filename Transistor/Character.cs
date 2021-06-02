@@ -11,6 +11,7 @@ namespace Transistor
         protected string symbols;
         private ConsoleColor color;
         protected int life;
+        protected int damage;
         protected int speed;
         protected int coolDown;
         protected Battlefield field;
@@ -90,9 +91,9 @@ namespace Transistor
 
         }
 
-        void ReceiveDamage(int damage)
+        public virtual void ReceiveDamage(int damage)
         {
-
+            life -= damage;
         }
     }
 }

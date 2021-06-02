@@ -8,7 +8,7 @@ namespace Transistor
     {
         public Enemy(Battlefield field, Coor pos):base(field, pos)
         {
-
+            
         }
 
         public override Coor Dir
@@ -66,6 +66,8 @@ namespace Transistor
     {
         public Creep(Battlefield field, Coor pos) : base(field, pos)
         {
+            life = 50;
+            damage = 10;
             Symbols = "^^";
             Color = ConsoleColor.Yellow;
             Speed = 2; // igual a Player
@@ -97,11 +99,11 @@ namespace Transistor
 
                     if (field.Red.Pos.col > Pos.col) //Creep a la izquierda de Player
                     {
-                        laser = new Laser(field, Pos + Coor.LEFT);
+                        laser = new Laser(field, Pos, Coor.RIGHT);
                     }
                     else
                     {
-                        laser = new Laser(field, Pos + Coor.RIGHT);
+                        laser = new Laser(field, Pos, Coor.LEFT);
                     }
 
                     coolDown = 2;
@@ -113,11 +115,11 @@ namespace Transistor
 
                     if (field.Red.Pos.row > Pos.row) //Creep por encima de Player
                     {
-                        laser = new Laser(field, Pos + Coor.DOWN);
+                        laser = new Laser(field, Pos, Coor.UP);
                     }
                     else
                     {
-                        laser = new Laser(field, Pos + Coor.UP);
+                        laser = new Laser(field, Pos, Coor.DOWN);
                     }
 
                     coolDown = 2;
@@ -134,6 +136,7 @@ namespace Transistor
 
         public Snapshot(Battlefield field, Coor pos) : base(field, pos)
         {
+            life = 50;
             Symbols = "##";
             Color = ConsoleColor.Green;
             coolDown = 50;
@@ -162,17 +165,17 @@ namespace Transistor
                     {
                         if (field.Red.Pos.col > Pos.col)
                         {
-                            return Coor.RIGHT;
+                            return Coor.LEFT;
                         }
                         else
                         {
-                            return Coor.LEFT;
+                            return Coor.RIGHT;
                         }
                     }
                 }
                 else
                 {
-                    if ((Math.Abs(field.Red.Pos.row - Pos.row) > minDistance))  //si está a suficiente distancia 
+                    if (Math.Abs(field.Red.Pos.row - Pos.row) > minDistance)  //si está a suficiente distancia 
                     {
                         if (field.Red.Pos.row == Pos.row || field.Red.Pos.col == Pos.col) //si está en línea con el jugador
                         {
@@ -204,7 +207,7 @@ namespace Transistor
             if (coolDown <= 0)
             {
                 dirPred = field.Red.Dir;
-                coolDown = 2;
+                coolDown = 5;
             }
             else
             {
@@ -222,13 +225,13 @@ namespace Transistor
                 {
                     Shot shot;
 
-                    if (field.Red.Pos.col > Pos.col) //Creep a la izquierda de Player
+                    if (field.Red.Pos.col > Pos.col) //Creep por encima de Player
                     {
-                        shot = new Shot(field, Pos + Coor.LEFT);
+                        shot = new Shot(field, Pos, Coor.DOWN);
                     }
                     else
                     {
-                        shot = new Shot(field, Pos + Coor.RIGHT);
+                        shot = new Shot(field, Pos, Coor.UP);
                     }
 
                     coolDown = 2;
@@ -238,13 +241,14 @@ namespace Transistor
                 {
                     Shot shot;
 
-                    if (field.Red.Pos.row > Pos.row) //Creep por encima de Player
+                    if (field.Red.Pos.row > Pos.row) //Creep a la izquierda de Player
                     {
-                        shot = new Shot(field, Pos + Coor.DOWN);
+                        shot = new Shot(field, Pos, Coor.RIGHT);
+                        
                     }
                     else
                     {
-                        shot = new Shot(field, Pos + Coor.UP);
+                        shot = new Shot(field, Pos, Coor.LEFT);
                     }
 
                     coolDown = 2;
@@ -258,9 +262,10 @@ namespace Transistor
     {
         public Jerk(Battlefield field, Coor pos) : base(field, pos)
         {
+            life = 50;
             Symbols = "&&";
             Color = ConsoleColor.DarkCyan;
-            Speed = 4; // doble que Player
+            Speed = 1; // mitad que Player
         }
 
         // Move() básico
@@ -315,7 +320,7 @@ namespace Transistor
 
                     if (newPos == field.Red.Pos)
                     {
-                        //InflictDamage(); //TODO: implementar método
+                        field.Red.ReceiveDamage(damage); 
                     }
                 }
                 if (i < maxDown)
@@ -330,9 +335,10 @@ namespace Transistor
     {
         public Fetch(Battlefield field, Coor pos) : base(field, pos)
         {
+            life = 50;
             Symbols = "!!";
             Color = ConsoleColor.Red;
-            Speed = 1; // mitad que Player
+            Speed = 4; // mitad que Player
         }
 
         // Move() básico
@@ -343,7 +349,7 @@ namespace Transistor
             {
                 if (newPos == field.Red.Pos)
                 {
-                    //InflictDamage(); //TODO: crear el método
+                    field.Red.ReceiveDamage(damage); 
                     coolDown = 3;
                 }
             }
