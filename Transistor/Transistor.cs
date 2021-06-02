@@ -119,6 +119,9 @@ namespace Transistor
                         //NextLevel (hack)
                         //next = SKIP; //En vez de if(SKIP) next = true;
                         break;
+                    case "D1":
+                        field.Red.Attack(mode, 'c');
+                        break;
                 }
             }
 

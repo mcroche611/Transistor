@@ -140,5 +140,21 @@ namespace Transistor
 
             return found;
         }
+
+        public Enemy GetEnemyInPos(Coor pos)
+        {
+            Node aux = first;
+            Enemy enemy = null;
+
+            while (aux != null && enemy == null)
+            {
+                if (aux.data.Pos != pos)
+                    aux = aux.next;
+                else
+                    enemy = aux.data;
+            }
+
+            return enemy;
+        }
     }
 }

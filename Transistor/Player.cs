@@ -37,8 +37,9 @@ namespace Transistor
         public Player(Battlefield field, Coor pos) : base(field, pos)
         {
             life = 100;
+            damage = 20;
             dir = Coor.RIGHT;
-            Color = ConsoleColor.DarkRed;
+            BgColor = ConsoleColor.DarkRed;
             Speed = 2;
         }
 
@@ -57,6 +58,18 @@ namespace Transistor
         public override void Move(TurnMode mode)
         {
             base.Move(mode);
+        }
+
+        public override void Attack(TurnMode mode, char attackMode)
+        {
+            Next(out Coor newPos);
+
+            Enemy e = field.EnemyList.GetEnemyInPos(newPos);
+
+            if (e != null)
+            {
+                e.ReceiveDamage(damage);
+            }
         }
     }
 }

@@ -191,6 +191,16 @@ namespace Transistor
                 Enemy enemy = EnemyList.nEsimo(k);
                 enemy.Move(mode);
             }
+
+            for (int k = 0; k < EnemyList.Count(); k++)
+            {
+                Enemy enemy = EnemyList.nEsimo(k);
+                
+                if (enemy.Destroyed)
+                {
+                    enemyList.Delete(enemy);
+                }
+            }
         }
 
         public void EnemiesAttack(TurnMode mode = TurnMode.Normal)
@@ -257,9 +267,9 @@ namespace Transistor
             if (c.PosChanged)
             {
                 Console.SetCursorPosition(2 * c.Pos.col, c.Pos.row);
-                Console.ForegroundColor = ConsoleColor.White; //TODO: Add property foreground color
+                Console.ForegroundColor = ConsoleColor.White; //TODO: Assign property foreground color
 
-                Console.BackgroundColor = c.Color;
+                Console.BackgroundColor = c.BgColor;
                 Console.Write(c.Symbols);
 
                 if (c is Jerk)

@@ -61,7 +61,7 @@ namespace Transistor
             Console.Write(header);
             col++;
             Console.SetCursorPosition(col, row);
-            SetColor(player.Color);
+            SetColor(player.BgColor);
             Console.Write(player.Symbols);
             col += 4;
             Console.SetCursorPosition(col, row);
@@ -70,7 +70,7 @@ namespace Transistor
 
             col += 15;
             Console.SetCursorPosition(col, row);
-            SetColor(creep.Color);
+            SetColor(creep.BgColor);
             Console.Write(creep.Symbols);
             col += 4;
             Console.SetCursorPosition(col, row);
@@ -91,7 +91,7 @@ namespace Transistor
             Console.Write(header);
             col++;
             Console.SetCursorPosition(col, row);
-            SetColor(snapshot.Color);
+            SetColor(snapshot.BgColor);
             Console.Write(snapshot.Symbols);
             col += 4;
             Console.SetCursorPosition(col, row);
@@ -100,7 +100,7 @@ namespace Transistor
 
             col += 15;
             Console.SetCursorPosition(col, row);
-            SetColor(jerk.Color);
+            SetColor(jerk.BgColor);
             Console.Write(jerk.Symbols);
             col += 4;
             Console.SetCursorPosition(col, row);
@@ -122,7 +122,7 @@ namespace Transistor
             Console.Write(header);
             col++;
             Console.SetCursorPosition(col, row);
-            SetColor(fetch.Color);
+            SetColor(fetch.BgColor);
             Console.Write(fetch.Symbols);
             col += 4;
             Console.SetCursorPosition(col, row);

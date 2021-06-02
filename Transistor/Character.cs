@@ -9,9 +9,12 @@ namespace Transistor
         protected Coor dir;
         protected Coor pos;
         protected string symbols;
-        private ConsoleColor color;
-        protected int life;
+        protected ConsoleColor bgColor;
+        protected ConsoleColor fgColor;
+        protected int life; //TODO: maxLife
         protected int damage;
+        protected bool destroyed;
+        private bool hit;
         protected int speed;
         protected int coolDown;
         protected Battlefield field;
@@ -40,10 +43,32 @@ namespace Transistor
             set => symbols = value;
         }
 
-        public ConsoleColor Color
+        public ConsoleColor BgColor
         {
-            get => color;
-            set => color = value;
+            get
+            {
+                ConsoleColor color;
+
+                if (hit)
+                {
+                    color = ConsoleColor.White;
+                    hit = false;
+                }
+                else
+                {
+                    color = bgColor;
+                }
+
+                return color;
+            }
+
+            set => bgColor = value;
+        }
+
+        public ConsoleColor FgColor
+        {
+            get => fgColor;
+            set => fgColor = value;
         }
 
         public int Speed
@@ -86,6 +111,18 @@ namespace Transistor
             get => posChanged ;
         }
 
+        public bool Destroyed
+        {
+            get => destroyed;
+        }
+
+        public bool Hit 
+        { 
+            get => hit; 
+            set => hit = value;
+        }
+        
+
         public virtual void Attack(TurnMode mode, char attackMode)
         {
 
@@ -94,6 +131,12 @@ namespace Transistor
         public virtual void ReceiveDamage(int damage)
         {
             life -= damage;
+            hit = true;
+
+            if (life <= 0)
+            {
+                destroyed = true;
+            }
         }
     }
 }

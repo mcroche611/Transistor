@@ -74,7 +74,7 @@ namespace Transistor
             life = 50;
             damage = 10;
             Symbols = "^^";
-            Color = ConsoleColor.Yellow;
+            BgColor = ConsoleColor.Yellow;
             Speed = 2; // igual a Player
         }
 
@@ -147,8 +147,8 @@ namespace Transistor
         {
             life = 50;
             Symbols = "##";
-            Color = ConsoleColor.Green;
-            coolDown = 5;
+            BgColor = ConsoleColor.Green;
+            coolDown = 20;
             Speed = 2; // igual a Player
             dirPred = Coor.ZERO;
         }
@@ -238,7 +238,7 @@ namespace Transistor
                 {
                     Shot shot;
 
-                    if (field.Red.Pos.col > Pos.col) //Creep por encima de Player
+                    if (field.Red.Pos.row > Pos.row) //Snapshot por encima de Player
                     {
                         shot = new Shot(field, Pos, Coor.DOWN);
                     }
@@ -247,14 +247,14 @@ namespace Transistor
                         shot = new Shot(field, Pos, Coor.UP);
                     }
 
-                    coolDown = 2;
+                    coolDown = 20;
                     field.ProjectileList.Append(shot);
                 }
                 else if (field.Red.Pos.row == Pos.row)
                 {
                     Shot shot;
 
-                    if (field.Red.Pos.row > Pos.row) //Creep a la izquierda de Player
+                    if (field.Red.Pos.col > Pos.col) //Snapshot a la izquierda de Player
                     {
                         shot = new Shot(field, Pos, Coor.RIGHT);
                         
@@ -264,7 +264,7 @@ namespace Transistor
                         shot = new Shot(field, Pos, Coor.LEFT);
                     }
 
-                    coolDown = 2;
+                    coolDown = 20;
                     field.ProjectileList.Append(shot);
                 }
             }
@@ -277,7 +277,7 @@ namespace Transistor
         {
             life = 50;
             Symbols = "&&";
-            Color = ConsoleColor.DarkCyan;
+            BgColor = ConsoleColor.DarkCyan;
             Speed = 4; // mitad que Player
         }
 
@@ -353,7 +353,7 @@ namespace Transistor
         {
             life = 50;
             Symbols = "!!";
-            Color = ConsoleColor.Red;
+            BgColor = ConsoleColor.Red;
             Speed = 1; // mitad que Player
         }
 
