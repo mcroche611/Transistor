@@ -29,11 +29,11 @@ namespace Transistor
         Snapshot snapshot= new Snapshot(null, null);
         Jerk jerk = new Jerk(null, null);
         Fetch fetch = new Fetch(null, null);
-        Beam beam = new Beam(null, null);
-        Laser laser = new Laser(null, null);
-        Shot shot= new Shot(null, null);
-        Load load = new Load(null, null);
-        Bullet bullet = new Bullet(null, null);
+        Beam beam = new Beam(null, null, null);
+        Laser laser = new Laser(null, null, null);
+        Shot shot= new Shot(null, null, null);
+        Load load = new Load(null, null, null);
+        Bullet bullet = new Bullet(null, null, null);
 
 
         public CaptionDisplay(int topRow, int maxColumns)
