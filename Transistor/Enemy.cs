@@ -265,17 +265,46 @@ namespace Transistor
 
         // Move() básico
 
+        private int Range(int maxRange, Coor dir)
+        {
+            int newRange = 0;
+
+            for (int i = 0; i <= maxRange; i++)
+            {
+                if (NextDir(dir, Pos + new Coor(dir.row * i, dir.col * i)))
+                {
+                    newRange++;
+                }
+            }
+
+            return newRange;
+        }
+
+        private bool NextDir(Coor dir, Coor pos)
+        {
+            Coor newPos = pos + dir;
+
+            bool possible = field.tile[newPos.row, newPos.col] != Battlefield.Tile.BorderWall;
+
+            return possible;
+        }
+
         public override void Attack(TurnMode mode, char attackMode)
         {
-            Coor newPos = new Coor();
+            Coor newPos;
 
-            int range = 2; //TODO: dónde se debería inicializar?
+            int maxRange = 2;
+
+            int minLeft = Range(maxRange, Coor.LEFT);
+            int maxRight = Range(maxRange, Coor.RIGHT);
+            int minUp = Range(maxRange, Coor.UP);
+            int maxDown = Range(maxRange, Coor.DOWN);
             int i = 0;
 
-            //Chequeo del jugador en un área en rombo
-            for (int j = -range; j <= range; j++)
+            //Chequeo del jugador en un área en rombo //TODO: representar el ataque visualmente?
+            for (int j = -minLeft; j <= maxRight; j++)
             {
-                for (int k = i; k <= Math.Abs(i); k++)
+                for (int k = -minUp; k <= Math.Abs(i); k++)
                 {
                     newPos = Pos + new Coor(j, k);
 
@@ -283,9 +312,11 @@ namespace Transistor
                     {
                         //InflictDamage(); //TODO: implementar método
                     }
-
-                    i--;
                 }
+                if (i < maxDown)
+                    i++;
+                else if (i >= maxDown)
+                    i = 0;
             }
         }
     }
