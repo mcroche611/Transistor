@@ -139,7 +139,7 @@ namespace Transistor
             life = 50;
             Symbols = "##";
             Color = ConsoleColor.Green;
-            coolDown = 50;
+            coolDown = 5;
             Speed = 2; // igual a Player
             dirPred = Coor.ZERO;
         }
@@ -190,11 +190,11 @@ namespace Transistor
                     {
                         if (field.Red.Pos.row > Pos.row) 
                         {
-                            return Coor.UP; 
+                            return Coor.DOWN; 
                         }
                         else
                         {
-                            return Coor.DOWN;
+                            return Coor.UP;
                         }
                     }
                 }

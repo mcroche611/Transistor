@@ -32,9 +32,9 @@ namespace Transistor
                     if (ReadInput(mode))
                         field.GetPlayer().Move(mode);
                 }
-                field.EnemiesAttack(mode);
-                field.MoveProjectiles(mode);
-                field.MoveEnemies(mode);
+                //field.EnemiesAttack();
+                //field.MoveProjectiles();
+                field.MoveEnemies();
 
                 field.Show(mode);
                 // retardo
