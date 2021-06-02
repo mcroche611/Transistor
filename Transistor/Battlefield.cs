@@ -208,6 +208,17 @@ namespace Transistor
             {
                 Projectile projectile = ProjectileList.nEsimo(k);
                 projectile.Move();
+                projectile.CheckDamage();
+            }
+
+            for (int k = 0; k < ProjectileList.Count(); k++)
+            {
+                Projectile projectile = ProjectileList.nEsimo(k);
+                
+                if (projectile.Destroyed)
+                {
+                    ProjectileList.BorraElto(projectile);
+                }
             }
         }
 
@@ -263,13 +274,16 @@ namespace Transistor
 
         private void PrintAttacks(Projectile p)
         {
-            Console.SetCursorPosition(2 * p.Pos.col, p.Pos.row);
-            Console.ForegroundColor = p.FgColor;
+            //if (!p.Destroyed)
+            {
+                Console.SetCursorPosition(2 * p.Pos.col, p.Pos.row);
+                Console.ForegroundColor = p.FgColor;
 
-            Console.BackgroundColor = p.BgColor;
-            Console.Write(p.Symbols);
+                Console.BackgroundColor = p.BgColor;
+                Console.Write(p.Symbols);
 
-            Console.BackgroundColor = ConsoleColor.Black;
+                Console.BackgroundColor = ConsoleColor.Black;
+            }
         }
 
         private void PrintRange(Character c)

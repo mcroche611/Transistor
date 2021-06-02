@@ -8,6 +8,8 @@ namespace Transistor
     {
         private Coor dir;
         private Coor pos;
+        private int damage;
+        private bool destroyed; 
         private string symbols;
         private ConsoleColor fgColor;
         private ConsoleColor bgColor;
@@ -19,6 +21,8 @@ namespace Transistor
             this.field = field;
             Pos = pos;
             Dir = dir;
+            damage = 10; //TODO: asignar valor personalizado
+            destroyed = false;
         }
 
         public Coor Pos
@@ -51,6 +55,11 @@ namespace Transistor
             set => bgColor = value;
         }
 
+        public bool Destroyed 
+        { 
+            get => destroyed; 
+        }
+
         public virtual bool Next(out Coor newPos)
         {
             newPos = Pos + Dir;
@@ -62,8 +71,21 @@ namespace Transistor
 
         public virtual void Move()
         {
-            if (Next(out Coor newPos))
-                Pos = newPos;
+            Next(out Coor newPos);
+            Pos = newPos;
+        }
+
+        public virtual void CheckDamage()
+        {
+            if (Pos == field.Red.Pos)
+            {
+                field.Red.ReceiveDamage(damage);
+                destroyed = true;
+            }
+            else if (field.tile[Pos.row, Pos.col] != Battlefield.Tile.Empty)
+            {
+                destroyed = true;
+            }
         }
     }
 

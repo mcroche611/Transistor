@@ -325,7 +325,7 @@ namespace Transistor
             //int i = 0;
 
 
-            //Chequeo del jugador en un área en rombo //TODO: representar el ataque visualmente?
+            //Chequeo del jugador en un área en rombo 
             for (int j = -maxRange; j <= maxRange; j++)
             {
                 int col;
