@@ -28,6 +28,9 @@ namespace Transistor
             int counter = 0;
             mode = TurnMode.Normal;
 
+            field.Show(mode);
+            captionDisplay.Show();
+
             //Bucle principal de juego
             while (playing)
             {
@@ -48,7 +51,7 @@ namespace Transistor
                 if (turnPercentage <= 0)
                     turnPercentage = 100;
 
-                captionDisplay.Show();
+                
                 
                 // retardo
                 System.Threading.Thread.Sleep(LapTime);

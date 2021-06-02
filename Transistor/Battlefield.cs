@@ -250,6 +250,12 @@ namespace Transistor
 
                 Console.BackgroundColor = c.Color;
                 Console.Write(c.Symbols);
+
+                if (c is Jerk)
+                {
+                    PrintRange(c);
+                }
+
                 c.Painted();
                 Console.BackgroundColor = ConsoleColor.Black;
             }
@@ -264,6 +270,38 @@ namespace Transistor
             Console.Write(p.Symbols);
 
             Console.BackgroundColor = ConsoleColor.Black;
+        }
+
+        private void PrintRange(Character c)
+        {
+            int range = 3;
+            //int i = 0;
+
+            for (int j = -range; j <= range; j++)
+            {
+                int col;
+                if (j <= 0)
+                    col = (range + j);
+                else
+                    col = (range - j);
+
+                for (int k = -col; k <= col; k++)
+                {
+                    Coor newPos = c.Pos + new Coor(j, k);
+
+                    if (newPos.row < tile.GetLength(0) && newPos.col < tile.GetLength(1) && newPos.row > 0 && newPos.col > 0)
+                    {
+                        Tile t = tile[newPos.row, newPos.col];
+
+                        if (newPos != Red.Pos && tile[newPos.row, newPos.col] == Tile.Empty && newPos != c.Pos)
+                        {
+                            Console.SetCursorPosition(2 * newPos.col, newPos.row);
+                            Console.BackgroundColor = ConsoleColor.DarkBlue;
+                            Console.Write("  ");
+                        }
+                    }
+                }
+            }
         }
 
         private bool ElementInPos(Coor pos)

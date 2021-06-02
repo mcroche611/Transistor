@@ -17,7 +17,8 @@ namespace Transistor
             {
                 Coor realDir;
 
-                if (Math.Abs(field.Red.Pos.col - Pos.col) > Math.Abs(field.Red.Pos.row - Pos.row)) //si está más lejos del jugador por x que por y
+                //si está más lejos del jugador por x que por y
+                if (Math.Abs(field.Red.Pos.col - Pos.col) > Math.Abs(field.Red.Pos.row - Pos.row) && field.Red.Pos.row != Pos.row || field.Red.Pos.col == Pos.col) 
                 {
                     if (field.Red.Pos.row > Pos.row)
                     {
@@ -277,56 +278,63 @@ namespace Transistor
             life = 50;
             Symbols = "&&";
             Color = ConsoleColor.DarkCyan;
-            Speed = 1; // mitad que Player
+            Speed = 4; // mitad que Player
         }
 
         // Move() básico
 
-        private int Range(int maxRange, Coor dir)
-        {
-            int newRange = 0;
-            bool outOfBoard = false;
+        //private int Range(int maxRange, Coor dir)
+        //{
+        //    int newRange = 0;
+        //    bool outOfBoard = false;
 
-            while (newRange <= maxRange && !outOfBoard)
-            {
-                if (NextDir(dir, Pos + new Coor(dir.row * newRange, dir.col * newRange)))
-                {
-                    newRange++;
-                }
-                else
-                {
-                    outOfBoard = true;
-                }
-            }
+        //    while (newRange <= maxRange && !outOfBoard)
+        //    {
+        //        if (NextDir(dir, Pos + new Coor(dir.row * newRange, dir.col * newRange)))
+        //        {
+        //            newRange++;
+        //        }
+        //        else
+        //        {
+        //            outOfBoard = true;
+        //        }
+        //    }
 
-            return newRange;
-        }
+        //    return newRange;
+        //}
 
-        private bool NextDir(Coor dir, Coor pos)
-        {
-            Coor newPos = pos + dir;
+        //private bool NextDir(Coor dir, Coor pos)
+        //{
+        //    Coor newPos = pos + dir;
 
-            bool possible = field.tile[newPos.row, newPos.col] != Battlefield.Tile.BorderWall;
+        //    bool possible = field.tile[newPos.row, newPos.col] != Battlefield.Tile.BorderWall;
 
-            return possible;
-        }
+        //    return possible;
+        //}
 
         public override void Attack(TurnMode mode, char attackMode)
         {
             Coor newPos;
 
-            int maxRange = 2;
+            int maxRange = 3;
 
-            int minLeft = Range(maxRange, Coor.LEFT);
-            int maxRight = Range(maxRange, Coor.RIGHT);
-            int minUp = Range(maxRange, Coor.UP);
-            int maxDown = Range(maxRange, Coor.DOWN);
-            int i = 0;
+            //int minLeft = Range(maxRange, Coor.LEFT);
+            //int maxRight = Range(maxRange, Coor.RIGHT);
+            //int minUp = Range(maxRange, Coor.UP);
+            //int maxDown = Range(maxRange, Coor.DOWN);
+            //int i = 0;
+
 
             //Chequeo del jugador en un área en rombo //TODO: representar el ataque visualmente?
-            for (int j = -minLeft; j <= maxRight; j++)
+            for (int j = -maxRange; j <= maxRange; j++)
             {
-                for (int k = -minUp; k <= Math.Abs(i); k++)
+                int col;
+                if (j <= 0)
+                    col = (maxRange + j);
+                else
+                    col = (maxRange - j);
+
+                for (int k = -col; k <= col; k++)
                 {
                     newPos = Pos + new Coor(j, k);
 
@@ -335,10 +343,6 @@ namespace Transistor
                         field.Red.ReceiveDamage(damage); 
                     }
                 }
-                if (i < maxDown)
-                    i++;
-                else if (i >= maxDown)
-                    i = 0;
             }
         }
     }
@@ -350,7 +354,7 @@ namespace Transistor
             life = 50;
             Symbols = "!!";
             Color = ConsoleColor.Red;
-            Speed = 4; // mitad que Player
+            Speed = 1; // mitad que Player
         }
 
         // Move() básico
