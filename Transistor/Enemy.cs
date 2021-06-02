@@ -8,7 +8,7 @@ namespace Transistor
     {
         public Enemy(Battlefield field, Coor pos):base(field, pos)
         {
-
+            
         }
 
         public override Coor Dir
@@ -19,22 +19,22 @@ namespace Transistor
                 {
                     if (field.Red.Pos.col > Pos.col)
                     {
-                        return new Coor(0, 1); //right
+                        return Coor.RIGHT;
                     }
                     else
                     {
-                        return new Coor(0, -1); //left                        
+                        return Coor.LEFT;
                     }
                 }
                 else
                 {
                     if (field.Red.Pos.row > Pos.row)
                     {
-                        return new Coor(1, 0); //down
+                        return Coor.DOWN;
                     }
                     else
                     {
-                        return new Coor(-1, 0); //up
+                        return Coor.UP;          
                     }
                 }
             }
@@ -66,6 +66,8 @@ namespace Transistor
     {
         public Creep(Battlefield field, Coor pos) : base(field, pos)
         {
+            life = 50;
+            damage = 10;
             Symbols = "^^";
             Color = ConsoleColor.Yellow;
             Speed = 2; // igual a Player
@@ -86,6 +88,45 @@ namespace Transistor
                 //TODO: que no se mueva y al tiempo que ataque al jugador (y que aunque se mueva el Jugador, no vuelva a moverse hasta pasado un tiempo)
             }
         }
+
+        public override void Attack(TurnMode mode, char attackMode)
+        {
+            if (coolDown <= 0)
+            {
+                if (field.Red.Pos.col == Pos.col) //misma columna
+                {
+                    Laser laser;
+
+                    if (field.Red.Pos.col > Pos.col) //Creep a la izquierda de Player
+                    {
+                        laser = new Laser(field, Pos, Coor.RIGHT);
+                    }
+                    else
+                    {
+                        laser = new Laser(field, Pos, Coor.LEFT);
+                    }
+
+                    coolDown = 2;
+                    field.ProjectileList.Append(laser);
+                }
+                else if (field.Red.Pos.row == Pos.row)
+                {
+                    Projectile laser;
+
+                    if (field.Red.Pos.row > Pos.row) //Creep por encima de Player
+                    {
+                        laser = new Laser(field, Pos, Coor.UP);
+                    }
+                    else
+                    {
+                        laser = new Laser(field, Pos, Coor.DOWN);
+                    }
+
+                    coolDown = 2;
+                    field.ProjectileList.Append(laser);
+                }
+            }
+        }
     }
 
     class Snapshot : Enemy
@@ -95,11 +136,12 @@ namespace Transistor
 
         public Snapshot(Battlefield field, Coor pos) : base(field, pos)
         {
+            life = 50;
             Symbols = "##";
             Color = ConsoleColor.Green;
-            coolDown = 50;
+            coolDown = 5;
             Speed = 2; // igual a Player
-            dirPred = new Coor(0, 0);
+            dirPred = Coor.ZERO;
         }
 
         public override Coor Dir 
@@ -108,37 +150,51 @@ namespace Transistor
             {
                 if (Math.Abs(field.Red.Pos.col - Pos.col) > Math.Abs(field.Red.Pos.row - Pos.row)) //si está más lejos del jugador por x que por y
                 {
-                    if (Math.Abs(field.Red.Pos.col - Pos.col) > minDistance)
+                    if ((Math.Abs(field.Red.Pos.col - Pos.col) > minDistance)) //si está a suficiente distancia
                     {
-                        return dirPred; //sigue en la dirección a la que cree que va el jugador
-                    }
-                    else
-                    {
-                        if (field.Red.Pos.col > Pos.col) //si la distancia mínima es menor que la distancia al jugador, se aleja
+                        if (field.Red.Pos.col == Pos.col || field.Red.Pos.row == Pos.row) //si está en línea con el jugador
                         {
-                            return new Coor(-1, 0); //left
+                            return Coor.ZERO;
                         }
                         else
                         {
-                            return new Coor(1, 0); //right
+                            return dirPred; //sigue en la dirección a la que cree que va el jugador
+                        }
+                    }
+                    else //si la distancia mínima es menor que la distancia al jugador, se aleja
+                    {
+                        if (field.Red.Pos.col > Pos.col)
+                        {
+                            return Coor.LEFT;
+                        }
+                        else
+                        {
+                            return Coor.RIGHT;
                         }
                     }
                 }
                 else
                 {
-                    if (Math.Abs(field.Red.Pos.row - Pos.row) > minDistance)
+                    if (Math.Abs(field.Red.Pos.row - Pos.row) > minDistance)  //si está a suficiente distancia 
                     {
-                        return dirPred; //sigue en la dirección a la que cree que va el jugador
-                    }
-                    else
-                    {
-                        if (field.Red.Pos.col > Pos.col) //si la distancia mínima es menor que la distancia al jugador, se aleja
+                        if (field.Red.Pos.row == Pos.row || field.Red.Pos.col == Pos.col) //si está en línea con el jugador
                         {
-                            return new Coor(0, 1); //down
+                            return Coor.ZERO;
                         }
                         else
                         {
-                            return new Coor(0, -1); //up
+                            return dirPred; //sigue en la dirección a la que cree que va el jugador
+                        }
+                    }
+                    else //si la distancia mínima es menor que la distancia al jugador, se aleja
+                    {
+                        if (field.Red.Pos.row > Pos.row) 
+                        {
+                            return Coor.DOWN; 
+                        }
+                        else
+                        {
+                            return Coor.UP;
                         }
                     }
                 }
@@ -151,14 +207,54 @@ namespace Transistor
             if (coolDown <= 0)
             {
                 dirPred = field.Red.Dir;
-                coolDown = 50;
+                coolDown = 5;
             }
             else
             {
-                coolDown -= 10;
+                coolDown--;
             }
 
             base.Move(mode);
+        }
+
+        public override void Attack(TurnMode mode, char attackMode)
+        {
+            if (coolDown <= 0)
+            {
+                if (field.Red.Pos.col == Pos.col) //misma columna
+                {
+                    Shot shot;
+
+                    if (field.Red.Pos.col > Pos.col) //Creep por encima de Player
+                    {
+                        shot = new Shot(field, Pos, Coor.DOWN);
+                    }
+                    else
+                    {
+                        shot = new Shot(field, Pos, Coor.UP);
+                    }
+
+                    coolDown = 2;
+                    field.ProjectileList.Append(shot);
+                }
+                else if (field.Red.Pos.row == Pos.row)
+                {
+                    Shot shot;
+
+                    if (field.Red.Pos.row > Pos.row) //Creep a la izquierda de Player
+                    {
+                        shot = new Shot(field, Pos, Coor.RIGHT);
+                        
+                    }
+                    else
+                    {
+                        shot = new Shot(field, Pos, Coor.LEFT);
+                    }
+
+                    coolDown = 2;
+                    field.ProjectileList.Append(shot);
+                }
+            }
         }
     }
 
@@ -166,23 +262,101 @@ namespace Transistor
     {
         public Jerk(Battlefield field, Coor pos) : base(field, pos)
         {
+            life = 50;
             Symbols = "&&";
             Color = ConsoleColor.DarkCyan;
-            Speed = 4; // doble que Player
+            Speed = 1; // mitad que Player
         }
 
         // Move() básico
+
+        private int Range(int maxRange, Coor dir)
+        {
+            int newRange = 0;
+            bool outOfBoard = false;
+
+            while (newRange <= maxRange && !outOfBoard)
+            {
+                if (NextDir(dir, Pos + new Coor(dir.row * newRange, dir.col * newRange)))
+                {
+                    newRange++;
+                }
+                else
+                {
+                    outOfBoard = true;
+                }
+            }
+
+            return newRange;
+        }
+
+        private bool NextDir(Coor dir, Coor pos)
+        {
+            Coor newPos = pos + dir;
+
+            bool possible = field.tile[newPos.row, newPos.col] != Battlefield.Tile.BorderWall;
+
+            return possible;
+        }
+
+        public override void Attack(TurnMode mode, char attackMode)
+        {
+            Coor newPos;
+
+            int maxRange = 2;
+
+            int minLeft = Range(maxRange, Coor.LEFT);
+            int maxRight = Range(maxRange, Coor.RIGHT);
+            int minUp = Range(maxRange, Coor.UP);
+            int maxDown = Range(maxRange, Coor.DOWN);
+            int i = 0;
+
+            //Chequeo del jugador en un área en rombo //TODO: representar el ataque visualmente?
+            for (int j = -minLeft; j <= maxRight; j++)
+            {
+                for (int k = -minUp; k <= Math.Abs(i); k++)
+                {
+                    newPos = Pos + new Coor(j, k);
+
+                    if (newPos == field.Red.Pos)
+                    {
+                        field.Red.ReceiveDamage(damage); 
+                    }
+                }
+                if (i < maxDown)
+                    i++;
+                else if (i >= maxDown)
+                    i = 0;
+            }
+        }
     }
 
     class Fetch : Enemy
     {
         public Fetch(Battlefield field, Coor pos) : base(field, pos)
         {
+            life = 50;
             Symbols = "!!";
             Color = ConsoleColor.Red;
-            Speed = 1; // mitad que Player
+            Speed = 4; // mitad que Player
         }
 
         // Move() básico
+
+        public override void Attack(TurnMode mode, char attackMode)
+        {
+            if (coolDown <= 0 && Next(out Coor newPos)) //coolDown transcurrido y obtenemos la siguiente posición
+            {
+                if (newPos == field.Red.Pos)
+                {
+                    field.Red.ReceiveDamage(damage); 
+                    coolDown = 3;
+                }
+            }
+            else if (coolDown > 0)
+            {
+                coolDown--;
+            }
+        }
     }
 }

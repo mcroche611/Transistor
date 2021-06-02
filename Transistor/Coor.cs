@@ -6,6 +6,12 @@ namespace Transistor
 {
     class Coor
     {
+        public static Coor ZERO = new Coor(0, 0);
+        public static Coor LEFT = new Coor(0, -1);
+        public static Coor RIGHT = new Coor(0, 1);
+        public static Coor UP = new Coor(-1, 0);
+        public static Coor DOWN = new Coor(1, 0);
+
         // fila y columna (como propiedades)
         public int row { get; set; }
         public int col { get; set; }
@@ -19,7 +25,12 @@ namespace Transistor
         // sobrecarga de + y - para hacer "desplazamientos" con coordenadas
         public static Coor operator +(Coor c1, Coor c2)
         {
-            return new Coor(c1.row + c2.row, c1.col + c2.col);
+            if (c1 is null)
+                return c2;
+            else if (c2 is null)
+                return c1;
+            else
+                return new Coor(c1.row + c2.row, c1.col + c2.col);
         }
 
         public static Coor operator -(Coor c)

@@ -11,6 +11,7 @@ namespace Transistor
         protected string symbols;
         private ConsoleColor color;
         protected int life;
+        protected int damage;
         protected int speed;
         protected int coolDown;
         protected Battlefield field;
@@ -55,7 +56,7 @@ namespace Transistor
         {
             this.field = field;
             Pos = pos;
-            this.dir = new Coor(0, 0);
+            this.dir = Coor.ZERO;
         }
 
         public virtual bool Next(out Coor newPos)
@@ -85,14 +86,14 @@ namespace Transistor
             get => posChanged ;
         }
 
-        void Attack(TurnMode mode, char attackMode)
+        public virtual void Attack(TurnMode mode, char attackMode)
         {
 
         }
 
-        void ReceiveDamage(int damage)
+        public virtual void ReceiveDamage(int damage)
         {
-
+            life -= damage;
         }
     }
 }

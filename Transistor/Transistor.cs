@@ -37,7 +37,9 @@ namespace Transistor
                     if (ReadInput(mode))
                         field.GetPlayer().Move(mode);
                 }
-                field.MoveEnemies(mode);
+                //field.EnemiesAttack();
+                //field.MoveProjectiles();
+                field.MoveEnemies();
 
                 field.Show(mode);
 
@@ -76,19 +78,19 @@ namespace Transistor
                 switch (tecla)
                 {
                     case "LeftArrow":
-                        field.GetPlayer().Dir = new Coor(0, -1);
+                        field.GetPlayer().Dir = Coor.LEFT;
                         dirInput = true;
                         break;
                     case "RightArrow":
-                        field.GetPlayer().Dir = new Coor(0, 1);
+                        field.GetPlayer().Dir = Coor.RIGHT;
                         dirInput = true;
                         break;
                     case "UpArrow":
-                        field.GetPlayer().Dir = new Coor(-1, 0);
+                        field.GetPlayer().Dir = Coor.UP;
                         dirInput = true;
                         break;
                     case "DownArrow":
-                        field.GetPlayer().Dir = new Coor(1, 0);
+                        field.GetPlayer().Dir = Coor.DOWN;
                         dirInput = true;
                         break;
                     case "P":

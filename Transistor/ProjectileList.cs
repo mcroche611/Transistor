@@ -19,7 +19,7 @@ namespace Transistor
             pri = null;
         }
 
-        public void InsertaFinal(Projectile e)
+        public void Append(Projectile e)
         {
             // Si la lista está vacía
             if (pri == null)

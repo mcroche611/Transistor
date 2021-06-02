@@ -151,6 +151,13 @@ namespace Transistor
                 //Console.WriteLine();
             }
 
+            // Dibuja los proyectiles
+            for (int k = 0; k < ProjectileList.Count(); k++)
+            {
+                Projectile projectile = ProjectileList.nEsimo(k);
+                PrintAttacks(projectile);
+            }
+
             // Dibuja al jugador
             PrintCharacter(Red);
 
@@ -159,13 +166,6 @@ namespace Transistor
             {
                 Enemy enemy = EnemyList.nEsimo(k);
                 PrintCharacter(enemy);
-            }
-
-            // Dibuja los proyectiles
-            for (int k = 0; k < ProjectileList.Count(); k++)
-            {
-                Projectile projectile = ProjectileList.nEsimo(k);
-                PrintAttacks(projectile);
             }
 
             Console.SetCursorPosition(0, numRows + 2);
@@ -184,13 +184,30 @@ namespace Transistor
             //}
         }
 
-        public void MoveEnemies(TurnMode mode= TurnMode.Normal)
+        public void MoveEnemies(TurnMode mode = TurnMode.Normal)
         {
-            
             for (int k = 0; k < EnemyList.Count(); k++)
             {
                 Enemy enemy = EnemyList.nEsimo(k);
                 enemy.Move(mode);
+            }
+        }
+
+        public void EnemiesAttack(TurnMode mode = TurnMode.Normal)
+        {
+            for (int k = 0; k < EnemyList.Count(); k++)
+            {
+                Enemy enemy = EnemyList.nEsimo(k);
+                enemy.Attack(mode, ' ');
+            }
+        }
+
+        public void MoveProjectiles(TurnMode mode = TurnMode.Normal)
+        {
+            for (int k = 0; k < ProjectileList.Count(); k++)
+            {
+                Projectile projectile = ProjectileList.nEsimo(k);
+                projectile.Move();
             }
         }
 
