@@ -368,7 +368,6 @@ namespace Transistor
         public void PrintAim(Character c, char attack)
         {
             Coor newPos;
-            Coor rangePos;
 
             switch (attack)
             {
@@ -395,7 +394,7 @@ namespace Transistor
                         }
                     }
                     break;
-                case 's':
+                case 'p':
                     {
                         newPos = red.Pos;
 
@@ -406,70 +405,6 @@ namespace Transistor
                                 Console.SetCursorPosition(2 * newPos.col, newPos.row);
                                 Console.BackgroundColor = ConsoleColor.Gray;
                                 Console.Write("  ");
-                            }
-                        }
-
-                        if (newPos != null && enemyList.IsEnemy(newPos))
-                        {
-                            Coor enemyPos = newPos;
-
-                            if (red.Dir == Coor.UP || red.Dir == Coor.DOWN) //dirección a la que va el proyectil inicialmente
-                            {
-                                Range(Coor.LEFT, enemyPos, attack, out rangePos);
-
-                                // dibujar la trayectoria de giro del proyectil si esta da a un enemigo
-                                if (enemyList.IsEnemy(rangePos) && red.Next(out newPos)) 
-                                //for (int i = 0; i < Range(Coor.LEFT, attack, out rangePos); i++)
-                                {
-                                    while (NextDir(Coor.LEFT, newPos, attack, out newPos))
-                                    {
-                                        Console.SetCursorPosition(2 * newPos.col, newPos.row);
-                                        Console.BackgroundColor = ConsoleColor.Gray;
-                                        Console.Write("  ");
-                                    }
-                                }
-
-                                Range(Coor.RIGHT, enemyPos, attack, out rangePos);
-
-                                if (enemyList.IsEnemy(rangePos) && red.Next(out newPos)) 
-                                //for (int i = 0; i < Range(Coor.RIGHT, enemyPos, attack, out rangePos); i++)
-                                {
-                                    while (NextDir(Coor.RIGHT, newPos, attack, out newPos))
-                                    {
-                                        Console.SetCursorPosition(2 * newPos.col, newPos.row);
-                                        Console.BackgroundColor = ConsoleColor.Gray;
-                                        Console.Write("  ");
-                                    }
-                                }
-                            }
-                            else
-                            { 
-                                Range(Coor.UP, enemyPos, attack, out rangePos);
-
-                                // dibujar la trayectoria de giro del proyectil si esta da a un enemigo
-                                if (enemyList.IsEnemy(rangePos) && red.Next(out newPos))
-                                //for (int i = 0; i < Range(Coor.LEFT, attack, out rangePos); i++)
-                                {
-                                    while (NextDir(Coor.UP, newPos, attack, out newPos))
-                                    {
-                                        Console.SetCursorPosition(2 * newPos.col, newPos.row);
-                                        Console.BackgroundColor = ConsoleColor.Gray;
-                                        Console.Write("  ");
-                                    }
-                                }
-
-                                Range(Coor.DOWN, enemyPos, attack, out rangePos);
-
-                                if (enemyList.IsEnemy(rangePos) && red.Next(out newPos))
-                                //for (int i = 0; i < Range(Coor.RIGHT, enemyPos, attack, out rangePos); i++)
-                                {
-                                    while (NextDir(Coor.DOWN, newPos, attack, out newPos))
-                                    {
-                                        Console.SetCursorPosition(2 * newPos.col, newPos.row);
-                                        Console.BackgroundColor = ConsoleColor.Gray;
-                                        Console.Write("  ");
-                                    }
-                                }
                             }
                         }
                     }
@@ -487,26 +422,26 @@ namespace Transistor
             }
         }
 
-        private int Range(Coor dir, Coor pos, char attack, out Coor rangePos)
-        {
-            int newRange = 0;
-            bool outOfBoard = false;
-            rangePos = pos;
+        //private int Range(Coor dir, Coor pos, char attack, out Coor rangePos)
+        //{
+        //    int newRange = 0;
+        //    bool outOfBoard = false;
+        //    rangePos = pos;
 
-            while (!outOfBoard)
-            {
-                if (NextDir(dir, pos + new Coor(dir.row * newRange, dir.col * newRange), attack, out rangePos))
-                {
-                    newRange++;
-                }
-                else
-                {
-                    outOfBoard = true;
-                }
-            }
+        //    while (!outOfBoard)
+        //    {
+        //        if (NextDir(dir, pos + new Coor(dir.row * newRange, dir.col * newRange), attack, out rangePos))
+        //        {
+        //            newRange++;
+        //        }
+        //        else
+        //        {
+        //            outOfBoard = true;
+        //        }
+        //    }
 
-            return newRange;
-        }
+        //    return newRange;
+        //}
 
         private bool NextDir(Coor dir, Coor pos, char attack, out Coor newPos)
         {

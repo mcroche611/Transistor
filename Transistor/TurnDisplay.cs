@@ -35,7 +35,7 @@ namespace Transistor
             this.maxColumns = maxColumns*2;
             TurnLength =(int) (this.maxColumns * 0.7f);
         }
-        public void Show(TurnMode mode, float turnPercentage, int crash, int breach, int load, int bounce)
+        public void Show(TurnMode mode, float turnPercentage, int crash, int breach, int load, int ping)
         {
 
             int row = topRow + 1;
@@ -90,22 +90,17 @@ namespace Transistor
             Console.Write(label);
             col += label.Length + 2;
 
+            SetColor(ConsoleColor.DarkGreen, ConsoleColor.Black);
+            Console.SetCursorPosition(col, row);
+            label = "Ping: " + ping;
+            Console.Write(label);
+            col += label.Length + 2;
+
             SetColor(ConsoleColor.Magenta, ConsoleColor.Black);
             Console.SetCursorPosition(col, row);
             label = "Load: " + load;
             Console.Write(label);
             col += label.Length + 2;
-
-            SetColor(ConsoleColor.DarkGreen, ConsoleColor.Black);
-            Console.SetCursorPosition(col, row);
-            label = "Bounce: " + bounce;
-            Console.Write(label);
-            col += label.Length + 2;
-
-
-
-
-
 
         }
         void SetColor(ConsoleColor backColor= ConsoleColor.Black, ConsoleColor foreColor = ConsoleColor.White)

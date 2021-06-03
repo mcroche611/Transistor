@@ -185,9 +185,9 @@ namespace Transistor
                         //field.Red.Attack(mode, 'b');
                         break;
                     case "D3":
-                        currentAttack = 's';
+                        currentAttack = 'p';
                         field.PrintAim(field.Red, CurrentAttack);
-                        //field.Red.Attack(mode, 's');
+                        //field.Red.Attack(mode, 'p');
                         break;
                     case "D4":
                         currentAttack = 'l'; //TODO: potentially change to Ping()? (projectile)
