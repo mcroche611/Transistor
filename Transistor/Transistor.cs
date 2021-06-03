@@ -91,7 +91,7 @@ namespace Transistor
 
         private bool ReadInputBattle()
         {
-            bool dirInput = false;
+            bool redInput = false;
 
             if (Console.KeyAvailable)
             {
@@ -100,22 +100,23 @@ namespace Transistor
                 {
                     case "LeftArrow":
                         field.GetPlayer().Dir = Coor.LEFT;
-                        dirInput = true;
+                        redInput = true;
                         break;
                     case "RightArrow":
                         field.GetPlayer().Dir = Coor.RIGHT;
-                        dirInput = true;
+                        redInput = true;
                         break;
                     case "UpArrow":
                         field.GetPlayer().Dir = Coor.UP;
-                        dirInput = true;
+                        redInput = true;
                         break;
                     case "DownArrow":
                         field.GetPlayer().Dir = Coor.DOWN;
-                        dirInput = true;
+                        redInput = true;
                         break;
                     case "D1":
                         field.Red.Attack(mode, 'c');
+                        redInput = true;
                         break;
                     case "Spacebar":
                         mode = TurnMode.Plan;
@@ -146,56 +147,58 @@ namespace Transistor
                 }
             }
 
-            return dirInput;
+            return redInput;
         }
 
         private bool ReadInputTurn()
         {
-            bool dirInput = false;
+            bool redInput = false;
 
             if (Console.KeyAvailable)
             {
-                string tecla = Console.ReadKey().Key.ToString();
-                switch (tecla)
+                string key = Console.ReadKey().Key.ToString();
+                switch (key)
                 {
                     case "LeftArrow":
                         field.GetPlayer().Dir = Coor.LEFT;
-                        dirInput = true;
+                        redInput = true;
                         break;
                     case "RightArrow":
                         field.GetPlayer().Dir = Coor.RIGHT;
-                        dirInput = true;
+                        redInput = true;
                         break;
                     case "UpArrow":
                         field.GetPlayer().Dir = Coor.UP;
-                        dirInput = true;
+                        redInput = true;
                         break;
                     case "DownArrow":
                         field.GetPlayer().Dir = Coor.DOWN;
-                        dirInput = true;
+                        redInput = true;
                         break;
                     case "D1":
                         currentAttack = 'c';
-                        field.PrintAim(field.Red, CurrentAttack);
+                        redInput = true;
                         //field.Red.Attack(mode, 'c');
                         break;
                     case "D2":
                         currentAttack = 'b';
-                        field.PrintAim(field.Red, CurrentAttack);
+                        redInput = true;
                         //field.Red.Attack(mode, 'b');
                         break;
                     case "D3":
                         currentAttack = 'p';
-                        field.PrintAim(field.Red, CurrentAttack);
+                        redInput = true;
                         //field.Red.Attack(mode, 'p');
                         break;
                     case "D4":
-                        currentAttack = 'l'; //TODO: potentially change to Ping()? (projectile)
-                        field.PrintAim(field.Red, CurrentAttack);
+                        currentAttack = 'l';
+                        redInput = true;
                         //field.Red.Attack(mode, 'l');
                         break;
                     case "Enter":
+                        field.PrintAim(field.Red, currentAttack);
                         field.Red.Attack(mode, currentAttack);
+                        currentAttack = ' ';
                         break;
                     case "Spacebar":
                         mode = TurnMode.Run;
@@ -203,7 +206,7 @@ namespace Transistor
                 }
             }
 
-            return dirInput;
+            return redInput;
         }
 
         //void ProcessInput()
