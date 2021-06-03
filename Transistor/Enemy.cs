@@ -18,8 +18,9 @@ namespace Transistor
                 Coor realDir;
 
                 //si está más lejos del jugador por x que por y
-                if (Math.Abs(field.Red.Pos.col - Pos.col) > Math.Abs(field.Red.Pos.row - Pos.row) && field.Red.Pos.row != Pos.row || field.Red.Pos.col == Pos.col) 
+                if (Pos.X_Distance(field.Red.Pos) > Pos.Y_Distance(field.Red.Pos)) // TODO: Validar si sobra  // && field.Red.Pos.row != Pos.row || field.Red.Pos.col == Pos.col) 
                 {
+                    // Me acerco por Y (pq está más cerca)
                     if (field.Red.Pos.row > Pos.row)
                     {
                         realDir = Coor.DOWN;
@@ -31,6 +32,7 @@ namespace Transistor
                 }
                 else
                 {
+                    // Me acerco por X (pq está más cerca)
                     if (field.Red.Pos.col > Pos.col)
                     {
                         realDir = Coor.RIGHT;
@@ -78,11 +80,12 @@ namespace Transistor
             Speed = 2; // igual a Player
         }
 
+        
         public override void Move(TurnMode mode)
         {
             if (coolDown <= 0)
             {
-                if (field.Red.Pos.col != Pos.col && field.Red.Pos.row != Pos.row) //si no está ya en línea con el jugador
+                if (!Pos.Aligned(field.Red.Pos)) //si no está ya en línea con el jugador
                 {
                     base.Move(mode); //note-to-self: rn they are dumb and run and will shoot straight into walls.
                 }
@@ -109,7 +112,7 @@ namespace Transistor
                 {
                     Laser laser;
 
-                    if (field.Red.Pos.col > Pos.col) //Creep por encima de Player
+                    if (field.Red.Pos.row > Pos.row) //Creep por encima de Player
                     {
                         laser = new Laser(field, Pos, Coor.DOWN);
                     }
@@ -125,7 +128,7 @@ namespace Transistor
                 {
                     Projectile laser;
 
-                    if (field.Red.Pos.row > Pos.row) //Creep a la derecha de Player
+                    if (field.Red.Pos.col < Pos.col) //Creep a la derecha de Player
                     {
                         laser = new Laser(field, Pos, Coor.LEFT);
                     }
@@ -166,11 +169,11 @@ namespace Transistor
             {
                 Coor realDir;
 
-                if (Math.Abs(field.Red.Pos.col - Pos.col) > Math.Abs(field.Red.Pos.row - Pos.row)) //si está más lejos del jugador por x que por y
+                if (Pos.X_Distance(field.Red.Pos) > Pos.Y_Distance(field.Red.Pos)) //si está más lejos del jugador por x que por y
                 {
-                    if ((Math.Abs(field.Red.Pos.col - Pos.col) > minDistance)) //si está a suficiente distancia
+                    if (Pos.X_Distance(field.Red.Pos) > minDistance) //si está a suficiente distancia
                     {
-                        if (field.Red.Pos.col == Pos.col || field.Red.Pos.row == Pos.row) //si está en línea con el jugador
+                        if (Pos.Aligned(field.Red.Pos)) //si está en línea con el jugador
                         {
                             realDir = Coor.ZERO;
                         }
@@ -193,9 +196,9 @@ namespace Transistor
                 }
                 else
                 {
-                    if (Math.Abs(field.Red.Pos.row - Pos.row) > minDistance)  //si está a suficiente distancia 
+                    if (Pos.Y_Distance(field.Red.Pos) > minDistance)  //si está a suficiente distancia 
                     {
-                        if (field.Red.Pos.row == Pos.row || field.Red.Pos.col == Pos.col) //si está en línea con el jugador
+                        if (Pos.Aligned(field.Red.Pos)) //si está en línea con el jugador
                         {
                             realDir = Coor.ZERO;
                         }

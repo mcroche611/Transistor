@@ -22,6 +22,27 @@ namespace Transistor
             col = _col;
         }
 
+        public int X_Distance(Coor c)
+        {
+            return Math.Abs(this.col - c.col);
+        }
+        
+        public int Y_Distance(Coor c)
+        {
+            return Math.Abs(this.row - c.row);
+        }
+
+        public int Distance(Coor c)
+        {
+            return X_Distance(c) + Y_Distance(c);
+        }
+
+        public bool Aligned(Coor c)
+        {
+            return col == c.col || row == c.row;
+        }
+
+
         // sobrecarga de + y - para hacer "desplazamientos" con coordenadas
         public static Coor operator +(Coor c1, Coor c2)
         {

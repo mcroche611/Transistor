@@ -6,7 +6,7 @@ namespace Transistor
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!  ⬌ ↓ ↑ ← 🠐 → 😀 😈 ★ ♖ ➢ ");
+           // Console.WriteLine("Hello World!  ⬌ ↓ ↑ ← 🠐 → 😀 😈 ★ ♖ ➢ ");
             //Tester t = new Tester();
             //Console.Clear();
             //t.TestBattlefieldShowNormal();

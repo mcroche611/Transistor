@@ -146,6 +146,10 @@ namespace Transistor
                 }
             }
 
+            //Limpiamos el buffer de teclado
+            while (Console.KeyAvailable)
+                Console.ReadKey(false);
+
             return dirInput;
         }
 
