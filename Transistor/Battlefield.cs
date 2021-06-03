@@ -224,12 +224,16 @@ namespace Transistor
 
         public void MoveEnemies(TurnMode mode = TurnMode.Normal)
         {
-            for (int k = 0; k < EnemyList.Count(); k++)
+            if (mode == TurnMode.Normal) //Solo se mueven en el modo normal
             {
-                Enemy enemy = EnemyList.nEsimo(k);
-                enemy.Move(mode);
+                for (int k = 0; k < EnemyList.Count(); k++)
+                {
+                    Enemy enemy = EnemyList.nEsimo(k);
+                    enemy.Move(mode);
+                }
             }
 
+            // Chequea si algún enemigo ha sido destruido y si es así, lo elimina
             for (int k = 0; k < EnemyList.Count(); k++)
             {
                 Enemy enemy = EnemyList.nEsimo(k);
@@ -255,8 +259,14 @@ namespace Transistor
             for (int k = 0; k < ProjectileList.Count(); k++)
             {
                 Projectile projectile = ProjectileList.nEsimo(k);
-                projectile.Move();
-                projectile.CheckDamage();
+
+                bool needMove = mode == TurnMode.Normal || (mode == TurnMode.Run && projectile.PlayerOwned);
+
+                if (needMove)
+                {
+                    projectile.Move();
+                    projectile.CheckDamage();
+                }
             }
 
             for (int k = 0; k < ProjectileList.Count(); k++)
@@ -328,16 +338,13 @@ namespace Transistor
 
         private void PrintAttacks(Projectile p)
         {
-            //if (!p.Destroyed)
-            {
-                Console.SetCursorPosition(2 * p.Pos.col, p.Pos.row);
-                Console.ForegroundColor = p.FgColor;
+            Console.SetCursorPosition(2 * p.Pos.col, p.Pos.row);
+            Console.ForegroundColor = p.FgColor;
 
-                Console.BackgroundColor = p.BgColor;
-                Console.Write(p.Symbols);
+            Console.BackgroundColor = p.BgColor;
+            Console.Write(p.Symbols);
 
-                Console.BackgroundColor = ConsoleColor.Black;
-            }
+            Console.BackgroundColor = ConsoleColor.Black;
         }
 
         private void PrintRange(Character c)

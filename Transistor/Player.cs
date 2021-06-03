@@ -16,6 +16,7 @@ namespace Transistor
         private const int breachDamage = 15;
         private const int pingDamage = 5;
         private const int loadDamage = 30;
+        private Coor posTurn;
 
         public string TurnMoves
         {
@@ -28,19 +29,19 @@ namespace Transistor
             {
                 string s;
 
-                if (Dir.col == 1 && Dir.row == 0)
+                if (Dir == Coor.RIGHT)
                 {
                     s = ("@>");
                 }
-                else if (Dir.col == -1 && Dir.row == 0)
+                else if (Dir == Coor.LEFT)
                 {
                     s = ("<@");
                 }
-                else if (Dir.col == 0 && Dir.row == -1)
+                else if (Dir == Coor.UP)
                 {
                     s = ("@↑");
                 }
-                else if (Dir.col == 0 && Dir.row == 1)
+                else if (Dir == Coor.DOWN)
                 {
                     s = ("@↓");
                 }
@@ -52,6 +53,12 @@ namespace Transistor
                 return s;
             }
             set => symbols = value;
+        }
+
+        internal Coor PosTurn
+        {
+            get => posTurn;
+            set => posTurn = value;
         }
 
         public Player(Battlefield field, Coor pos) : base(field, pos)
@@ -81,19 +88,19 @@ namespace Transistor
 
             if (mode == TurnMode.Plan)
             {
-                if (Dir.col == 1 && Dir.row == 0)
+                if (Dir == Coor.RIGHT)
                 {
                     turnMoves += ("r");
                 }
-                else if (Dir.col == -1 && Dir.row == 0)
+                else if (Dir == Coor.LEFT)
                 {
                     turnMoves += ("i");
                 }
-                else if (Dir.col == 0 && Dir.row == -1)
+                else if (Dir == Coor.UP)
                 {
                     turnMoves += ("u");
                 }
-                else if (Dir.col == 0 && Dir.row == 1)
+                else if (Dir == Coor.DOWN)
                 {
                     turnMoves += ("d");
                 }
@@ -167,6 +174,27 @@ namespace Transistor
             field.ProjectileList.Append(load);
 
             field.TurnPercentage -= loadTurn;
+        }
+
+        public char GetActionTurn()
+        {
+            char c = '\0'; //TODO: Comprobaciones de c != ' ' a c != '\0'
+
+            if (turnMoves.Length > 0)
+            {
+                c = turnMoves[0];
+
+                if (turnMoves.Length > 1)
+                {
+                    turnMoves = turnMoves.Substring(1);
+                }
+                else
+                {
+                    turnMoves = "";
+                }
+            }
+
+            return c;
         }
     }
 }

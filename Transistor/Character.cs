@@ -141,8 +141,8 @@ namespace Transistor
 
         protected void SetColor(ConsoleColor backColor = ConsoleColor.Black, ConsoleColor foreColor = ConsoleColor.White)
         {
-            Console.BackgroundColor = backColor;
-            Console.ForegroundColor = foreColor;
+            BgColor = backColor; //TODO: A la hora de pintar, no en el constructor
+            FgColor = foreColor;
         }
     }
 }

@@ -9,7 +9,8 @@ namespace Transistor
         private Coor dir;
         private Coor pos;
         private int damage;
-        private bool destroyed; 
+        private bool destroyed;
+        protected bool playerOwned;
         private string symbols;
         private ConsoleColor fgColor;
         private ConsoleColor bgColor;
@@ -21,6 +22,7 @@ namespace Transistor
             this.field = field;
             Pos = pos;
             Dir = dir;
+            playerOwned = false;
             this.damage = damage; //TODO: asignar valor personalizado
             destroyed = false;
         }
@@ -58,6 +60,11 @@ namespace Transistor
         public bool Destroyed 
         { 
             get => destroyed; 
+        }
+
+        public bool PlayerOwned
+        {
+            get => playerOwned;
         }
 
         public virtual bool Next(out Coor newPos)
@@ -116,6 +123,7 @@ namespace Transistor
             Symbols = "^^";
             FgColor = ConsoleColor.Black;
             BgColor = ConsoleColor.Cyan;
+            playerOwned = true;
         }
     }
 
@@ -126,11 +134,12 @@ namespace Transistor
             Symbols = "**";
             FgColor = ConsoleColor.Black;
             BgColor = ConsoleColor.Magenta;
+            playerOwned = true;
         }
 
         public override void Move()
         {
-            // No se mueve
+            // No se mueve porque es una bomba
         }
     }
 
@@ -141,6 +150,7 @@ namespace Transistor
             Symbols = "**";
             FgColor = ConsoleColor.White;
             BgColor = ConsoleColor.Black;
+            playerOwned = true;
         }
     }
 }
