@@ -14,7 +14,7 @@ namespace Transistor
         public void TestBattlefieldShowNormal()
         {
             Battlefield bf = new Battlefield("Transistor.txt");
-            bf.Show(TurnMode.Normal);
+            //bf.Show(TurnMode.Normal);
 
         }
         public void TestList()

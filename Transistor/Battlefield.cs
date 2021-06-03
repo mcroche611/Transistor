@@ -123,23 +123,7 @@ namespace Transistor
             }
         }
 
-        public void Show(TurnMode mode) //Llama a uno u otro renderizado de pantalla.
-        {
-            if (mode == TurnMode.Normal)
-            {
-                ShowBattle();
-            }
-            else if (mode == TurnMode.Plan)
-            {
-                ShowTurn();
-            }
-            else
-            {
-                // TODO: execute one by one Turn 
-            }
-        }
-
-        private void ShowBattle()
+        public void Show(TurnMode mode, char currentAttack) //Llama a uno u otro renderizado de pantalla.
         {
             //Primero dibuja el tablero vacio
             for (int i = 0; i < tile.GetLength(0); i++)
@@ -159,7 +143,12 @@ namespace Transistor
             }
 
             // Dibuja al jugador
-            PrintCharacter(Red);
+            PrintCharacter(Red, mode, currentAttack);
+
+            //if (mode == TurnMode.Plan && currentAttack != ' ')
+            //{
+            //    PrintAim(Red, currentAttack);
+            //}
 
             // Dibuja los enemigos
             for (int k = 0; k < EnemyList.Count(); k++)
@@ -170,19 +159,65 @@ namespace Transistor
 
             Console.SetCursorPosition(0, numRows + 2);
 
-            //if (Debug)
-            //{
-            //    Console.BackgroundColor = ConsoleColor.Black;
-            //    Console.ForegroundColor = ConsoleColor.White;
 
-            //    Console.WriteLine("Comida Restante: {0}", numComida);
-            //    for (int i = 0; i < pers.Length; i++)
-            //    {
-            //        Console.ForegroundColor = colors[i];
-            //        Console.WriteLine("{0} --> Pos: ({1}, {2})      Dir: ({3}, {4}) ", pers[i].name, pers[i].pos.fil, pers[i].pos.col, pers[i].dir.fil, pers[i].dir.col);
-            //    }
+            //if (mode == TurnMode.Normal)
+            //{
+            //    ShowBattle();
+            //}
+            //else if (mode == TurnMode.Plan)
+            //{
+            //    ShowTurn();
+            //}
+            //else
+            //{
+            //    // TODO: execute one by one Turn 
             //}
         }
+
+        //private void ShowBattle()
+        //{
+        //    //Primero dibuja el tablero vacio
+        //    for (int i = 0; i < tile.GetLength(0); i++)
+        //    {
+        //        for (int j = 0; j < tile.GetLength(1); j++)
+        //        {
+        //            PrintTile(tile[i, j], i, j);
+        //        }
+        //        //Console.WriteLine();
+        //    }
+
+        //    // Dibuja los proyectiles
+        //    for (int k = 0; k < ProjectileList.Count(); k++)
+        //    {
+        //        Projectile projectile = ProjectileList.nEsimo(k);
+        //        PrintAttacks(projectile);
+        //    }
+
+        //    // Dibuja al jugador
+        //    PrintCharacter(Red);
+
+        //    // Dibuja los enemigos
+        //    for (int k = 0; k < EnemyList.Count(); k++)
+        //    {
+        //        Enemy enemy = EnemyList.nEsimo(k);
+        //        PrintCharacter(enemy);
+        //    }
+
+        //    Console.SetCursorPosition(0, numRows + 2);
+
+        //    //if (Debug)
+        //    //{
+        //    //    Console.BackgroundColor = ConsoleColor.Black;
+        //    //    Console.ForegroundColor = ConsoleColor.White;
+
+        //    //    Console.WriteLine("Comida Restante: {0}", numComida);
+        //    //    for (int i = 0; i < pers.Length; i++)
+        //    //    {
+        //    //        Console.ForegroundColor = colors[i];
+        //    //        Console.WriteLine("{0} --> Pos: ({1}, {2})      Dir: ({3}, {4}) ", pers[i].name, pers[i].pos.fil, pers[i].pos.col, pers[i].dir.fil, pers[i].dir.col);
+        //    //    }
+        //    //}
+        //}
 
         public void MoveEnemies(TurnMode mode = TurnMode.Normal)
         {
@@ -232,10 +267,10 @@ namespace Transistor
             }
         }
 
-        private void ShowTurn()
-        {
+        //private void ShowTurn()
+        //{
 
-        }
+        //}
 
         private void PrintTile(Tile tile, int row, int col)
         {
@@ -262,7 +297,7 @@ namespace Transistor
             }
         }
 
-        private void PrintCharacter(Character c)
+        private void PrintCharacter(Character c, TurnMode mode = TurnMode.Normal, char currentAttack = ' ')
         {
             if (c.PosChanged)
             {
@@ -275,6 +310,11 @@ namespace Transistor
                 if (c is Jerk)
                 {
                     PrintRange(c);
+                }
+
+                if (mode == TurnMode.Plan && c is Player && currentAttack != ' ')
+                {
+                    PrintAim(c, currentAttack);
                 }
 
                 c.Painted();
@@ -299,7 +339,6 @@ namespace Transistor
         private void PrintRange(Character c)
         {
             int range = 3;
-            //int i = 0;
 
             for (int j = -range; j <= range; j++)
             {
@@ -315,8 +354,6 @@ namespace Transistor
 
                     if (newPos.row < tile.GetLength(0) && newPos.col < tile.GetLength(1) && newPos.row > 0 && newPos.col > 0)
                     {
-                        Tile t = tile[newPos.row, newPos.col];
-
                         if (newPos != Red.Pos && tile[newPos.row, newPos.col] == Tile.Empty && newPos != c.Pos)
                         {
                             Console.SetCursorPosition(2 * newPos.col, newPos.row);
@@ -326,6 +363,167 @@ namespace Transistor
                     }
                 }
             }
+        }
+
+        public void PrintAim(Character c, char attack)
+        {
+            Coor newPos;
+            Coor rangePos;
+
+            switch (attack)
+            {
+                case 'c':
+                    if (red.Next(out newPos))
+                    {
+                        Console.SetCursorPosition(2 * newPos.col, newPos.row);
+                        Console.BackgroundColor = ConsoleColor.Gray;
+                        Console.Write("  ");
+                    }
+                    break;
+                case 'b':
+                    {
+                        newPos = red.Pos;
+
+                        while (NextDir(red.Dir, newPos, attack, out newPos))
+                        {
+                            if (!enemyList.IsEnemy(newPos) && !projectileList.IsProjectile(newPos))
+                            {
+                                Console.SetCursorPosition(2 * newPos.col, newPos.row);
+                                Console.BackgroundColor = ConsoleColor.Gray;
+                                Console.Write("  ");
+                            }
+                        }
+                    }
+                    break;
+                case 's':
+                    {
+                        newPos = red.Pos;
+
+                        while (NextDir(red.Dir, newPos, attack, out newPos))
+                        {
+                            if (!enemyList.IsEnemy(newPos) && !projectileList.IsProjectile(newPos))
+                            {
+                                Console.SetCursorPosition(2 * newPos.col, newPos.row);
+                                Console.BackgroundColor = ConsoleColor.Gray;
+                                Console.Write("  ");
+                            }
+                        }
+
+                        if (newPos != null && enemyList.IsEnemy(newPos))
+                        {
+                            Coor enemyPos = newPos;
+
+                            if (red.Dir == Coor.UP || red.Dir == Coor.DOWN) //dirección a la que va el proyectil inicialmente
+                            {
+                                Range(Coor.LEFT, enemyPos, attack, out rangePos);
+
+                                // dibujar la trayectoria de giro del proyectil si esta da a un enemigo
+                                if (enemyList.IsEnemy(rangePos) && red.Next(out newPos)) 
+                                //for (int i = 0; i < Range(Coor.LEFT, attack, out rangePos); i++)
+                                {
+                                    while (NextDir(Coor.LEFT, newPos, attack, out newPos))
+                                    {
+                                        Console.SetCursorPosition(2 * newPos.col, newPos.row);
+                                        Console.BackgroundColor = ConsoleColor.Gray;
+                                        Console.Write("  ");
+                                    }
+                                }
+
+                                Range(Coor.RIGHT, enemyPos, attack, out rangePos);
+
+                                if (enemyList.IsEnemy(rangePos) && red.Next(out newPos)) 
+                                //for (int i = 0; i < Range(Coor.RIGHT, enemyPos, attack, out rangePos); i++)
+                                {
+                                    while (NextDir(Coor.RIGHT, newPos, attack, out newPos))
+                                    {
+                                        Console.SetCursorPosition(2 * newPos.col, newPos.row);
+                                        Console.BackgroundColor = ConsoleColor.Gray;
+                                        Console.Write("  ");
+                                    }
+                                }
+                            }
+                            else
+                            { 
+                                Range(Coor.UP, enemyPos, attack, out rangePos);
+
+                                // dibujar la trayectoria de giro del proyectil si esta da a un enemigo
+                                if (enemyList.IsEnemy(rangePos) && red.Next(out newPos))
+                                //for (int i = 0; i < Range(Coor.LEFT, attack, out rangePos); i++)
+                                {
+                                    while (NextDir(Coor.UP, newPos, attack, out newPos))
+                                    {
+                                        Console.SetCursorPosition(2 * newPos.col, newPos.row);
+                                        Console.BackgroundColor = ConsoleColor.Gray;
+                                        Console.Write("  ");
+                                    }
+                                }
+
+                                Range(Coor.DOWN, enemyPos, attack, out rangePos);
+
+                                if (enemyList.IsEnemy(rangePos) && red.Next(out newPos))
+                                //for (int i = 0; i < Range(Coor.RIGHT, enemyPos, attack, out rangePos); i++)
+                                {
+                                    while (NextDir(Coor.DOWN, newPos, attack, out newPos))
+                                    {
+                                        Console.SetCursorPosition(2 * newPos.col, newPos.row);
+                                        Console.BackgroundColor = ConsoleColor.Gray;
+                                        Console.Write("  ");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 'l':
+                    {
+                        if (red.Next(out newPos))
+                        {
+                            Console.SetCursorPosition(2 * newPos.col, newPos.row);
+                            Console.BackgroundColor = ConsoleColor.DarkMagenta;
+                            Console.Write("  ");
+                        }
+                    }
+                    break;
+            }
+        }
+
+        private int Range(Coor dir, Coor pos, char attack, out Coor rangePos)
+        {
+            int newRange = 0;
+            bool outOfBoard = false;
+            rangePos = pos;
+
+            while (!outOfBoard)
+            {
+                if (NextDir(dir, pos + new Coor(dir.row * newRange, dir.col * newRange), attack, out rangePos))
+                {
+                    newRange++;
+                }
+                else
+                {
+                    outOfBoard = true;
+                }
+            }
+
+            return newRange;
+        }
+
+        private bool NextDir(Coor dir, Coor pos, char attack, out Coor newPos)
+        {
+            newPos = pos + dir;
+
+            bool possible;
+
+            if (attack == 'b')
+            {
+                possible = tile[newPos.row, newPos.col] != Battlefield.Tile.BorderWall;
+            }
+            else 
+            {
+                possible = tile[newPos.row, newPos.col] == Battlefield.Tile.Empty && !enemyList.IsEnemy(newPos);
+            }
+
+            return possible;
         }
 
         private bool ElementInPos(Coor pos)
@@ -340,11 +538,6 @@ namespace Transistor
             }
 
             return elementFound;
-        }
-
-        private void PrintTurn()
-        {
-            // TODO: Dibujar la barra de Turn()
         }
 
         public Player GetPlayer()

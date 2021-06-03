@@ -80,17 +80,24 @@ namespace Transistor
 
         public override void Move(TurnMode mode)
         {
-            if (field.Red.Pos.col != Pos.col && field.Red.Pos.row != Pos.row) //si no está ya en línea con el jugador
+            if (coolDown <= 0)
             {
-                base.Move(mode); //note-to-self: rn they are dumb and run and will shoot straight into walls.
-            }
-            else if (mode != TurnMode.Normal)
-            {
-                // que no se mueva
+                if (field.Red.Pos.col != Pos.col && field.Red.Pos.row != Pos.row) //si no está ya en línea con el jugador
+                {
+                    base.Move(mode); //note-to-self: rn they are dumb and run and will shoot straight into walls.
+                }
+                else if (mode != TurnMode.Normal)
+                {
+                    // que no se mueva
+                }
+                else
+                {
+                    //TODO: que no se mueva y al tiempo que ataque al jugador (y que aunque se mueva el Jugador, no vuelva a moverse hasta pasado un tiempo)
+                }
             }
             else
             {
-                //TODO: que no se mueva y al tiempo que ataque al jugador (y que aunque se mueva el Jugador, no vuelva a moverse hasta pasado un tiempo)
+                coolDown--;
             }
         }
 
