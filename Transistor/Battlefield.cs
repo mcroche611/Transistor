@@ -9,7 +9,9 @@ namespace Transistor
     {
         public enum Tile { Empty, Wall, BorderWall };
         public Tile[,] tile; //matriz de casillas del nivel.
-        public int numRows, numCols; //OJO
+        public int numRows, numCols; //OJO TODO: Hacer propiedades
+        public SoundFX Fx = new SoundFX();
+        private float turnPercentage = 100f;
 
         EnemyList enemyList; 
         Player red;
@@ -18,6 +20,7 @@ namespace Transistor
         internal EnemyList EnemyList { get => enemyList;}
         internal Player Red { get => red;}
         internal ProjectileList ProjectileList { get => projectileList;}
+        public float TurnPercentage { get => turnPercentage; set => turnPercentage = value; }
 
         public Battlefield(string file)
         {
@@ -307,18 +310,19 @@ namespace Transistor
                 Console.BackgroundColor = c.BgColor;
                 Console.Write(c.Symbols);
 
-                if (c is Jerk)
-                {
-                    PrintRange(c);
-                }
-
-                if (mode == TurnMode.Plan && c is Player && currentAttack != ' ')
-                {
-                    PrintAim(c, currentAttack);
-                }
-
                 c.Painted();
                 Console.BackgroundColor = ConsoleColor.Black;
+            }
+
+            //TODO: Design Choice, si se sitúan dentro se ven una vez por mov, si no, parpadean de forma constante
+            if (c is Jerk)
+            {
+                PrintRange(c);
+            }
+
+            if (mode == TurnMode.Plan && c is Player && currentAttack != ' ')
+            {
+                PrintAim(c, currentAttack);
             }
         }
 

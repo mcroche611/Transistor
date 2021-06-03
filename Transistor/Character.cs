@@ -12,7 +12,6 @@ namespace Transistor
         protected ConsoleColor bgColor;
         protected ConsoleColor fgColor;
         protected int life; //TODO: maxLife
-        protected int damage;
         protected bool destroyed;
         private bool hit;
         protected int speed;
@@ -131,12 +130,19 @@ namespace Transistor
         public virtual void ReceiveDamage(int damage)
         {
             life -= damage;
-            hit = true;
+            //hit = true;
+            field.Fx.PlayShot1();
 
             if (life <= 0)
             {
                 destroyed = true;
             }
+        }
+
+        protected void SetColor(ConsoleColor backColor = ConsoleColor.Black, ConsoleColor foreColor = ConsoleColor.White)
+        {
+            Console.BackgroundColor = backColor;
+            Console.ForegroundColor = foreColor;
         }
     }
 }

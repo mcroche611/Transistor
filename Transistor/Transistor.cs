@@ -28,7 +28,6 @@ namespace Transistor
             field = new Battlefield("Transistor2.txt");
             TurnDisplay turnDisplay = new TurnDisplay(field.numRows, field.numCols);
             CaptionDisplay captionDisplay= new CaptionDisplay(field.numRows, field.numCols);
-            float turnPercentage = 100f;
             bool playing = true;
             
             int counter = 0;
@@ -58,10 +57,10 @@ namespace Transistor
 
                 field.Show(mode, CurrentAttack);
 
-                turnDisplay.Show(TurnMode.Normal, turnPercentage, 2, 4, 0, 3);
+                turnDisplay.Show(TurnMode.Normal, field.TurnPercentage, 1, 2, 3, 4);
 
-                if (turnPercentage < 100)
-                    turnPercentage += 0.5f;
+                if (field.TurnPercentage < 100) //TODO: TurnMode.Normal
+                    field.TurnPercentage += 0.5f;
 
 
 
@@ -91,7 +90,7 @@ namespace Transistor
 
         private bool ReadInputBattle()
         {
-            bool redInput = false;
+            bool dirInput = false;
 
             if (Console.KeyAvailable)
             {
@@ -100,23 +99,22 @@ namespace Transistor
                 {
                     case "LeftArrow":
                         field.GetPlayer().Dir = Coor.LEFT;
-                        redInput = true;
+                        dirInput = true;
                         break;
                     case "RightArrow":
                         field.GetPlayer().Dir = Coor.RIGHT;
-                        redInput = true;
+                        dirInput = true;
                         break;
                     case "UpArrow":
                         field.GetPlayer().Dir = Coor.UP;
-                        redInput = true;
+                        dirInput = true;
                         break;
                     case "DownArrow":
                         field.GetPlayer().Dir = Coor.DOWN;
-                        redInput = true;
+                        dirInput = true;
                         break;
                     case "D1":
                         field.Red.Attack(mode, 'c');
-                        redInput = true;
                         break;
                     case "Spacebar":
                         mode = TurnMode.Plan;
@@ -149,12 +147,12 @@ namespace Transistor
             //Limpiamos el buffer de teclado
             while (Console.KeyAvailable)
                 Console.ReadKey(false);
-            return redInput;
+            return dirInput;
         }
 
         private bool ReadInputTurn()
         {
-            bool redInput = false;
+            bool dirInput = false;
 
             if (Console.KeyAvailable)
             {
@@ -163,43 +161,40 @@ namespace Transistor
                 {
                     case "LeftArrow":
                         field.GetPlayer().Dir = Coor.LEFT;
-                        redInput = true;
+                        dirInput = true;
                         break;
                     case "RightArrow":
                         field.GetPlayer().Dir = Coor.RIGHT;
-                        redInput = true;
+                        dirInput = true;
                         break;
                     case "UpArrow":
                         field.GetPlayer().Dir = Coor.UP;
-                        redInput = true;
+                        dirInput = true;
                         break;
                     case "DownArrow":
                         field.GetPlayer().Dir = Coor.DOWN;
-                        redInput = true;
+                        dirInput = true;
                         break;
                     case "D1":
                         currentAttack = 'c';
-                        redInput = true;
                         //field.Red.Attack(mode, 'c');
                         break;
                     case "D2":
                         currentAttack = 'b';
-                        redInput = true;
                         //field.Red.Attack(mode, 'b');
                         break;
                     case "D3":
                         currentAttack = 'p';
-                        redInput = true;
                         //field.Red.Attack(mode, 'p');
                         break;
                     case "D4":
                         currentAttack = 'l';
-                        redInput = true;
                         //field.Red.Attack(mode, 'l');
                         break;
                     case "Enter":
                         field.PrintAim(field.Red, currentAttack);
                         field.Red.Attack(mode, currentAttack);
+                        // reducir turn
                         currentAttack = ' ';
                         break;
                     case "Spacebar":
@@ -208,7 +203,7 @@ namespace Transistor
                 }
             }
 
-            return redInput;
+            return dirInput;
         }
 
         //void ProcessInput()

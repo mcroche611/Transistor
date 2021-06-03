@@ -16,12 +16,12 @@ namespace Transistor
         protected Battlefield field;
         
 
-        public Projectile(Battlefield field, Coor pos, Coor dir)
+        public Projectile(Battlefield field, Coor pos, Coor dir, int damage)
         {
             this.field = field;
             Pos = pos;
             Dir = dir;
-            damage = 10; //TODO: asignar valor personalizado
+            this.damage = damage; //TODO: asignar valor personalizado
             destroyed = false;
         }
 
@@ -91,7 +91,7 @@ namespace Transistor
 
     class Laser: Projectile
     {
-        public Laser(Battlefield field, Coor pos, Coor dir) : base(field, pos, dir)
+        public Laser(Battlefield field, Coor pos, Coor dir, int damage) : base(field, pos, dir, damage)
         {
             Symbols = "||";
             FgColor = ConsoleColor.White;
@@ -101,7 +101,7 @@ namespace Transistor
 
     class Shot: Projectile
     {
-        public Shot(Battlefield field, Coor pos, Coor dir) : base(field, pos, dir)
+        public Shot(Battlefield field, Coor pos, Coor dir, int damage) : base(field, pos, dir, damage)
         {
             Symbols = "##";
             FgColor = ConsoleColor.White;
@@ -111,7 +111,7 @@ namespace Transistor
 
     class Beam: Projectile
     {
-        public Beam(Battlefield field, Coor pos, Coor dir) : base(field, pos, dir)
+        public Beam(Battlefield field, Coor pos, Coor dir, int damage) : base(field, pos, dir, damage)
         {
             Symbols = "^^";
             FgColor = ConsoleColor.Black;
@@ -121,7 +121,7 @@ namespace Transistor
 
     class Load: Projectile
     {
-        public Load(Battlefield field, Coor pos, Coor dir) : base(field, pos, dir)
+        public Load(Battlefield field, Coor pos, Coor dir, int damage) : base(field, pos, dir, damage)
         {
             Symbols = "**";
             FgColor = ConsoleColor.Black;
@@ -136,7 +136,7 @@ namespace Transistor
 
     class Bullet: Projectile
     {
-        public Bullet(Battlefield field, Coor pos, Coor dir) : base(field, pos, dir)
+        public Bullet(Battlefield field, Coor pos, Coor dir, int damage) : base(field, pos, dir, damage)
         {
             Symbols = "**";
             FgColor = ConsoleColor.White;

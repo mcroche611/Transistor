@@ -29,11 +29,11 @@ namespace Transistor
         Snapshot snapshot= new Snapshot(null, null);
         Jerk jerk = new Jerk(null, null);
         Fetch fetch = new Fetch(null, null);
-        Beam beam = new Beam(null, null, null);
-        Laser laser = new Laser(null, null, null);
-        Shot shot= new Shot(null, null, null);
-        Load load = new Load(null, null, null);
-        Bullet bullet = new Bullet(null, null, null);
+        Beam beam = new Beam(null, null, null, 0);
+        Laser laser = new Laser(null, null, null, 0);
+        Shot shot= new Shot(null, null, null, 0);
+        Load load = new Load(null, null, null, 0);
+        Bullet bullet = new Bullet(null, null, null, 0);
 
 
         public CaptionDisplay(int topRow, int maxColumns)
@@ -212,6 +212,7 @@ namespace Transistor
             Console.Write(header);
 
         }
+
         void SetColor(ConsoleColor backColor = ConsoleColor.Black, ConsoleColor foreColor = ConsoleColor.White)
         {
             Console.BackgroundColor = backColor;

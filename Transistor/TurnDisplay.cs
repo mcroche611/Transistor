@@ -103,7 +103,7 @@ namespace Transistor
             col += label.Length + 2;
 
         }
-        void SetColor(ConsoleColor backColor= ConsoleColor.Black, ConsoleColor foreColor = ConsoleColor.White)
+        void SetColor(ConsoleColor backColor = ConsoleColor.Black, ConsoleColor foreColor = ConsoleColor.White)
         {
             Console.BackgroundColor = backColor;
             Console.ForegroundColor = foreColor;

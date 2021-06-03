@@ -7,6 +7,15 @@ namespace Transistor
     class Player: Character
     {
         protected string turnMoves;
+        private int moveTurn = 2;
+        private int crashTurn = 10;
+        private int breachTurn = 10;
+        private int pingTurn = 10;
+        private int loadTurn = 10;
+        private const int crashDamage = 5;
+        private const int breachDamage = 15;
+        private const int pingDamage = 5;
+        private const int loadDamage = 30;
 
         public string TurnMoves
         {
@@ -48,10 +57,8 @@ namespace Transistor
         public Player(Battlefield field, Coor pos) : base(field, pos)
         {
             life = 100;
-            damage = 20;
             dir = Coor.RIGHT;
-            BgColor = ConsoleColor.DarkRed;
-            FgColor = ConsoleColor.White;
+            SetColor(ConsoleColor.DarkRed, ConsoleColor.White);
             Speed = 2;
             turnMoves = "";
         }
@@ -90,26 +97,76 @@ namespace Transistor
                 {
                     turnMoves += ("d");
                 }
+
+                field.TurnPercentage -= moveTurn;
             }
         }
 
-        public override void Attack(TurnMode mode, char attackMode)
+        public override void Attack(TurnMode mode, char attack)
         {
-            if (mode == TurnMode.Normal)
+            if (mode != TurnMode.Plan)
             {
-                Next(out Coor newPos);
-
-                Enemy e = field.EnemyList.GetEnemyInPos(newPos);
-
-                if (e != null)
+                switch(attack)
                 {
-                    e.ReceiveDamage(damage);
+                    case 'c':
+                        Crash();
+                        break;
+                    case 'b':
+                        Breach();
+                        break;
+                    case 'p':
+                        Ping();
+                        break;
+                    case 'l':
+                        Load();
+                        break;
                 }
             }
-            else if (mode == TurnMode.Plan)
+            else
             {
-                turnMoves += attackMode;
+                turnMoves += attack;
             }
+        }
+
+        private void Crash()
+        {
+            Next(out Coor newPos);
+
+            Enemy e = field.EnemyList.GetEnemyInPos(newPos);
+
+            if (e != null)
+            {
+                e.ReceiveDamage(crashDamage);
+            }
+
+            field.TurnPercentage -= crashTurn;
+        }
+
+        private void Breach()
+        {
+            Beam beam = new Beam(field, Pos, Dir, breachDamage);
+
+            field.ProjectileList.Append(beam);
+
+            field.TurnPercentage -= breachTurn;
+        }
+
+        private void Ping()
+        {
+            Bullet bullet = new Bullet(field, Pos, Dir, pingDamage);
+
+            field.ProjectileList.Append(bullet);
+
+            field.TurnPercentage -= pingTurn;
+        }
+
+        private void Load()
+        {
+            Load load = new Load(field, Pos, Dir, loadDamage);
+
+            field.ProjectileList.Append(load);
+
+            field.TurnPercentage -= loadTurn;
         }
     }
 }

@@ -6,6 +6,8 @@ namespace Transistor
 {
     class Enemy: Character
     {
+        protected int damage;
+
         public Enemy(Battlefield field, Coor pos):base(field, pos)
         {
             
@@ -114,11 +116,11 @@ namespace Transistor
 
                     if (field.Red.Pos.row > Pos.row) //Creep por encima de Player
                     {
-                        laser = new Laser(field, Pos, Coor.DOWN);
+                        laser = new Laser(field, Pos, Coor.DOWN, damage);
                     }
                     else
                     {
-                        laser = new Laser(field, Pos, Coor.UP);
+                        laser = new Laser(field, Pos, Coor.UP, damage);
                     }
 
                     coolDown = 2;
@@ -130,11 +132,11 @@ namespace Transistor
 
                     if (field.Red.Pos.col < Pos.col) //Creep a la derecha de Player
                     {
-                        laser = new Laser(field, Pos, Coor.LEFT);
+                        laser = new Laser(field, Pos, Coor.LEFT, damage);
                     }
                     else
                     {
-                        laser = new Laser(field, Pos, Coor.RIGHT);
+                        laser = new Laser(field, Pos, Coor.RIGHT, damage);
                     }
 
                     coolDown = 2;
@@ -250,11 +252,11 @@ namespace Transistor
 
                     if (field.Red.Pos.row > Pos.row) //Snapshot por encima de Player
                     {
-                        shot = new Shot(field, Pos, Coor.DOWN);
+                        shot = new Shot(field, Pos, Coor.DOWN, damage);
                     }
                     else
                     {
-                        shot = new Shot(field, Pos, Coor.UP);
+                        shot = new Shot(field, Pos, Coor.UP, damage);
                     }
 
                     coolDown = 20;
@@ -266,12 +268,12 @@ namespace Transistor
 
                     if (field.Red.Pos.col > Pos.col) //Snapshot a la izquierda de Player
                     {
-                        shot = new Shot(field, Pos, Coor.RIGHT);
+                        shot = new Shot(field, Pos, Coor.RIGHT, damage);
                         
                     }
                     else
                     {
-                        shot = new Shot(field, Pos, Coor.LEFT);
+                        shot = new Shot(field, Pos, Coor.LEFT, damage);
                     }
 
                     coolDown = 20;
@@ -287,7 +289,7 @@ namespace Transistor
         {
             life = 50;
             Symbols = "&&";
-            BgColor = ConsoleColor.DarkCyan;
+            SetColor(ConsoleColor.DarkCyan, ConsoleColor.Black);
             Speed = 4; // mitad que Player
         }
 
@@ -362,8 +364,9 @@ namespace Transistor
         public Fetch(Battlefield field, Coor pos) : base(field, pos)
         {
             life = 50;
+            damage = 15;
             Symbols = "!!";
-            BgColor = ConsoleColor.Red;
+            SetColor(ConsoleColor.Red, ConsoleColor.Black);
             Speed = 1; // mitad que Player
         }
 
