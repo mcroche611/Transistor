@@ -245,7 +245,7 @@ namespace Transistor
             }
         }
 
-        public void EnemiesAttack(TurnMode mode = TurnMode.Normal)
+        public void EnemiesAttack(TurnMode mode = TurnMode.Normal) //parámetro para pasar al Attack() de Character que necesita mode para Player
         {
             for (int k = 0; k < EnemyList.Count(); k++)
             {
@@ -314,10 +314,8 @@ namespace Transistor
         {
             if (c.PosChanged)
             {
-                Console.SetCursorPosition(2 * c.Pos.col, c.Pos.row);
-                Console.ForegroundColor = ConsoleColor.White; //TODO: Assign property foreground color
-
-                Console.BackgroundColor = c.BgColor;
+                Console.SetCursorPosition(2 * c.Pos.col, c.Pos.row); //TODO: método que englobe estas tres líneas
+                SetColor(c.BgColor, c.FgColor);
                 Console.Write(c.Symbols);
 
                 c.Painted();
@@ -409,6 +407,7 @@ namespace Transistor
                     {
                         newPos = red.Pos;
 
+                        // Puede seguir si no se choca con ninguna pared o enemigo
                         while (NextDir(red.Dir, newPos, attack, out newPos))
                         {
                             if (!enemyList.IsEnemy(newPos) && !projectileList.IsProjectile(newPos))
@@ -425,7 +424,7 @@ namespace Transistor
                         if (red.Next(out newPos))
                         {
                             Console.SetCursorPosition(2 * newPos.col, newPos.row);
-                            Console.BackgroundColor = ConsoleColor.DarkMagenta;
+                            SetColor(ConsoleColor.DarkMagenta, ConsoleColor.White); //TODO: set to color of projectile
                             Console.Write("  ");
                         }
                     }
@@ -489,6 +488,17 @@ namespace Transistor
         public Player GetPlayer()
         {
             return Red;
+        }
+
+        internal void DestroyWall(Coor pos)
+        {
+            tile[pos.row, pos.col] = Tile.Empty;
+        }
+
+        protected void SetColor(ConsoleColor bgColor = ConsoleColor.Black, ConsoleColor fgColor = ConsoleColor.White)
+        {
+            Console.BackgroundColor = bgColor; //TODO: A la hora de pintar
+            Console.ForegroundColor = fgColor;
         }
     }
 }

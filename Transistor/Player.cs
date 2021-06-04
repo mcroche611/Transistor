@@ -17,6 +17,7 @@ namespace Transistor
         private const int pingDamage = 5;
         private const int loadDamage = 30;
         private Coor posTurn;
+        private TurnMode attackMode;
 
         public string TurnMoves
         {
@@ -65,7 +66,8 @@ namespace Transistor
         {
             life = 100;
             dir = Coor.RIGHT;
-            SetColor(ConsoleColor.DarkRed, ConsoleColor.White);
+            BgColor = ConsoleColor.DarkRed;
+            FgColor = ConsoleColor.White;
             Speed = 2;
             turnMoves = "";
         }
@@ -86,7 +88,7 @@ namespace Transistor
         {
             base.Move(mode);
 
-            if (mode == TurnMode.Plan)
+            if (mode == TurnMode.Plan) //Guarda el movimiento a ejecutar durante Run
             {
                 if (Dir == Coor.RIGHT)
                 {
@@ -104,14 +106,17 @@ namespace Transistor
                 {
                     turnMoves += ("d");
                 }
+            }
 
+            if (mode != TurnMode.Normal) //Resta coste del movimiento a Turn
+            {
                 field.TurnPercentage -= moveTurn;
             }
         }
 
         public override void Attack(TurnMode mode, char attack)
         {
-            if (mode != TurnMode.Plan)
+            if (mode != TurnMode.Plan) 
             {
                 switch(attack)
                 {
@@ -129,7 +134,7 @@ namespace Transistor
                         break;
                 }
             }
-            else
+            else //Guarda el ataque a ejecutar durante Run si el juego está en mode Plan
             {
                 turnMoves += attack;
             }
@@ -145,13 +150,23 @@ namespace Transistor
             {
                 e.ReceiveDamage(crashDamage);
             }
+            else if (field.ProjectileList.IsProjectile(newPos) && field.ProjectileList.GetProjectileInPos(newPos) is Load) //TOCHECK: Como todos lo tienen pero solo lo usa Load, hace falta validarlo?
+            {
+                Projectile p = field.ProjectileList.GetProjectileInPos(newPos);
 
-            field.TurnPercentage -= crashTurn;
+                if (p is Load)
+                {
+                    p.ReceiveDamage();
+                }
+            }
+
+            if (attackMode != TurnMode.Normal)
+                field.TurnPercentage -= crashTurn;
         }
 
         private void Breach()
         {
-            Beam beam = new Beam(field, Pos, Dir, breachDamage);
+            Beam beam = new Beam(field, Pos + Dir, Dir, breachDamage);
 
             field.ProjectileList.Append(beam);
 
@@ -160,25 +175,30 @@ namespace Transistor
 
         private void Ping()
         {
-            Bullet bullet = new Bullet(field, Pos, Dir, pingDamage);
+            Bullet bullet = new Bullet(field, Pos + Dir, Dir, pingDamage);
 
             field.ProjectileList.Append(bullet);
 
-            field.TurnPercentage -= pingTurn;
+            if (attackMode != TurnMode.Normal)
+                field.TurnPercentage -= pingTurn;
         }
 
         private void Load()
         {
-            Load load = new Load(field, Pos, Dir, loadDamage);
+            if (Next(out Coor newPos)) //Solo si se puede colocar sobre la próxima posición
+            {
+                Load load = new Load(field, newPos, Dir, loadDamage);
 
-            field.ProjectileList.Append(load);
+                field.ProjectileList.Append(load);
 
-            field.TurnPercentage -= loadTurn;
+                if (attackMode != TurnMode.Normal)
+                    field.TurnPercentage -= loadTurn;
+            }
         }
 
         public char GetActionTurn()
         {
-            char c = '\0'; //TODO: Comprobaciones de c != ' ' a c != '\0'
+            char c = '\0'; 
 
             if (turnMoves.Length > 0)
             {

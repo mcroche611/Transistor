@@ -6,46 +6,46 @@ namespace Transistor
 {
     class ProjectileList
     {
-        private class Nodo
+        private class Node
         {
-            public Projectile dato;
-            public Nodo sig;
+            public Projectile data;
+            public Node next;
         }
 
-        Nodo pri;
+        Node first;
 
         public ProjectileList()
         {
-            pri = null;
+            first = null;
         }
 
         public void Append(Projectile e)
         {
             // Si la lista está vacía
-            if (pri == null)
+            if (first == null)
             {
-                pri = new Nodo(); // Creamos un nodo en pri
-                pri.dato = e;
-                pri.sig = null;
+                first = new Node(); // Creamos un nodo en pri
+                first.data = e;
+                first.next = null;
             }
             else // Lista no vacía
             {
                 // Recorremos la lista hasta el último nodo
-                Nodo aux = pri;
-                while (aux.sig != null)
+                Node aux = first;
+                while (aux.next != null)
                 {
-                    aux = aux.sig;
+                    aux = aux.next;
                 }
 
                 // aux apunta al último nodo
-                aux.sig = new Nodo();
-                aux = aux.sig;
-                aux.dato = e;
-                aux.sig = null;
+                aux.next = new Node();
+                aux = aux.next;
+                aux.data = e;
+                aux.next = null;
             }
         }
 
-        private Nodo nEsimoNodo(int n)
+        private Node nEsimoNodo(int n)
         {
             if (n < 0)
             {
@@ -53,13 +53,13 @@ namespace Transistor
             }
             else
             {
-                Nodo nEsimo = pri;
+                Node nEsimo = first;
 
                 int i = 0;
                 while (nEsimo != null && i < n)
                 {
                     i++;
-                    nEsimo = nEsimo.sig;
+                    nEsimo = nEsimo.next;
                 }
                 return nEsimo;
             }
@@ -67,34 +67,34 @@ namespace Transistor
 
         public Projectile nEsimo(int n)
         {
-            Nodo aux = nEsimoNodo(n);
+            Node aux = nEsimoNodo(n);
 
             if (aux == null)
                 throw new Exception("Error: Índice fuera de los límites de la lista");
             else
-                return aux.dato;
+                return aux.data;
         }
 
         public bool BorraElto(Projectile e)
         {
-            Nodo aux = pri;
-            Nodo prev = null;
+            Node aux = first;
+            Node prev = null;
 
-            while (aux.dato != e && aux.sig != null)
+            while (aux.data != e && aux.next != null)
             {
                 prev = aux;
-                aux = aux.sig;
+                aux = aux.next;
             }
 
-            if (aux.dato == e)
+            if (aux.data == e)
             {
                 if (prev != null)
-                    prev.sig = aux.sig;
+                    prev.next = aux.next;
                 else
-                    pri = aux.sig;
+                    first = aux.next;
                 return true;
             }
-            else if (aux.sig == null)
+            else if (aux.next == null)
             {
                 return false;
             }
@@ -108,16 +108,16 @@ namespace Transistor
         {
             int numEltos = 0;
 
-            if (pri != null)
+            if (first != null)
             {
                 //Primer nodo
                 numEltos++;
 
                 //Recorre el resto de nodos
-                Nodo aux = pri;
-                while (aux.sig != null)
+                Node aux = first;
+                while (aux.next != null)
                 {
-                    aux = aux.sig;
+                    aux = aux.next;
                     numEltos++;
                 }
             }
@@ -127,18 +127,34 @@ namespace Transistor
 
         public bool IsProjectile(Coor pos)
         {
-            Nodo aux = pri;
+            Node aux = first;
             bool found = false;
 
             while (aux != null && !found)
             {
-                if (aux.dato.Pos != pos)
-                    aux = aux.sig;
+                if (aux.data.Pos != pos)
+                    aux = aux.next;
                 else
                     found = true;
             }
 
             return found;
+        }
+
+        public Projectile GetProjectileInPos(Coor pos)
+        {
+            Node aux = first;
+            Projectile projectile = null;
+
+            while (aux != null && projectile == null)
+            {
+                if (aux.data.Pos != pos)
+                    aux = aux.next;
+                else
+                    projectile = aux.data;
+            }
+
+            return projectile;
         }
     }
 }

@@ -138,11 +138,5 @@ namespace Transistor
                 destroyed = true;
             }
         }
-
-        protected void SetColor(ConsoleColor backColor = ConsoleColor.Black, ConsoleColor foreColor = ConsoleColor.White)
-        {
-            BgColor = backColor; //TODO: A la hora de pintar, no en el constructor
-            FgColor = foreColor;
-        }
     }
 }

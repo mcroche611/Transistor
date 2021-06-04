@@ -8,8 +8,8 @@ namespace Transistor
     {
         private Coor dir;
         private Coor pos;
-        private int damage;
-        private bool destroyed;
+        protected int damage;
+        protected bool destroyed;
         protected bool playerOwned;
         private string symbols;
         private ConsoleColor fgColor;
@@ -93,6 +93,21 @@ namespace Transistor
             {
                 destroyed = true;
             }
+            else if (field.ProjectileList.IsProjectile(Pos) && field.ProjectileList.GetProjectileInPos(Pos) is Load) //TOCHECK: Como todos lo tienen pero solo lo usa Load, hace falta validarlo?
+            {
+                Projectile p = field.ProjectileList.GetProjectileInPos(Pos);
+
+                if (p is Load)
+                {
+                    p.ReceiveDamage();
+                    destroyed = true;
+                }
+            }
+        }
+
+        public virtual void ReceiveDamage()
+        {
+            // Solo va a usarlo Load
         }
     }
 
@@ -125,10 +140,39 @@ namespace Transistor
             BgColor = ConsoleColor.Cyan;
             playerOwned = true;
         }
+
+        public override void CheckDamage()
+        {
+            if (field.EnemyList.IsEnemy(Pos))
+            {
+                Enemy e = field.EnemyList.GetEnemyInPos(Pos);
+                e.ReceiveDamage(damage);
+            }   
+            else if (field.tile[Pos.row, Pos.col] == Battlefield.Tile.BorderWall)
+            {
+                destroyed = true;
+            }
+            else if (field.tile[Pos.row, Pos.col] == Battlefield.Tile.Wall)
+            {
+                field.DestroyWall(Pos);
+            }
+            else if (field.ProjectileList.IsProjectile(Pos) && field.ProjectileList.GetProjectileInPos(Pos) is Load) //TOCHECK: Como todos lo tienen pero solo lo usa Load, hace falta validarlo?
+            {
+                Projectile p = field.ProjectileList.GetProjectileInPos(Pos);
+
+                if (p is Load)
+                {
+                    p.ReceiveDamage();
+                    destroyed = true;
+                }
+            }
+        }
     }
 
     class Load: Projectile
     {
+        bool exploded = false;
+
         public Load(Battlefield field, Coor pos, Coor dir, int damage) : base(field, pos, dir, damage)
         {
             Symbols = "**";
@@ -141,6 +185,46 @@ namespace Transistor
         {
             // No se mueve porque es una bomba
         }
+
+        public override void CheckDamage()
+        {
+            if (exploded)
+            {
+                Coor newPos;
+
+                int maxRange = 3;
+
+                //Chequeo de enemigos en un área en rombo 
+                for (int j = -maxRange; j <= maxRange; j++)
+                {
+                    int col;
+                    if (j <= 0)
+                        col = (maxRange + j);
+                    else
+                        col = (maxRange - j);
+
+                    for (int k = -col; k <= col; k++)
+                    {
+                        newPos = Pos + new Coor(j, k);
+
+                        if (field.EnemyList.IsEnemy(newPos)) //No hace daño ni al jugador ni a otros load
+                        {
+                            Enemy e = field.EnemyList.GetEnemyInPos(newPos);
+                            e.ReceiveDamage(damage);
+                        }
+                    }
+                }
+
+                destroyed = true;
+            }
+            //TODO: Hace falta validar/impedir que el jugador no tire el load() sobre un muro???
+        }
+
+        public override void ReceiveDamage()
+        {
+            exploded = true;
+            CheckDamage();
+        }
     }
 
     class Bullet: Projectile
@@ -151,6 +235,30 @@ namespace Transistor
             FgColor = ConsoleColor.White;
             BgColor = ConsoleColor.Black;
             playerOwned = true;
+        }
+
+        public override void CheckDamage()
+        {
+            if (field.EnemyList.IsEnemy(Pos)) // Hace daño y se destruye al chocar con enemigos
+            {
+                Enemy e = field.EnemyList.GetEnemyInPos(Pos);
+                e.ReceiveDamage(damage);
+                destroyed = true;
+            }
+            else if (field.tile[Pos.row, Pos.col] != Battlefield.Tile.Empty) //Se destruye con paredes
+            {
+                destroyed = true;
+            }
+            else if (field.ProjectileList.IsProjectile(Pos) && field.ProjectileList.GetProjectileInPos(Pos) is Load) //TOCHECK: Como todos lo tienen pero solo lo usa Load, hace falta validarlo?
+            {
+                Projectile p = field.ProjectileList.GetProjectileInPos(Pos);
+
+                if (p is Load)
+                {
+                    p.ReceiveDamage();
+                    destroyed = true;
+                }
+            }
         }
     }
 }

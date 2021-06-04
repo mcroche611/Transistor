@@ -64,7 +64,7 @@ namespace Transistor
 
             if (possible)
             {
-                possible = !(field.Red.Pos == newPos) && !field.EnemyList.IsEnemy(newPos); // && !field.ProjectileList.IsProjectile(newPos);
+                possible = !(field.Red.Pos == newPos) && !field.EnemyList.IsEnemy(newPos); //TOCHECK: && !field.ProjectileList.IsProjectile(newPos);
             }
 
             return possible;
@@ -289,7 +289,8 @@ namespace Transistor
         {
             life = 50;
             Symbols = "&&";
-            SetColor(ConsoleColor.DarkCyan, ConsoleColor.Black);
+            BgColor = ConsoleColor.DarkCyan; 
+            FgColor = ConsoleColor.Black;
             Speed = 4; // mitad que Player
         }
 
@@ -330,13 +331,6 @@ namespace Transistor
 
             int maxRange = 3;
 
-            //int minLeft = Range(maxRange, Coor.LEFT);
-            //int maxRight = Range(maxRange, Coor.RIGHT);
-            //int minUp = Range(maxRange, Coor.UP);
-            //int maxDown = Range(maxRange, Coor.DOWN);
-            //int i = 0;
-
-
             //Chequeo del jugador en un área en rombo 
             for (int j = -maxRange; j <= maxRange; j++)
             {
@@ -354,6 +348,15 @@ namespace Transistor
                     {
                         field.Red.ReceiveDamage(damage); 
                     }
+                    else if (field.ProjectileList.IsProjectile(newPos) && field.ProjectileList.GetProjectileInPos(newPos) is Load) //TOCHECK: Como todos lo tienen pero solo lo usa Load, hace falta validarlo?
+                    {
+                        Projectile p = field.ProjectileList.GetProjectileInPos(newPos);
+
+                        if (p is Load)
+                        {
+                            p.ReceiveDamage();
+                        }
+                    }
                 }
             }
         }
@@ -366,7 +369,8 @@ namespace Transistor
             life = 50;
             damage = 15;
             Symbols = "!!";
-            SetColor(ConsoleColor.Red, ConsoleColor.Black);
+            BgColor = ConsoleColor.Red;
+            FgColor = ConsoleColor.Black;
             Speed = 1; // mitad que Player
         }
 
@@ -380,6 +384,15 @@ namespace Transistor
                 {
                     field.Red.ReceiveDamage(damage); 
                     coolDown = 3;
+                }
+                else if (field.ProjectileList.IsProjectile(newPos) && field.ProjectileList.GetProjectileInPos(newPos) is Load) //TOCHECK: Como todos lo tienen pero solo lo usa Load, hace falta validarlo?
+                {
+                    Projectile p = field.ProjectileList.GetProjectileInPos(newPos);
+
+                    if (p is Load)
+                    {
+                        p.ReceiveDamage();
+                    }
                 }
             }
             else if (coolDown > 0)
