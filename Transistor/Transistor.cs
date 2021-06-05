@@ -25,7 +25,7 @@ namespace Transistor
             Console.ForegroundColor = ConsoleColor.White;
             Console.Clear();
 
-            field = new Battlefield("Transistor2.txt");
+            field = new Battlefield("Transistor4.txt");
             TurnDisplay turnDisplay = new TurnDisplay(field.numRows, field.numCols);
             CaptionDisplay captionDisplay= new CaptionDisplay(field.numRows, field.numCols);
             bool playing = true;
@@ -57,8 +57,13 @@ namespace Transistor
                 field.MoveEnemies(mode);
 
                 field.Show(mode, CurrentAttack);
+                float lifePercentage = field.Red.Life;
+                turnDisplay.Show(mode, field.TurnPercentage, lifePercentage,  1, 2, 3, 4);
 
-                turnDisplay.Show(TurnMode.Normal, field.TurnPercentage, 1, 2, 3, 4);
+                /// TEST ////
+                if (lifePercentage < 50)
+                    turnDisplay.CrashEnabled = false;
+                /// FIN TEST ////
 
                 if (mode == TurnMode.Normal)
                 {

@@ -104,6 +104,32 @@ namespace Transistor
             }
         }
 
+        public void BorraEliminados()
+        {
+            Node aux = first;
+            Node prev = null;
+
+            while (aux != null)
+            {
+                if (aux.data.Destroyed)
+                {
+                    if (prev != null)
+                    {
+                        prev.next = aux.next;
+                    }
+                    else
+                    {
+                        first = aux.next;
+                    }
+                }
+                else
+                {
+                    prev = aux;
+                }
+                aux = aux.next;
+            }
+        }
+
         public int Count()
         {
             int numElts = 0;

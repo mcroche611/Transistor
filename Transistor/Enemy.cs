@@ -158,6 +158,7 @@ namespace Transistor
         public Snapshot(Battlefield field, Coor pos) : base(field, pos)
         {
             life = 50;
+            damage = 10;
             Symbols = "##";
             BgColor = ConsoleColor.Green;
             coolDown = 20;
@@ -288,6 +289,7 @@ namespace Transistor
         public Jerk(Battlefield field, Coor pos) : base(field, pos)
         {
             life = 50;
+            damage = 10;
             Symbols = "&&";
             BgColor = ConsoleColor.DarkCyan; 
             FgColor = ConsoleColor.Black;

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Transistor
 {
@@ -69,8 +67,8 @@ namespace Transistor
 
         public virtual bool Next(out Coor newPos)
         {
-            newPos = Pos + Dir;
-
+            
+            newPos = Pos + Dir;            
             bool possible = field.tile[newPos.row, newPos.col] == Battlefield.Tile.Empty;
 
             return possible;
@@ -83,7 +81,7 @@ namespace Transistor
         }
 
         public virtual void CheckDamage()
-        {
+        {            
             if (Pos == field.Red.Pos)
             {
                 field.Red.ReceiveDamage(damage);

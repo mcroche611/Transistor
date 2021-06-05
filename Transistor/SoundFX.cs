@@ -8,27 +8,37 @@ namespace Transistor
 {
     class SoundFX
     {
+        bool enabled = false;
         const string fxFolder = @"fx\";
         SoundPlayer sp = new SoundPlayer();
         //SoundPlayer sp2 = new SoundPlayer(fxFolder + "mixkit-boxer-getting-hit-2055.wav");
 
         public void PlayDamage1()
         {
-            sp.SoundLocation = fxFolder + "mixkit-boxer-getting-hit-2055.wav";
-            sp.Play();
+            if (enabled)
+            {
+                sp.SoundLocation = fxFolder + "mixkit-boxer-getting-hit-2055.wav";
+                sp.Play();
+            }
             
         }
 
         public void PlayDamage2()
         {
-            sp.SoundLocation = fxFolder + "mixkit-martial-arts-punch-2052.wav";
-            sp.Play();
+            if (enabled)
+            {
+                sp.SoundLocation = fxFolder + "mixkit-martial-arts-punch-2052.wav";
+                sp.Play();
+            }
         }
 
         public void PlayShot1()
         {
-            sp.SoundLocation = fxFolder + "mixkit-short-laser-gun-shot-1670.wav";
-            sp.Play();
+            if (enabled)
+            {
+                sp.SoundLocation = fxFolder + "mixkit-short-laser-gun-shot-1670.wav";
+                sp.Play();
+            }
         }
     }
 }

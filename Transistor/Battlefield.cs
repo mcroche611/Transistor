@@ -233,6 +233,8 @@ namespace Transistor
                 }
             }
 
+            enemyList.BorraEliminados();
+            /*
             // Chequea si algún enemigo ha sido destruido y si es así, lo elimina
             for (int k = 0; k < EnemyList.Count(); k++)
             {
@@ -243,6 +245,7 @@ namespace Transistor
                     enemyList.Delete(enemy);
                 }
             }
+            */
         }
 
         public void EnemiesAttack(TurnMode mode = TurnMode.Normal) //parámetro para pasar al Attack() de Character que necesita mode para Player
@@ -262,13 +265,15 @@ namespace Transistor
 
                 bool needMove = mode == TurnMode.Normal || (mode == TurnMode.Run && projectile.PlayerOwned);
 
-                if (needMove)
+                if (needMove)// && !projectile.Destroyed)
                 {
                     projectile.Move();
                     projectile.CheckDamage();
                 }
             }
 
+            projectileList.BorraEliminados();
+            /*
             for (int k = 0; k < ProjectileList.Count(); k++)
             {
                 Projectile projectile = ProjectileList.nEsimo(k);
@@ -276,8 +281,10 @@ namespace Transistor
                 if (projectile.Destroyed)
                 {
                     ProjectileList.BorraElto(projectile);
+                    k = 0; //TODO: Ver si esto funciona
                 }
             }
+            */
         }
 
         //private void ShowTurn()
@@ -336,13 +343,16 @@ namespace Transistor
 
         private void PrintAttacks(Projectile p)
         {
-            Console.SetCursorPosition(2 * p.Pos.col, p.Pos.row);
-            Console.ForegroundColor = p.FgColor;
+            if (!enemyList.IsEnemy(p.Pos))
+            {
+                Console.SetCursorPosition(2 * p.Pos.col, p.Pos.row);
+                Console.ForegroundColor = p.FgColor;
 
-            Console.BackgroundColor = p.BgColor;
-            Console.Write(p.Symbols);
+                Console.BackgroundColor = p.BgColor;
+                Console.Write(p.Symbols);
 
-            Console.BackgroundColor = ConsoleColor.Black;
+                Console.BackgroundColor = ConsoleColor.Black;
+            }
         }
 
         private void PrintRange(Character c)
@@ -363,7 +373,7 @@ namespace Transistor
 
                     if (newPos.row < tile.GetLength(0) && newPos.col < tile.GetLength(1) && newPos.row > 0 && newPos.col > 0)
                     {
-                        if (newPos != Red.Pos && tile[newPos.row, newPos.col] == Tile.Empty && newPos != c.Pos)
+                        if (newPos != Red.Pos && !enemyList.IsEnemy(newPos) && tile[newPos.row, newPos.col] == Tile.Empty && newPos != c.Pos)
                         {
                             Console.SetCursorPosition(2 * newPos.col, newPos.row);
                             Console.BackgroundColor = ConsoleColor.DarkBlue;

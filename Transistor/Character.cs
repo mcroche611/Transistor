@@ -120,8 +120,11 @@ namespace Transistor
             get => hit; 
             set => hit = value;
         }
+        public int Life
+        {
+            get => life;
+        }
         
-
         public virtual void Attack(TurnMode mode, char attackMode)
         {
 
