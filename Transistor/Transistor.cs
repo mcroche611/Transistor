@@ -37,7 +37,7 @@ namespace Transistor
             captionDisplay.Show();
 
             //Bucle principal de juego
-            while (playing)
+            while (field.EnemyList.Count() > 0 && field.Red.Life > 0) //La partida continúa hasta que no queden enemigos o no queden vidas
             {
                 // input de usuario
                 if (counter % field.Red.Speed == 0)
@@ -132,7 +132,20 @@ namespace Transistor
                         dirInput = true;
                         break;
                     case "D1":
-                        field.Red.Attack(mode, 'c');
+                        if (field.Red.AttacksEnabled[0])
+                            field.Red.Attack(mode, 'c');
+                        break;
+                    case "D2":
+                        if (field.Red.AttacksEnabled[1])
+                            field.Red.Attack(mode, 'b');
+                        break;
+                    case "D3":
+                        if (field.Red.AttacksEnabled[2])
+                            field.Red.Attack(mode, 'p');
+                        break;
+                    case "D4":
+                        if (field.Red.AttacksEnabled[3])
+                            field.Red.Attack(mode, 'l');
                         break;
                     case "Spacebar":
                         field.Red.PosTurn = field.Red.Pos;
@@ -199,16 +212,20 @@ namespace Transistor
                             dirInput = true;
                             break;
                         case "D1":
-                            currentAttack = 'c';
+                            if (field.Red.AttacksEnabled[0])
+                                currentAttack = 'c';
                             break;
                         case "D2":
-                            currentAttack = 'b';
+                            if (field.Red.AttacksEnabled[1])
+                                currentAttack = 'b';
                             break;
                         case "D3":
-                            currentAttack = 'p';
+                            if (field.Red.AttacksEnabled[2])
+                                currentAttack = 'p';
                             break;
                         case "D4":
-                            currentAttack = 'l';
+                            if (field.Red.AttacksEnabled[3])
+                                currentAttack = 'l';
                             break;
                     }
                 }
@@ -224,6 +241,7 @@ namespace Transistor
                         field.Red.Pos = field.Red.PosTurn;
                         field.TurnPercentage = 100;
                         mode = TurnMode.Run;
+                        currentAttack = ' ';
                         break;
                 }
             }

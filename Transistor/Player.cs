@@ -9,10 +9,10 @@ namespace Transistor
         protected string turnMoves;
 
         //posiciones en cada array de los atributos de cada ataque
-        private const int CRASH = 0; 
-        private const int BREACH = 1;
-        private const int PING = 2;
-        private const int LOAD = 3;
+        private const int crashNum = 0;
+        private const int breachNum = 1;
+        private const int pingNum = 2;
+        private const int loadNum = 3;
 
         private int moveTurn = 2;
         private int[] attacksTurn = { 10, 30, 10, 20 }; //Coste de la barra de Turn de cada ataque
@@ -125,6 +125,8 @@ namespace Transistor
 
         public override void Attack(TurnMode mode, char attack)
         {
+            attackMode = mode;
+
             if (mode != TurnMode.Plan) 
             {
                 switch(attack)
@@ -157,7 +159,7 @@ namespace Transistor
 
             if (e != null)
             {
-                e.ReceiveDamage(attacksDamage[CRASH]);
+                e.ReceiveDamage(attacksDamage[crashNum]);
             }
             else if (field.ProjectileList.IsProjectile(newPos) && field.ProjectileList.GetProjectileInPos(newPos) is Load) //TOCHECK: Como todos lo tienen pero solo lo usa Load, hace falta validarlo?
             {
@@ -170,38 +172,38 @@ namespace Transistor
             }
 
             if (attackMode != TurnMode.Normal)
-                field.TurnPercentage -= attacksTurn[CRASH];
+                field.TurnPercentage -= attacksTurn[crashNum];
         }
 
         private void Breach()
         {
-            Beam beam = new Beam(field, Pos + Dir, Dir, attacksDamage[BREACH]);
+            Beam beam = new Beam(field, Pos + Dir, Dir, attacksDamage[breachNum]);
 
             field.ProjectileList.Append(beam);
 
-            field.TurnPercentage -= attacksTurn[BREACH];
+            field.TurnPercentage -= attacksTurn[breachNum];
         }
 
         private void Ping()
         {
-            Bullet bullet = new Bullet(field, Pos + Dir, Dir, attacksDamage[PING]);
+            Bullet bullet = new Bullet(field, Pos + Dir, Dir, attacksDamage[pingNum]);
 
             field.ProjectileList.Append(bullet);
 
             if (attackMode != TurnMode.Normal)
-                field.TurnPercentage -= attacksTurn[PING];
+                field.TurnPercentage -= attacksTurn[pingNum];
         }
 
         private void Load()
         {
             if (Next(out Coor newPos)) //Solo si se puede colocar sobre la próxima posición
             {
-                Load load = new Load(field, newPos, Dir, attacksDamage[LOAD]);
+                Load load = new Load(field, newPos, Dir, attacksDamage[loadNum]);
 
                 field.ProjectileList.Append(load);
 
                 if (attackMode != TurnMode.Normal)
-                    field.TurnPercentage -= attacksTurn[LOAD];
+                    field.TurnPercentage -= attacksTurn[loadNum];
             }
         }
 
