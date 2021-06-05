@@ -78,7 +78,12 @@ namespace Transistor
             ///// Pintar barra de Turn
             ///
 
-            row++; col = 0;
+            col = 0;
+            SetColor(bgColor);
+            Console.SetCursorPosition(col, row);
+            Console.Write(header);
+            row++;
+
             ShowBar("Turn", turnPercentage, row, col, ConsoleColor.DarkBlue, bgColor);
 
             //separador
@@ -132,7 +137,8 @@ namespace Transistor
         {
             string header = new string(' ', maxColumns);
             int resto;
-            SetColor();
+
+            SetColor(bgColor);
             Console.SetCursorPosition(col, row);
             Console.Write(header);
 
