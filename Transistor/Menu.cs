@@ -32,7 +32,7 @@ namespace Transistor
                         Console.Clear();
                         profile = AskName();
 
-                        level = LastLevelPlayed(profile);
+                        level = LastLevelPlayed(profile) + 1;
 
                         if (level == -1)
                         {

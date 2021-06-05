@@ -12,6 +12,8 @@ namespace Transistor
         TurnMode mode;
         const int LapTime = 20;
         const int MAXLEVEL = 10;
+        bool quit = false;
+        bool goToMenu = false;
         Battlefield field;
 
         //enum Action { Controls, Continue, Start, Credits, Exit };
@@ -29,17 +31,21 @@ namespace Transistor
             Console.ForegroundColor = ConsoleColor.White;
             Console.Clear();
 
-            bool quit = false;
             while (!quit)
             {
+                quit = false;
+                goToMenu = false;
+
                 Menu menu = new Menu();
 
                 int level = menu.RunMenu(out string profile, ref quit);
 
                 Console.Clear();
 
-                while (!quit && level < MAXLEVEL)
+                while (!quit && level < MAXLEVEL && !goToMenu)
                 {
+                    goToMenu = false;
+
                     field = new Battlefield("Transistor" + level + ".txt");
                     TurnDisplay turnDisplay = new TurnDisplay(field, field.numRows, field.numCols);
                     CaptionDisplay captionDisplay = new CaptionDisplay(field.numRows, field.numCols);
@@ -52,7 +58,7 @@ namespace Transistor
                     captionDisplay.Show();
 
                     //Bucle principal de juego
-                    while (field.EnemyList.Count() > 0 && field.Red.Life > 0) //La partida continúa hasta que no queden enemigos o no queden vidas
+                    while (field.EnemyList.Count() > 0 && field.Red.Life > 0 && !quit && !goToMenu) //La partida continúa hasta que no queden enemigos o no queden vidas
                     {
                         // input de usuario
                         if (lapCounter % field.Red.Speed == 0)
@@ -90,30 +96,44 @@ namespace Transistor
                     Console.Clear();
                     Console.SetCursorPosition(20, 5);
 
-                    if (!quit)
+                    if (!quit && !goToMenu)
                     {
+                        //Limpiamos el buffer de teclado
+                        while (Console.KeyAvailable)
+                            Console.ReadKey(false);
+
                         Console.BackgroundColor = ConsoleColor.Black;
-                        //if (capturado) //TODO: Condición de nivel superado
+
+                        if (field.Red.Life <= 0)
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("GAME OVER");
+                            Console.WriteLine();
+                            Console.WriteLine("         Press M to exit to menu, Q to exit game, and any key to retry");
                         }
-                        //else // Nivel completado
+                        else // Nivel completado
                         {
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("LEVEL CLEARED");
 
                             menu.SaveData(level, profile);
                             level++;
+
+                            Console.WriteLine();
+                            Console.WriteLine("         Press M to exit to menu, Q to exit game, and any key to continue to next level");
+
                         }
-                        Console.WriteLine();
-                        Console.WriteLine();
-                        Console.WriteLine();
-                        Console.ReadLine();
+                        string answer = Console.ReadLine().ToLower();
+                        if (answer == "m")
+                        {
+                            goToMenu = true;
+                        }
+                        else if (answer == "q")
+                        {
+                            quit = true;
+                        }
                     }
                 }
-                break;
-
             }
 
             bool ReadInput()
@@ -144,15 +164,86 @@ namespace Transistor
 
                 return dirInput;
             }
+        }
 
-            bool ReadInputNormal()
+        bool ReadInputNormal()
+        {
+            bool dirInput = false;
+
+            if (Console.KeyAvailable)
             {
-                bool dirInput = false;
-
-                if (Console.KeyAvailable)
+                string tecla = Console.ReadKey().Key.ToString();
+                switch (tecla)
                 {
-                    string tecla = Console.ReadKey().Key.ToString();
-                    switch (tecla)
+                    case "LeftArrow":
+                        field.GetPlayer().Dir = Coor.LEFT;
+                        dirInput = true;
+                        break;
+                    case "RightArrow":
+                        field.GetPlayer().Dir = Coor.RIGHT;
+                        dirInput = true;
+                        break;
+                    case "UpArrow":
+                        field.GetPlayer().Dir = Coor.UP;
+                        dirInput = true;
+                        break;
+                    case "DownArrow":
+                        field.GetPlayer().Dir = Coor.DOWN;
+                        dirInput = true;
+                        break;
+                    case "D1":
+                        if (field.Red.AttacksEnabled[0])
+                            field.Red.Attack(mode, 'c');
+                        break;
+                    case "D2":
+                        if (field.Red.AttacksEnabled[1])
+                            field.Red.Attack(mode, 'b');
+                        break;
+                    case "D3":
+                        if (field.Red.AttacksEnabled[2])
+                            field.Red.Attack(mode, 'p');
+                        break;
+                    case "D4":
+                        if (field.Red.AttacksEnabled[3])
+                            field.Red.Attack(mode, 'l');
+                        break;
+                    case "Spacebar":
+                        if (field.TurnPercentage >= 100)
+                        {
+                            field.Red.PosTurn = field.Red.Pos;
+                            mode = TurnMode.Plan;
+                        }
+                        break;
+                    case "Q": // Salir del juego
+                        quit = true;
+                        break;
+                    case "M": // Salir al menú
+                        goToMenu = true;
+                        break;
+                    case "N":
+                        //NextLevel (hack)
+                        //next = SKIP; //En vez de if(SKIP) next = true;
+                        break;
+                }
+            }
+            //Limpiamos el buffer de teclado
+            while (Console.KeyAvailable)
+                Console.ReadKey(false);
+
+            return dirInput;
+        }
+
+        bool ReadInputTurn()
+        {
+            bool dirInput = false;
+
+            if (Console.KeyAvailable)
+            {
+                string key = Console.ReadKey().Key.ToString();
+
+                if (field.TurnPercentage > 0)
+                {
+                    switch (key)
                     {
                         case "LeftArrow":
                             field.GetPlayer().Dir = Coor.LEFT;
@@ -172,166 +263,92 @@ namespace Transistor
                             break;
                         case "D1":
                             if (field.Red.AttacksEnabled[0])
-                                field.Red.Attack(mode, 'c');
+                                currentAttack = 'c';
                             break;
                         case "D2":
                             if (field.Red.AttacksEnabled[1])
-                                field.Red.Attack(mode, 'b');
+                                currentAttack = 'b';
                             break;
                         case "D3":
                             if (field.Red.AttacksEnabled[2])
-                                field.Red.Attack(mode, 'p');
+                                currentAttack = 'p';
                             break;
                         case "D4":
                             if (field.Red.AttacksEnabled[3])
-                                field.Red.Attack(mode, 'l');
-                            break;
-                        case "Spacebar":
-                            if (field.TurnPercentage >= 100)
-                            {
-                                field.Red.PosTurn = field.Red.Pos;
-                                mode = TurnMode.Plan;
-                            }
-                            break;
-                        case "P":
-                            //Pause
-                            //Console.SetCursorPosition(26, 10);
-                            //Console.BackgroundColor = ConsoleColor.Black;
-                            //Console.ForegroundColor = ConsoleColor.Yellow;
-                            //Console.Write("PAUSA");
-                            ////Esperamos a la próxima pulsación de p
-                            //string pausa = String.Empty;
-                            //while (pausa != "P")
-                            //    if (Console.KeyAvailable)
-                            //        pausa = Console.ReadKey(true).Key.ToString();
-                            break;
-                        case "Q": // Salir del juego
-                                  //quit = true;
-                            break;
-                        case "N":
-                            //NextLevel (hack)
-                            //next = SKIP; //En vez de if(SKIP) next = true;
+                                currentAttack = 'l';
                             break;
                     }
                 }
-                //Limpiamos el buffer de teclado
-                while (Console.KeyAvailable)
-                    Console.ReadKey(false);
 
-                return dirInput;
-            }
-
-            bool ReadInputTurn()
-            {
-                bool dirInput = false;
-
-                if (Console.KeyAvailable)
+                switch (key)
                 {
-                    string key = Console.ReadKey().Key.ToString();
-
-                    if (field.TurnPercentage > 0)
-                    {
-                        switch (key)
-                        {
-                            case "LeftArrow":
-                                field.GetPlayer().Dir = Coor.LEFT;
-                                dirInput = true;
-                                break;
-                            case "RightArrow":
-                                field.GetPlayer().Dir = Coor.RIGHT;
-                                dirInput = true;
-                                break;
-                            case "UpArrow":
-                                field.GetPlayer().Dir = Coor.UP;
-                                dirInput = true;
-                                break;
-                            case "DownArrow":
-                                field.GetPlayer().Dir = Coor.DOWN;
-                                dirInput = true;
-                                break;
-                            case "D1":
-                                if (field.Red.AttacksEnabled[0])
-                                    currentAttack = 'c';
-                                break;
-                            case "D2":
-                                if (field.Red.AttacksEnabled[1])
-                                    currentAttack = 'b';
-                                break;
-                            case "D3":
-                                if (field.Red.AttacksEnabled[2])
-                                    currentAttack = 'p';
-                                break;
-                            case "D4":
-                                if (field.Red.AttacksEnabled[3])
-                                    currentAttack = 'l';
-                                break;
-                        }
-                    }
-
-                    switch (key)
-                    {
-                        case "Enter":
-                            field.PrintAim(field.Red, currentAttack);
-                            field.Red.Attack(mode, currentAttack);
-                            currentAttack = ' ';
-                            break;
-                        case "Spacebar":
-                            field.Red.Pos = field.Red.PosTurn;
-                            field.TurnPercentage = 100;
-                            mode = TurnMode.Run;
-                            currentAttack = ' ';
-                            break;
-                    }
+                    case "Enter":
+                        field.PrintAim(field.Red, currentAttack);
+                        field.Red.Attack(mode, currentAttack);
+                        currentAttack = ' ';
+                        break;
+                    case "Spacebar":
+                        field.Red.Pos = field.Red.PosTurn;
+                        field.TurnPercentage = 100;
+                        mode = TurnMode.Run;
+                        currentAttack = ' ';
+                        break;
+                    case "Q": // Salir del juego
+                        quit = true;
+                        break;
+                    case "M": // Salir al menú
+                        goToMenu = true;
+                        break;
                 }
-                //Limpiamos el buffer de teclado
-                while (Console.KeyAvailable)
-                    Console.ReadKey(false);
-
-                return dirInput;
             }
+            //Limpiamos el buffer de teclado
+            while (Console.KeyAvailable)
+                Console.ReadKey(false);
 
-            bool ReadInputRun(char action)
+            return dirInput;
+        }
+
+        bool ReadInputRun(char action)
+        {
+            bool dirInput = false;
+
+            if (field.TurnPercentage > 0)
             {
-                bool dirInput = false;
-
-                if (field.TurnPercentage > 0)
+                switch (action)
                 {
-                    switch (action)
-                    {
-                        case 'i':
-                            field.GetPlayer().Dir = Coor.LEFT;
-                            dirInput = true;
-                            break;
-                        case 'r':
-                            field.GetPlayer().Dir = Coor.RIGHT;
-                            dirInput = true;
-                            break;
-                        case 'u':
-                            field.GetPlayer().Dir = Coor.UP;
-                            dirInput = true;
-                            break;
-                        case 'd':
-                            field.GetPlayer().Dir = Coor.DOWN;
-                            dirInput = true;
-                            break;
-                        case 'c':
-                            field.Red.Attack(mode, action);
-                            break;
-                        case 'b':
-                            field.Red.Attack(mode, action);
-                            break;
-                        case 'p':
-                            field.Red.Attack(mode, action);
-                            currentAttack = ' ';
-                            break;
-                        case 'l':
-                            field.Red.Attack(mode, action);
-                            break;
-                    }
+                    case 'i':
+                        field.GetPlayer().Dir = Coor.LEFT;
+                        dirInput = true;
+                        break;
+                    case 'r':
+                        field.GetPlayer().Dir = Coor.RIGHT;
+                        dirInput = true;
+                        break;
+                    case 'u':
+                        field.GetPlayer().Dir = Coor.UP;
+                        dirInput = true;
+                        break;
+                    case 'd':
+                        field.GetPlayer().Dir = Coor.DOWN;
+                        dirInput = true;
+                        break;
+                    case 'c':
+                        field.Red.Attack(mode, action);
+                        break;
+                    case 'b':
+                        field.Red.Attack(mode, action);
+                        break;
+                    case 'p':
+                        field.Red.Attack(mode, action);
+                        currentAttack = ' ';
+                        break;
+                    case 'l':
+                        field.Red.Attack(mode, action);
+                        break;
                 }
-
-                return dirInput;
             }
+
+            return dirInput;
         }
     }
 }
