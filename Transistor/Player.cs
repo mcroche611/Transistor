@@ -7,17 +7,21 @@ namespace Transistor
     class Player: Character
     {
         protected string turnMoves;
+
+        //posiciones en cada array de los atributos de cada ataque
+        private const int CRASH = 0; 
+        private const int BREACH = 1;
+        private const int PING = 2;
+        private const int LOAD = 3;
+
         private int moveTurn = 2;
-        private int crashTurn = 10;
-        private int breachTurn = 10;
-        private int pingTurn = 10;
-        private int loadTurn = 10;
-        private const int crashDamage = 5;
-        private const int breachDamage = 15;
-        private const int pingDamage = 5;
-        private const int loadDamage = 30;
-        private Coor posTurn;
-        private TurnMode attackMode;
+        private int[] attacksTurn = { 10, 30, 10, 20 }; //Coste de la barra de Turn de cada ataque
+        private int[] attacksDamage = { 5, 15, 5, 30 };
+        private bool[] attacksEnabled = { true, true, true, true };
+
+        Random rnd = new Random();
+        private Coor posTurn; //La posición inicial al comienzo de una fase de planificación
+        private TurnMode attackMode; //Guarda el modo en el que se realizan los ataques para disminuir o no la barra de Turn
 
         public string TurnMoves
         {
@@ -60,6 +64,11 @@ namespace Transistor
         {
             get => posTurn;
             set => posTurn = value;
+        }
+
+        public bool[] AttacksEnabled
+        {
+            get => attacksEnabled;
         }
 
         public Player(Battlefield field, Coor pos) : base(field, pos)
@@ -148,7 +157,7 @@ namespace Transistor
 
             if (e != null)
             {
-                e.ReceiveDamage(crashDamage);
+                e.ReceiveDamage(attacksDamage[CRASH]);
             }
             else if (field.ProjectileList.IsProjectile(newPos) && field.ProjectileList.GetProjectileInPos(newPos) is Load) //TOCHECK: Como todos lo tienen pero solo lo usa Load, hace falta validarlo?
             {
@@ -161,38 +170,38 @@ namespace Transistor
             }
 
             if (attackMode != TurnMode.Normal)
-                field.TurnPercentage -= crashTurn;
+                field.TurnPercentage -= attacksTurn[CRASH];
         }
 
         private void Breach()
         {
-            Beam beam = new Beam(field, Pos + Dir, Dir, breachDamage);
+            Beam beam = new Beam(field, Pos + Dir, Dir, attacksDamage[BREACH]);
 
             field.ProjectileList.Append(beam);
 
-            field.TurnPercentage -= breachTurn;
+            field.TurnPercentage -= attacksTurn[BREACH];
         }
 
         private void Ping()
         {
-            Bullet bullet = new Bullet(field, Pos + Dir, Dir, pingDamage);
+            Bullet bullet = new Bullet(field, Pos + Dir, Dir, attacksDamage[PING]);
 
             field.ProjectileList.Append(bullet);
 
             if (attackMode != TurnMode.Normal)
-                field.TurnPercentage -= pingTurn;
+                field.TurnPercentage -= attacksTurn[PING];
         }
 
         private void Load()
         {
             if (Next(out Coor newPos)) //Solo si se puede colocar sobre la próxima posición
             {
-                Load load = new Load(field, newPos, Dir, loadDamage);
+                Load load = new Load(field, newPos, Dir, attacksDamage[LOAD]);
 
                 field.ProjectileList.Append(load);
 
                 if (attackMode != TurnMode.Normal)
-                    field.TurnPercentage -= loadTurn;
+                    field.TurnPercentage -= attacksTurn[LOAD];
             }
         }
 
@@ -215,6 +224,37 @@ namespace Transistor
             }
 
             return c;
+        }
+
+        public override void ReceiveDamage(int damage)
+        {
+            life -= damage;
+
+            if (life <= 0)
+            {
+                //Deshabilitar un ataque random de cuatro
+                int attackRemoved = rnd.Next(0, 4);
+                while (attacksEnabled[attackRemoved] == false)
+                {
+                    attackRemoved = rnd.Next(0, 4);
+                }
+
+                attacksEnabled[attackRemoved] = false;
+
+                //Cuenta el número de ataques que le quedan disponibles al jugador
+                int numAttacks = 0;
+                for (int i = 0; i < attacksEnabled.Length; i++)
+                {
+                    if (attacksEnabled[i])
+                        numAttacks++;
+                }
+
+                //Si todavía le quedan ataques habilitados al jugador, recupera la vida
+                if (numAttacks != 0)
+                {
+                    life = 100;
+                }
+            }
         }
     }
 }

@@ -370,6 +370,7 @@ namespace Transistor
         {
             life = 50;
             damage = 15;
+            coolDown = 0;
             Symbols = "!!";
             BgColor = ConsoleColor.Red;
             FgColor = ConsoleColor.Black;
@@ -380,26 +381,31 @@ namespace Transistor
 
         public override void Attack(TurnMode mode, char attackMode)
         {
-            if (coolDown <= 0 && Next(out Coor newPos)) //coolDown transcurrido y obtenemos la siguiente posición
-            {
-                if (newPos == field.Red.Pos)
-                {
-                    field.Red.ReceiveDamage(damage); 
-                    coolDown = 3;
-                }
-                else if (field.ProjectileList.IsProjectile(newPos) && field.ProjectileList.GetProjectileInPos(newPos) is Load) //TOCHECK: Como todos lo tienen pero solo lo usa Load, hace falta validarlo?
-                {
-                    Projectile p = field.ProjectileList.GetProjectileInPos(newPos);
+            Next(out Coor newPos); //obtenemos la siguiente posición
 
-                    if (p is Load)
+            if (field.Red.Pos == newPos) //Si Player está en la posición de ataque
+            {
+                if (coolDown <= 0) //coolDown transcurrido
+                {
+                    if (newPos == field.Red.Pos)
                     {
-                        p.ReceiveDamage();
+                        field.Red.ReceiveDamage(damage);
+                        coolDown = 3;
+                    }
+                    else if (field.ProjectileList.IsProjectile(newPos) && field.ProjectileList.GetProjectileInPos(newPos) is Load) //TOCHECK: Como todos lo tienen pero solo lo usa Load, hace falta validarlo?
+                    {
+                        Projectile p = field.ProjectileList.GetProjectileInPos(newPos);
+
+                        if (p is Load)
+                        {
+                            p.ReceiveDamage();
+                        }
                     }
                 }
-            }
-            else if (coolDown > 0)
-            {
-                coolDown--;
+                else if (coolDown > 0)
+                {
+                    coolDown--;
+                }
             }
         }
     }

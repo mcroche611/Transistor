@@ -26,7 +26,7 @@ namespace Transistor
             Console.Clear();
 
             field = new Battlefield("Transistor2.txt");
-            TurnDisplay turnDisplay = new TurnDisplay(field.numRows, field.numCols);
+            TurnDisplay turnDisplay = new TurnDisplay(field, field.numRows, field.numCols);
             CaptionDisplay captionDisplay= new CaptionDisplay(field.numRows, field.numCols);
             bool playing = true;
             
@@ -58,11 +58,11 @@ namespace Transistor
 
                 field.Show(mode, CurrentAttack);
                 float lifePercentage = field.Red.Life;
-                turnDisplay.Show(mode, field.TurnPercentage, lifePercentage,  1, 2, 3, 4);
+                turnDisplay.Show(mode, field.TurnPercentage, lifePercentage);
 
                 /// TEST ////
                 if (lifePercentage < 50)
-                    turnDisplay.CrashEnabled = false;
+                    //turnDisplay.CrashEnabled = false;
                 /// FIN TEST ////
 
                 if (mode == TurnMode.Normal)

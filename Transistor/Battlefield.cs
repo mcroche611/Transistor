@@ -495,7 +495,7 @@ namespace Transistor
             return elementFound;
         }
 
-        public Player GetPlayer()
+        public Player GetPlayer() //TOCHECK: vale con la property solo, no?
         {
             return Red;
         }
