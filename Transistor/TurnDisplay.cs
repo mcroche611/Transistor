@@ -114,7 +114,7 @@ namespace Transistor
             int lifeChars = (int)(TurnLength * lifePercentage / 100);
             Console.BackgroundColor = ConsoleColor.DarkRed;
             Console.Write(new string(' ', lifeChars));
-            Console.BackgroundColor = bgColor;
+            Console.BackgroundColor = ConsoleColor.Black;
             resto = maxColumns - turnChars - col;
             if (resto <= 0)
                 resto = 1;
