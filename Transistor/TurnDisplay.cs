@@ -44,7 +44,7 @@ namespace Transistor
         public bool LoadEnabled { get => loadEnabled; set => loadEnabled = value; }
         public bool PingEnabled { get => pingEnabled; set => pingEnabled = value; }
 
-        public void Show(TurnMode mode, float turnPercentage, float lifePercentage, int crash, int breach, int load, int ping)
+        public void Show(TurnMode mode, float turnPercentage, float lifePercentage, int crash, int breach, int ping, int load)
         {
 
             int row = topRow ;

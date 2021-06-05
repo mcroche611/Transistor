@@ -32,8 +32,12 @@ namespace Transistor
 
         public virtual Coor Dir
         {
-            get => dir; 
-            set => dir = value;
+            get => dir;
+            set
+            {
+                dir = value;
+                posChanged = true;
+            }
         }
 
         public virtual string Symbols

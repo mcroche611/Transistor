@@ -25,7 +25,7 @@ namespace Transistor
             Console.ForegroundColor = ConsoleColor.White;
             Console.Clear();
 
-            field = new Battlefield("Transistor4.txt");
+            field = new Battlefield("Transistor2.txt");
             TurnDisplay turnDisplay = new TurnDisplay(field.numRows, field.numCols);
             CaptionDisplay captionDisplay= new CaptionDisplay(field.numRows, field.numCols);
             bool playing = true;

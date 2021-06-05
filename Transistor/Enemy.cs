@@ -19,8 +19,8 @@ namespace Transistor
             {
                 Coor realDir;
 
-                //si está más lejos del jugador por x que por y
-                if (Pos.X_Distance(field.Red.Pos) > Pos.Y_Distance(field.Red.Pos)) // TODO: Validar si sobra  // && field.Red.Pos.row != Pos.row || field.Red.Pos.col == Pos.col) 
+                //si está más lejos del jugador por x que por y, y cuando el enemigo no esté en la misma fila, o si está, independientemente de la distancia, en la misma columna.
+                if ((Pos.X_Distance(field.Red.Pos) > Pos.Y_Distance(field.Red.Pos) && field.Red.Pos.row != Pos.row) || field.Red.Pos.col == Pos.col) 
                 {
                     // Me acerco por Y (pq está más cerca)
                     if (field.Red.Pos.row > Pos.row)
