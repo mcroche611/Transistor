@@ -127,25 +127,24 @@ namespace Transistor
         {
             attackMode = mode;
 
-            if (mode != TurnMode.Plan) 
+            switch (attack)
             {
-                switch(attack)
-                {
-                    case 'c':
-                        Crash();
-                        break;
-                    case 'b':
-                        Breach();
-                        break;
-                    case 'p':
-                        Ping();
-                        break;
-                    case 'l':
-                        Load();
-                        break;
-                }
+                case 'c':
+                    Crash();
+                    break;
+                case 'b':
+                    Breach();
+                    break;
+                case 'p':
+                    Ping();
+                    break;
+                case 'l':
+                    Load();
+                    break;
             }
-            else //Guarda el ataque a ejecutar durante Run si el juego está en mode Plan
+
+
+            if (mode == TurnMode.Plan) //Guarda el ataque a ejecutar durante Run si el juego está en mode Plan
             {
                 turnMoves += attack;
             }
@@ -153,21 +152,24 @@ namespace Transistor
 
         private void Crash()
         {
-            Next(out Coor newPos);
-
-            Enemy e = field.EnemyList.GetEnemyInPos(newPos);
-
-            if (e != null)
+            if (attackMode != TurnMode.Plan)
             {
-                e.ReceiveDamage(attacksDamage[crashNum]);
-            }
-            else if (field.ProjectileList.IsProjectile(newPos) && field.ProjectileList.GetProjectileInPos(newPos) is Load) //TOCHECK: Como todos lo tienen pero solo lo usa Load, hace falta validarlo?
-            {
-                Projectile p = field.ProjectileList.GetProjectileInPos(newPos);
+                Next(out Coor newPos);
 
-                if (p is Load)
+                Enemy e = field.EnemyList.GetEnemyInPos(newPos);
+
+                if (e != null)
                 {
-                    p.ReceiveDamage();
+                    e.ReceiveDamage(attacksDamage[crashNum]);
+                }
+                else if (field.ProjectileList.IsProjectile(newPos) && field.ProjectileList.GetProjectileInPos(newPos) is Load) //TOCHECK: Como todos lo tienen pero solo lo usa Load, hace falta validarlo?
+                {
+                    Projectile p = field.ProjectileList.GetProjectileInPos(newPos);
+
+                    if (p is Load)
+                    {
+                        p.ReceiveDamage();
+                    }
                 }
             }
 
@@ -177,18 +179,25 @@ namespace Transistor
 
         private void Breach()
         {
-            Beam beam = new Beam(field, Pos + Dir, Dir, attacksDamage[breachNum]);
+            if (attackMode != TurnMode.Plan)
+            {
+                Beam beam = new Beam(field, Pos + Dir, Dir, attacksDamage[breachNum]);
 
-            field.ProjectileList.Append(beam);
+                field.ProjectileList.Append(beam);
+            }  
 
-            field.TurnPercentage -= attacksTurn[breachNum];
+            if (attackMode != TurnMode.Normal)
+                field.TurnPercentage -= attacksTurn[breachNum];
         }
 
         private void Ping()
         {
-            Bullet bullet = new Bullet(field, Pos + Dir, Dir, attacksDamage[pingNum]);
+            if (attackMode != TurnMode.Plan)
+            {
+                Bullet bullet = new Bullet(field, Pos + Dir, Dir, attacksDamage[pingNum]);
 
-            field.ProjectileList.Append(bullet);
+                field.ProjectileList.Append(bullet);
+            }
 
             if (attackMode != TurnMode.Normal)
                 field.TurnPercentage -= attacksTurn[pingNum];
@@ -196,15 +205,18 @@ namespace Transistor
 
         private void Load()
         {
-            if (Next(out Coor newPos)) //Solo si se puede colocar sobre la próxima posición
+            if (attackMode != TurnMode.Plan)
             {
-                Load load = new Load(field, newPos, Dir, attacksDamage[loadNum]);
+                if (Next(out Coor newPos)) //Solo si se puede colocar sobre la próxima posición
+                {
+                    Load load = new Load(field, newPos, Dir, attacksDamage[loadNum]);
 
-                field.ProjectileList.Append(load);
-
-                if (attackMode != TurnMode.Normal)
-                    field.TurnPercentage -= attacksTurn[loadNum];
+                    field.ProjectileList.Append(load);
+                }
             }
+
+            if (attackMode != TurnMode.Normal)
+                field.TurnPercentage -= attacksTurn[loadNum];
         }
 
         public char GetActionTurn()

@@ -151,6 +151,8 @@ namespace Transistor
             Console.SetCursorPosition(col, row);
             int barChars = (int)(BarLength * barPercentage / 100);
             Console.BackgroundColor = barColor;
+            if (barChars < 0)
+                barChars = 0;
             Console.Write(new string(' ', barChars));
             Console.BackgroundColor = bgColor;
 

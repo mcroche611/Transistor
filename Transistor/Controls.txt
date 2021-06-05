@@ -1,0 +1,9 @@
+				
+				
+				
+			Controls
+			----------------------------------------------------
+			Cursors for movement
+			Spacebar to begin and end planning phase
+			Numbers 1-4 for attacks
+			Enter to save planned attack
