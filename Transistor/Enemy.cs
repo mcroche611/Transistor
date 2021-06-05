@@ -377,7 +377,17 @@ namespace Transistor
             Speed = 1; // mitad que Player
         }
 
-        // Move() básico
+        public override void Move(TurnMode mode)
+        {
+            if (coolDown <= 0) //No se mueve si acaba de atacar
+            {
+                base.Move(mode);
+            }
+            else
+            {
+                coolDown--;
+            }
+        }
 
         public override void Attack(TurnMode mode, char attackMode)
         {
@@ -390,7 +400,7 @@ namespace Transistor
                     if (newPos == field.Red.Pos)
                     {
                         field.Red.ReceiveDamage(damage);
-                        coolDown = 3;
+                        coolDown = 15;  //TOCHECK: Equilibrado coolDown
                     }
                     else if (field.ProjectileList.IsProjectile(newPos) && field.ProjectileList.GetProjectileInPos(newPos) is Load) //TOCHECK: Como todos lo tienen pero solo lo usa Load, hace falta validarlo?
                     {
@@ -401,10 +411,6 @@ namespace Transistor
                             p.ReceiveDamage();
                         }
                     }
-                }
-                else if (coolDown > 0)
-                {
-                    coolDown--;
                 }
             }
         }

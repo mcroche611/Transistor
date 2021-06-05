@@ -222,14 +222,15 @@ namespace Transistor
         //    //}
         //}
 
-        public void MoveEnemies(TurnMode mode = TurnMode.Normal)
+        public void MoveEnemies(int lapCounter, TurnMode mode = TurnMode.Normal)
         {
             if (mode == TurnMode.Normal) //Solo se mueven en el modo normal
             {
                 for (int k = 0; k < EnemyList.Count(); k++)
                 {
                     Enemy enemy = EnemyList.nEsimo(k);
-                    enemy.Move(mode);
+                    if (lapCounter % enemy.Speed == 0)
+                        enemy.Move(mode);
                 }
             }
 

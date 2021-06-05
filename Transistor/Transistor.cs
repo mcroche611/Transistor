@@ -69,7 +69,7 @@ namespace Transistor
                         }
 
                         field.MoveProjectiles(mode);
-                        field.MoveEnemies(mode);
+                        field.MoveEnemies(lapCounter, mode);
 
                         field.Show(mode, CurrentAttack);
                         float lifePercentage = field.Red.Life;
@@ -92,7 +92,8 @@ namespace Transistor
 
                     if (!quit)
                     {
-                        //if (capturado)
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        //if (capturado) //TODO: Condición de nivel superado
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("GAME OVER");

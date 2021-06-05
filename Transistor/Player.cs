@@ -247,28 +247,43 @@ namespace Transistor
             if (life <= 0)
             {
                 //Deshabilitar un ataque random de cuatro
-                int attackRemoved = rnd.Next(0, 4);
-                while (attacksEnabled[attackRemoved] == false)
+                int attackRemoved;
+                int numAttacks;
+                do
                 {
                     attackRemoved = rnd.Next(0, 4);
+
+                    //Cuenta el número de ataques que le quedan disponibles al jugador
+                    numAttacks = CountAttacks();
                 }
+                while (attacksEnabled[attackRemoved] == false && numAttacks > 0);
 
                 attacksEnabled[attackRemoved] = false;
 
-                //Cuenta el número de ataques que le quedan disponibles al jugador
-                int numAttacks = 0;
-                for (int i = 0; i < attacksEnabled.Length; i++)
-                {
-                    if (attacksEnabled[i])
-                        numAttacks++;
-                }
+                numAttacks = CountAttacks();
 
                 //Si todavía le quedan ataques habilitados al jugador, recupera la vida
                 if (numAttacks != 0)
                 {
                     life = 100;
                 }
+                else
+                {
+                    life = 0;
+                }
             }
+        }
+
+        private int CountAttacks()
+        {
+            int numAttacks = 0;
+            for (int i = 0; i < attacksEnabled.Length; i++)
+            {
+                if (attacksEnabled[i])
+                    numAttacks++;
+            }
+
+            return numAttacks;
         }
     }
 }

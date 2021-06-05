@@ -8,7 +8,7 @@ namespace Transistor
 {
     class SoundFX
     {
-        bool enabled = false;
+        bool enabled = true;
         const string fxFolder = @"fx\";
         SoundPlayer sp = new SoundPlayer();
         //SoundPlayer sp2 = new SoundPlayer(fxFolder + "mixkit-boxer-getting-hit-2055.wav");
