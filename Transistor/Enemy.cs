@@ -77,11 +77,12 @@ namespace Transistor
     {
         public Creep(Battlefield field, Coor pos) : base(field, pos)
         {
-            life = 50;
+            life = 200;
             damage = 10;
             maxCoolDown = 6;
             Symbols = "^^";
             BgColor = ConsoleColor.Yellow;
+            FgColor = ConsoleColor.Black;
             Speed = 1; // mitad que Player
         }
 
@@ -144,11 +145,12 @@ namespace Transistor
 
         public Snapshot(Battlefield field, Coor pos) : base(field, pos)
         {
-            life = 50;
-            damage = 10;
-            maxCoolDown = 6;
+            life = 250;
+            damage = 5;
+            maxCoolDown = 3;
             Symbols = "##";
             BgColor = ConsoleColor.Green;
+            FgColor = ConsoleColor.Black;
             Speed = 2; // igual a Player
             dirPred = Coor.ZERO;
         }
@@ -270,8 +272,8 @@ namespace Transistor
     {
         public Jerk(Battlefield field, Coor pos) : base(field, pos)
         {
-            life = 50;
-            damage = 10;
+            life = 600;
+            damage = 5;
             maxCoolDown = 2;
             Symbols = "&&";
             BgColor = ConsoleColor.DarkCyan; 
@@ -331,9 +333,9 @@ namespace Transistor
     {
         public Fetch(Battlefield field, Coor pos) : base(field, pos)
         {
-            life = 50;
-            damage = 15;
-            maxCoolDown = 10;
+            life = 580;
+            damage = 10;
+            maxCoolDown = 6;
             Symbols = "!!";
             BgColor = ConsoleColor.Red;
             FgColor = ConsoleColor.Black;

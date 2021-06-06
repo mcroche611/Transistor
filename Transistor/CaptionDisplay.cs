@@ -9,7 +9,7 @@ namespace Transistor
      *  Ejemplo de uso
      *  
      
-     CaptionDisplay captionDisplay= new CaptionDisplay(field.numRows, field.numCols);
+     CaptionDisplay captionDisplay = new CaptionDisplay(field.numRows, field.numCols);
 
 
      // Dentro del bucle de juego
@@ -78,7 +78,7 @@ namespace Transistor
             Console.Write(header);
             col++;
             Console.SetCursorPosition(col, row);
-            SetColor(player.BgColor);
+            SetColor(player.BgColor, player.FgColor);
             Console.Write(player.Symbols);
             col += 4;
             Console.SetCursorPosition(col, row);
@@ -87,7 +87,7 @@ namespace Transistor
 
             col += 15;
             Console.SetCursorPosition(col, row);
-            SetColor(creep.BgColor);
+            SetColor(creep.BgColor, creep.FgColor);
             Console.Write(creep.Symbols);
             col += 4;
             Console.SetCursorPosition(col, row);
@@ -108,7 +108,7 @@ namespace Transistor
             Console.Write(header);
             col++;
             Console.SetCursorPosition(col, row);
-            SetColor(snapshot.BgColor);
+            SetColor(snapshot.BgColor, snapshot.FgColor);
             Console.Write(snapshot.Symbols);
             col += 4;
             Console.SetCursorPosition(col, row);
@@ -117,7 +117,7 @@ namespace Transistor
 
             col += 15;
             Console.SetCursorPosition(col, row);
-            SetColor(jerk.BgColor);
+            SetColor(jerk.BgColor, jerk.FgColor);
             Console.Write(jerk.Symbols);
             col += 4;
             Console.SetCursorPosition(col, row);
@@ -139,7 +139,7 @@ namespace Transistor
             Console.Write(header);
             col++;
             Console.SetCursorPosition(col, row);
-            SetColor(fetch.BgColor);
+            SetColor(fetch.BgColor, fetch.FgColor);
             Console.Write(fetch.Symbols);
             col += 4;
             Console.SetCursorPosition(col, row);
@@ -148,8 +148,7 @@ namespace Transistor
 
             col += 15;
             Console.SetCursorPosition(col, row);
-            //SetColor(beam.Color);
-            SetColor(ConsoleColor.Cyan);
+            SetColor(beam.BgColor, beam.FgColor);
             Console.Write(beam.Symbols);
             col += 4;
             Console.SetCursorPosition(col, row);
@@ -171,8 +170,7 @@ namespace Transistor
             Console.Write(header);
             col++;
             Console.SetCursorPosition(col, row);
-            //SetColor(laser.Color);
-            SetColor(ConsoleColor.Green);
+            SetColor(laser.BgColor, laser.FgColor);
             Console.Write(laser.Symbols);
             col += 4;
             Console.SetCursorPosition(col, row);
@@ -181,8 +179,7 @@ namespace Transistor
 
             col += 15;
             Console.SetCursorPosition(col, row);
-            //SetColor(beam.Color);
-            SetColor();
+            SetColor(shot.BgColor, shot.FgColor);
             Console.Write(shot.Symbols);
             col += 4;
             Console.SetCursorPosition(col, row);
@@ -203,8 +200,7 @@ namespace Transistor
             Console.Write(header);
             col++;
             Console.SetCursorPosition(col, row);
-            //SetColor(laser.Color);
-            SetColor(ConsoleColor.DarkMagenta);
+            SetColor(load.BgColor, load.FgColor);
             Console.Write(load.Symbols);
             col += 4;
             Console.SetCursorPosition(col, row);
@@ -213,8 +209,7 @@ namespace Transistor
 
             col += 15;
             Console.SetCursorPosition(col, row);
-            //SetColor(beam.Color);
-            SetColor();
+            SetColor(bullet.BgColor, bullet.FgColor);
             Console.Write(bullet.Symbols);
             col += 4;
             Console.SetCursorPosition(col, row);

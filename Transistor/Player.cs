@@ -15,10 +15,10 @@ namespace Transistor
         private const int loadNum = 3;
 
         private int moveTurn = 2;
-        private int[] attacksTurn = { 10, 30, 10, 20 }; //Coste de la barra de Turn de cada ataque
-        private int[] attacksDamage = { 5, 15, 5, 30 };
+        private int[] attacksTurn = { 20, 40, 10, 50 }; //Coste de la barra de Turn de cada ataque
+        private int[] attacksDamage = { 50, 100, 60, 250 };
         private bool[] attacksEnabled = { true, true, true, true };
-        private int[] attacksMaxCoolDown = { 5, 30, 5, 40 }; //Cooldown de cada uno de los ataques del jugador
+        private int[] attacksMaxCoolDown = { 5, 30, 2, 40 }; //Cooldown de cada uno de los ataques del jugador
         private int[] attacksCoolDown = { 0, 0, 0, 0 }; //Cooldown de cada uno de los ataques del jugador
 
         Random rnd = new Random();
