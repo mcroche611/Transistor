@@ -24,19 +24,22 @@ namespace Transistor
                 switch (input)
                 {
                     case Menu.Action.Continue: //Juego
-                        Console.Clear();
-                        profile = AskName();
-                        level = LastLevelPlayed(profile) + 1;
-
-                        if (level == -1)
+                        if (File.Exists("profiles")) //No deja seleccionar Continue si no hay ningún profile preexistente
                         {
-                            Console.WriteLine("Profile not found, starting new game");
-                            Console.ReadLine();
-                            level = 0;
-                            input = Action.Start; //TOCHECK: why not?
-                        }
+                            Console.Clear();
+                            profile = AskName();
+                            level = LastLevelPlayed(profile) + 1;
 
-                        levelSelected = true;
+                            if (level == -1)
+                            {
+                                Console.WriteLine("Profile not found, starting new game");
+                                Console.ReadLine();
+                                level = 0;
+                                input = Action.Start; //TOCHECK: why not?
+                            }
+
+                            levelSelected = true;
+                        }
                         break;
 
                     case Action.Start:
@@ -175,7 +178,7 @@ namespace Transistor
 
             Console.SetCursorPosition(0, 4);
             Console.WriteLine("                                    Transistor");
-            Console.WriteLine("                  From Supergiant Games, by Mat Croche Trigo");
+            Console.WriteLine("                  From Supergiant Games, by Marta Croche Trigo");
         }
 
         private void ShowScreen(int x, int y)

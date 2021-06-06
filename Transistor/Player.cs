@@ -235,7 +235,7 @@ namespace Transistor
                     field.ProjectileList.Append(load);
 
                     if (attackMode == TurnMode.Normal)
-                        attacksCoolDown[breachNum] = attacksMaxCoolDown[breachNum]; //Si el ataque es en modo normal, resetear el coolDown
+                        attacksCoolDown[loadNum] = attacksMaxCoolDown[loadNum]; //Si el ataque es en modo normal, resetear el coolDown
                 }
             }
 

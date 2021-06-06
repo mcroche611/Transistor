@@ -15,7 +15,6 @@ namespace Transistor
         protected bool destroyed;
         private bool hit;
         protected int speed;
-        protected int coolDown;
         protected Battlefield field;
         bool posChanged = true;
         
@@ -96,7 +95,7 @@ namespace Transistor
             return possible;
         }
 
-        public virtual void Move(TurnMode mode)
+        public virtual void Move(TurnMode mode = TurnMode.Normal)
         {
             if (Next(out Coor newPos))
             {

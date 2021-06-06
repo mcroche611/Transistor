@@ -7,6 +7,8 @@ namespace Transistor
     class Enemy: Character
     {
         protected int damage;
+        protected int coolDown = 0;
+        protected int maxCoolDown;
 
         public Enemy(Battlefield field, Coor pos):base(field, pos)
         {
@@ -22,7 +24,7 @@ namespace Transistor
                 //si está más lejos del jugador por x que por y, y cuando el enemigo no esté en la misma fila, o si está, independientemente de la distancia, en la misma columna.
                 if ((Pos.X_Distance(field.Red.Pos) > Pos.Y_Distance(field.Red.Pos) && field.Red.Pos.row != Pos.row) || field.Red.Pos.col == Pos.col) 
                 {
-                    // Me acerco por Y (pq está más cerca)
+                    // Se acerca por Y (porque está más cerca)
                     if (field.Red.Pos.row > Pos.row)
                     {
                         realDir = Coor.DOWN;
@@ -34,7 +36,7 @@ namespace Transistor
                 }
                 else
                 {
-                    // Me acerco por X (pq está más cerca)
+                    // Se acerca por X (porque está más cerca)
                     if (field.Red.Pos.col > Pos.col)
                     {
                         realDir = Coor.RIGHT;
@@ -50,11 +52,11 @@ namespace Transistor
             set => dir = value;
         }
 
-        public override void Move(TurnMode mode)
+        public override void Move(TurnMode mode = TurnMode.Normal)
         {
-            if (mode == TurnMode.Normal && field.Red.Pos != Pos)
+            if (field.Red.Pos != Pos)
             {
-                base.Move(mode);
+                base.Move();
             }
         }
 
@@ -64,7 +66,7 @@ namespace Transistor
 
             if (possible)
             {
-                possible = !(field.Red.Pos == newPos) && !field.EnemyList.IsEnemy(newPos); //TOCHECK: && !field.ProjectileList.IsProjectile(newPos);
+                possible = !(field.Red.Pos == newPos) && !field.EnemyList.IsEnemy(newPos); 
             }
 
             return possible;
@@ -77,27 +79,19 @@ namespace Transistor
         {
             life = 50;
             damage = 10;
+            maxCoolDown = 6;
             Symbols = "^^";
             BgColor = ConsoleColor.Yellow;
-            Speed = 2; // igual a Player
+            Speed = 1; // mitad que Player
         }
 
-        
-        public override void Move(TurnMode mode)
+        public override void Move(TurnMode mode = TurnMode.Normal)
         {
-            if (coolDown <= 0)
+            if (coolDown <= 0) //No se mueve y ataca simultáneamente
             {
-                if (!Pos.Aligned(field.Red.Pos)) //si no está ya en línea con el jugador
+                if (!Pos.Aligned(field.Red.Pos)) //Si no está ya en línea con el Player
                 {
                     base.Move(mode); //note-to-self: rn they are dumb and run and will shoot straight into walls.
-                }
-                else if (mode != TurnMode.Normal)
-                {
-                    // que no se mueva
-                }
-                else
-                {
-                    //TODO: que no se mueva y al tiempo que ataque al jugador (y que aunque se mueva el Jugador, no vuelva a moverse hasta pasado un tiempo)
                 }
             }
             else
@@ -108,44 +102,37 @@ namespace Transistor
 
         public override void Attack(TurnMode mode, char attackMode)
         {
-            if (coolDown <= 0)
+            if (field.Red.Pos.col == Pos.col) //Si está en la misma columna que el Player
             {
-                if (field.Red.Pos.col == Pos.col) //misma columna
+                Laser laser;
+
+                if (field.Red.Pos.row > Pos.row) //Creep por encima de Player
                 {
-                    Laser laser;
-
-                    if (field.Red.Pos.row > Pos.row) //Creep por encima de Player
-                    {
-                        laser = new Laser(field, Pos, Coor.DOWN, damage);
-                    }
-                    else
-                    {
-                        laser = new Laser(field, Pos, Coor.UP, damage);
-                    }
-
-                    coolDown = 2;
-                    field.ProjectileList.Append(laser);
+                    laser = new Laser(field, Pos, Coor.DOWN, damage);
                 }
-                else if (field.Red.Pos.row == Pos.row)
+                else
                 {
-                    Projectile laser;
-
-                    if (field.Red.Pos.col < Pos.col) //Creep a la derecha de Player
-                    {
-                        laser = new Laser(field, Pos, Coor.LEFT, damage);
-                    }
-                    else
-                    {
-                        laser = new Laser(field, Pos, Coor.RIGHT, damage);
-                    }
-
-                    coolDown = 2;
-                    field.ProjectileList.Append(laser);
+                    laser = new Laser(field, Pos, Coor.UP, damage);
                 }
+
+                coolDown = maxCoolDown;
+                field.ProjectileList.Append(laser);
             }
-            else
+            else if (field.Red.Pos.row == Pos.row)
             {
-                coolDown--;
+                Projectile laser;
+
+                if (field.Red.Pos.col < Pos.col) //Creep a la derecha de Player
+                {
+                    laser = new Laser(field, Pos, Coor.LEFT, damage);
+                }
+                else
+                {
+                    laser = new Laser(field, Pos, Coor.RIGHT, damage);
+                }
+
+                coolDown = maxCoolDown;
+                field.ProjectileList.Append(laser);
             }
         }
     }
@@ -159,9 +146,9 @@ namespace Transistor
         {
             life = 50;
             damage = 10;
+            maxCoolDown = 6;
             Symbols = "##";
             BgColor = ConsoleColor.Green;
-            coolDown = 20;
             Speed = 2; // igual a Player
             dirPred = Coor.ZERO;
         }
@@ -228,19 +215,14 @@ namespace Transistor
             set => dir = value; 
         }
 
-        public override void Move(TurnMode mode)
+        public override void Move(TurnMode mode = TurnMode.Normal)
         {
-            if (coolDown <= 0)
-            {
-                dirPred = field.Red.Dir;
-                coolDown = 5;
-            }
-            else
-            {
-                coolDown--;
-            }
+            dirPred = field.Red.Dir;
 
-            base.Move(mode);
+            if (coolDown > 0)
+                coolDown--;
+
+            base.Move();
         }
 
         public override void Attack(TurnMode mode, char attackMode)
@@ -260,7 +242,7 @@ namespace Transistor
                         shot = new Shot(field, Pos, Coor.UP, damage);
                     }
 
-                    coolDown = 20;
+                    coolDown = maxCoolDown;
                     field.ProjectileList.Append(shot);
                 }
                 else if (field.Red.Pos.row == Pos.row)
@@ -277,7 +259,7 @@ namespace Transistor
                         shot = new Shot(field, Pos, Coor.LEFT, damage);
                     }
 
-                    coolDown = 20;
+                    coolDown = maxCoolDown;
                     field.ProjectileList.Append(shot);
                 }
             }
@@ -290,73 +272,54 @@ namespace Transistor
         {
             life = 50;
             damage = 10;
+            maxCoolDown = 2;
             Symbols = "&&";
             BgColor = ConsoleColor.DarkCyan; 
             FgColor = ConsoleColor.Black;
             Speed = 4; // mitad que Player
         }
 
-        // Move() básico
+        public override void Move(TurnMode mode = TurnMode.Normal)
+        {
+            if (coolDown > 0)
+                coolDown--;
 
-        //private int Range(int maxRange, Coor dir)
-        //{
-        //    int newRange = 0;
-        //    bool outOfBoard = false;
-
-        //    while (newRange <= maxRange && !outOfBoard)
-        //    {
-        //        if (NextDir(dir, Pos + new Coor(dir.row * newRange, dir.col * newRange)))
-        //        {
-        //            newRange++;
-        //        }
-        //        else
-        //        {
-        //            outOfBoard = true;
-        //        }
-        //    }
-
-        //    return newRange;
-        //}
-
-        //private bool NextDir(Coor dir, Coor pos)
-        //{
-        //    Coor newPos = pos + dir;
-
-        //    bool possible = field.tile[newPos.row, newPos.col] != Battlefield.Tile.BorderWall;
-
-        //    return possible;
-        //}
+             base.Move(mode);
+        }
 
         public override void Attack(TurnMode mode, char attackMode)
         {
             Coor newPos;
 
-            int maxRange = 3;
+            int maxRange = 3; //Radio del área en el que hace daño al jugador
 
-            //Chequeo del jugador en un área en rombo 
-            for (int j = -maxRange; j <= maxRange; j++)
+            if (coolDown <= 0)
             {
-                int col;
-                if (j <= 0)
-                    col = (maxRange + j);
-                else
-                    col = (maxRange - j);
-
-                for (int k = -col; k <= col; k++)
+                //Chequeo del jugador en un área en rombo 
+                for (int j = -maxRange; j <= maxRange; j++)
                 {
-                    newPos = Pos + new Coor(j, k);
+                    int col;
+                    if (j <= 0)
+                        col = (maxRange + j);
+                    else
+                        col = (maxRange - j);
 
-                    if (newPos == field.Red.Pos)
+                    for (int k = -col; k <= col; k++)
                     {
-                        field.Red.ReceiveDamage(damage); 
-                    }
-                    else if (field.ProjectileList.IsProjectile(newPos) && field.ProjectileList.GetProjectileInPos(newPos) is Load) //TOCHECK: Como todos lo tienen pero solo lo usa Load, hace falta validarlo?
-                    {
-                        Projectile p = field.ProjectileList.GetProjectileInPos(newPos);
+                        newPos = Pos + new Coor(j, k);
 
-                        if (p is Load)
+                        if (newPos == field.Red.Pos)
                         {
-                            p.ReceiveDamage();
+                            field.Red.ReceiveDamage(damage);
+                        }
+                        else if (field.ProjectileList.IsProjectile(newPos) && field.ProjectileList.GetProjectileInPos(newPos) is Load) //TOCHECK: Como todos lo tienen pero solo lo usa Load, hace falta validarlo?
+                        {
+                            Projectile p = field.ProjectileList.GetProjectileInPos(newPos);
+
+                            if (p is Load)
+                            {
+                                p.ReceiveDamage();
+                            }
                         }
                     }
                 }
@@ -370,18 +333,18 @@ namespace Transistor
         {
             life = 50;
             damage = 15;
-            coolDown = 0;
+            maxCoolDown = 10;
             Symbols = "!!";
             BgColor = ConsoleColor.Red;
             FgColor = ConsoleColor.Black;
             Speed = 1; // mitad que Player
         }
 
-        public override void Move(TurnMode mode)
+        public override void Move(TurnMode mode = TurnMode.Normal)
         {
             if (coolDown <= 0) //No se mueve si acaba de atacar
             {
-                base.Move(mode);
+                base.Move();
             }
             else
             {
@@ -400,7 +363,7 @@ namespace Transistor
                     if (newPos == field.Red.Pos)
                     {
                         field.Red.ReceiveDamage(damage);
-                        coolDown = 15;  //TOCHECK: Equilibrado coolDown
+                        coolDown = maxCoolDown;  //TOCHECK: Equilibrado coolDown
                     }
                     else if (field.ProjectileList.IsProjectile(newPos) && field.ProjectileList.GetProjectileInPos(newPos) is Load) //TOCHECK: Como todos lo tienen pero solo lo usa Load, hace falta validarlo?
                     {

@@ -70,7 +70,7 @@ namespace Transistor
                             }
                         }
 
-                        if (mode == TurnMode.Normal) //TODO: Design choice, mode as parameter without if, or without mode but with if
+                        if (mode == TurnMode.Normal)
                         {
                             field.EnemiesAttack();
                         }
@@ -145,6 +145,15 @@ namespace Transistor
                         }
                     }
                 }
+
+                field.Fx.PlayLevelCompleted();
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("CONGRATULATIONS!!! GAME COMPLETE! CLOUDBANK IS NOW FREE");
+
+                menu.SaveData(level, profile);
+
+                Console.WriteLine();
+                Console.WriteLine("         Press M to exit to menu, Q to exit game");
             }
 
             bool ReadInput()
