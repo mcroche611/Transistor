@@ -257,7 +257,9 @@ namespace Transistor
                         if (field.TurnPercentage >= 100)
                         {
                             fx.PlayTurn1();
+                            // Guarda la posición y la dirección de comienzo del Turn
                             field.Red.PosTurn = field.Red.Pos;
+                            field.Red.DirTurn = field.Red.Dir;
                             mode = TurnMode.Plan;
                         }
                         break;
@@ -336,7 +338,10 @@ namespace Transistor
                         break;
                     case "Spacebar":
                         fx.PlayTurn2();
+                        // Restaura la posición y la dirección de comienzo del Turn
                         field.Red.Pos = field.Red.PosTurn;
+                        field.Red.Dir = field.Red.DirTurn;
+
                         field.TurnPercentage = 100;
                         mode = TurnMode.Run;
                         currentAttack = ' ';

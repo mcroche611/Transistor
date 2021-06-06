@@ -23,6 +23,7 @@ namespace Transistor
 
         Random rnd = new Random();
         private Coor posTurn; //La posición inicial al comienzo de una fase de planificación
+        private Coor dirTurn; //La dirección inicial al comienzo de una fase de planificación
         private TurnMode attackMode; //Guarda el modo en el que se realizan los ataques para disminuir o no la barra de Turn
 
         public string TurnMoves
@@ -67,6 +68,12 @@ namespace Transistor
             get => posTurn;
             set => posTurn = value;
         }
+        
+        public Coor DirTurn 
+        { 
+            get => dirTurn; 
+            set => dirTurn = value; 
+        }
 
         public bool[] AttacksEnabled
         {
@@ -83,6 +90,7 @@ namespace Transistor
             get => attacksCoolDown;
             set => attacksCoolDown = value;
         }
+        
 
         public Player(Battlefield field, Coor pos) : base(field, pos)
         {

@@ -239,9 +239,16 @@ namespace Transistor
 
         public int LastLevelPlayed(string nickname)
         {
-            if (IsProfile(nickname, out string linea))
-                return int.Parse(linea.Remove(0, nickname.Length + 1).TrimStart());
-            else return -1;
+            try
+            {
+                if (IsProfile(nickname, out string linea))
+                    return int.Parse(linea.Remove(0, nickname.Length + 1).TrimStart());
+                else return -1;
+            }
+            catch (Exception e)
+            {
+                return -1;
+            }
         }
 
         static bool IsProfile(string nickname, out string linea)
