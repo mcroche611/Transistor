@@ -11,16 +11,20 @@ namespace Transistor
         bool enabled = true;
         const string fxFolder = @"fx\";
         SoundPlayer sp = new SoundPlayer();
-        SoundPlayer sp1 = new SoundPlayer(fxFolder + "mixkit-boxer-getting-hit-2055.wav");
-        SoundPlayer sp2 = new SoundPlayer(fxFolder + "mixkit-martial-arts-punch-2052.wav");
-        SoundPlayer spd1 = new SoundPlayer(fxFolder + "mixkit-short-laser-gun-shot-1670.wav");
-        //SoundPlayer sp2 = new SoundPlayer(fxFolder + "mixkit-boxer-getting-hit-2055.wav");
+        SoundPlayer spHit1 = new SoundPlayer(fxFolder + "mixkit-boxer-getting-hit-2055.wav");
+        SoundPlayer spPunch2 = new SoundPlayer(fxFolder + "mixkit-martial-arts-punch-2052.wav");
+        SoundPlayer spLaser1 = new SoundPlayer(fxFolder + "mixkit-short-laser-gun-shot-1670.wav");
+        SoundPlayer spTecno1 = new SoundPlayer(fxFolder + "mixkit-bit-war-suprise-item-3162.wav");
+        SoundPlayer spTecno2 = new SoundPlayer(fxFolder + "mixkit-video-game-power-up-3164.wav");
+        SoundPlayer spLaser2 = new SoundPlayer(fxFolder + "mixkit-sci-fi-laser-in-space-sound-2825.wav");
+        SoundPlayer spGlitter = new SoundPlayer(fxFolder + "mixkit-magic-glitter-shot-2353.wav");
+        SoundPlayer spChirp = new SoundPlayer(fxFolder + "mixkit-retro-arcade-casino-notification-211.wav");
 
         public void PlayDamage1()
         {
             if (enabled)
             {
-                sp1.Play();
+                spHit1.Play();
             }
             
         }
@@ -29,7 +33,7 @@ namespace Transistor
         {
             if (enabled)
             {
-                sp2.Play();
+                spPunch2.Play();
             }
         }
 
@@ -37,7 +41,7 @@ namespace Transistor
         {
             if (enabled)
             {
-                spd1.Play();
+                spLaser1.Play();
             }
         }
 
@@ -49,6 +53,7 @@ namespace Transistor
                 sp.Play();
             }
         }
+
         public void PlayLevelCompleted()
         {
             if (enabled)
@@ -66,14 +71,23 @@ namespace Transistor
                 sp.Play();
             }
         }
+
         public void PlayMenuIntro()
         {
             if (enabled)
             {
-                sp.SoundLocation = fxFolder + "ColorofMusic.wav";
+                sp.SoundLocation = fxFolder + "Guardian of power.wav";
                 sp.Play();
             }
         }
 
+        public void PlayOutro()
+        {
+            if (enabled)
+            {
+                sp.SoundLocation = fxFolder + "Cinematic Emotional.wav";
+                sp.Play();
+            }
+        }
     }
 }
