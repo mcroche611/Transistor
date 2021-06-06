@@ -11,14 +11,16 @@ namespace Transistor
         bool enabled = true;
         const string fxFolder = @"fx\";
         SoundPlayer sp = new SoundPlayer();
+        SoundPlayer sp1 = new SoundPlayer(fxFolder + "mixkit-boxer-getting-hit-2055.wav");
+        SoundPlayer sp2 = new SoundPlayer(fxFolder + "mixkit-martial-arts-punch-2052.wav");
+        SoundPlayer spd1 = new SoundPlayer(fxFolder + "mixkit-short-laser-gun-shot-1670.wav");
         //SoundPlayer sp2 = new SoundPlayer(fxFolder + "mixkit-boxer-getting-hit-2055.wav");
 
         public void PlayDamage1()
         {
             if (enabled)
             {
-                sp.SoundLocation = fxFolder + "mixkit-boxer-getting-hit-2055.wav";
-                sp.Play();
+                sp1.Play();
             }
             
         }
@@ -27,8 +29,7 @@ namespace Transistor
         {
             if (enabled)
             {
-                sp.SoundLocation = fxFolder + "mixkit-martial-arts-punch-2052.wav";
-                sp.Play();
+                sp2.Play();
             }
         }
 
@@ -36,9 +37,43 @@ namespace Transistor
         {
             if (enabled)
             {
-                sp.SoundLocation = fxFolder + "mixkit-short-laser-gun-shot-1670.wav";
+                spd1.Play();
+            }
+        }
+
+        public void PlayNewLevel()
+        {
+            if (enabled)
+            {
+                sp.SoundLocation = fxFolder + "mixkit-arcade-game-complete-or-approved-mission-205.wav";
                 sp.Play();
             }
         }
+        public void PlayLevelCompleted()
+        {
+            if (enabled)
+            {
+                sp.SoundLocation = fxFolder + "mixkit-completion-of-a-level-2063.wav";
+                sp.Play();
+            }
+        }
+
+        public void PlayGameOver()
+        {
+            if (enabled)
+            {
+                sp.SoundLocation = fxFolder + "mixkit-arcade-retro-game-over-213.wav";
+                sp.Play();
+            }
+        }
+        public void PlayMenuIntro()
+        {
+            if (enabled)
+            {
+                sp.SoundLocation = fxFolder + "ColorofMusic.wav";
+                sp.Play();
+            }
+        }
+
     }
 }

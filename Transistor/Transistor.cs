@@ -15,6 +15,7 @@ namespace Transistor
         bool quit = false;
         bool goToMenu = false;
         Battlefield field;
+        SoundFX fx = new SoundFX();
 
         //enum Action { Controls, Continue, Start, Credits, Exit };
         private char currentAttack = ' ';
@@ -37,18 +38,19 @@ namespace Transistor
                 goToMenu = false;
 
                 Menu menu = new Menu();
-
+                fx.PlayMenuIntro();
                 int level = menu.RunMenu(out string profile, ref quit);
 
-                Console.Clear();
-
+                
                 while (!quit && level < MAXLEVEL && !goToMenu)
                 {
                     goToMenu = false;
-
+                    fx.PlayNewLevel();
+                    Console.Clear();
                     field = new Battlefield("Transistor" + level + ".txt");
+                    
                     TurnDisplay turnDisplay = new TurnDisplay(field, field.numRows, field.numCols);
-                    CaptionDisplay captionDisplay = new CaptionDisplay(field.numRows, field.numCols);
+                    CaptionDisplay captionDisplay = new CaptionDisplay(field.numRows, field.numCols, level);
                     //bool playing = true;
 
                     int lapCounter = 0;
@@ -84,7 +86,7 @@ namespace Transistor
                         if (mode == TurnMode.Normal) //Aumentar gradualmente la barra de Turn
                         {
                             if (field.TurnPercentage < 100)
-                                field.TurnPercentage += 0.5f;
+                                field.TurnPercentage += 2f;
                         }
 
                         // retardo
@@ -106,6 +108,7 @@ namespace Transistor
 
                         if (field.Red.Life <= 0)
                         {
+                            field.Fx.PlayGameOver();
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("GAME OVER");
                             Console.WriteLine();
@@ -113,6 +116,7 @@ namespace Transistor
                         }
                         else // Nivel completado
                         {
+                            field.Fx.PlayLevelCompleted();
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("LEVEL CLEARED");
 

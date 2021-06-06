@@ -24,6 +24,7 @@ namespace Transistor
     {
         private int topRow;
         private int maxColumns;
+        private int level;
         Player player = new Player(null, null);
         Creep creep= new Creep(null, null);
         Snapshot snapshot= new Snapshot(null, null);
@@ -36,23 +37,39 @@ namespace Transistor
         Bullet bullet = new Bullet(null, null, null, 0);
 
 
-        public CaptionDisplay(int topRow, int maxColumns)
+        public CaptionDisplay(int topRow, int maxColumns, int level)
         {
             this.topRow = topRow;
             this.maxColumns = maxColumns * 2;
+            this.level = level;
             
         }
 
         public void Show()
         {
+            int col;
             string header = new string(' ', 35);
-            int row = 1;
+            int row = 0;
             int initcol = maxColumns + 1;
 
-            int col = initcol;
+            col = initcol;
+            
             Console.SetCursorPosition(col, row);
             SetColor(ConsoleColor.White);
             Console.Write(header);
+
+            Console.SetCursorPosition(initcol + 13, row);
+            SetColor(ConsoleColor.White, ConsoleColor.DarkRed);
+            Console.Write("LEVEL " + level);
+
+            col = initcol; row++;
+            Console.SetCursorPosition(col, row);
+            SetColor(ConsoleColor.White);
+            Console.Write(header);
+
+            
+
+            
 
             // Fila 1
             row++;

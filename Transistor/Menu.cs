@@ -302,8 +302,8 @@ namespace Transistor
 
                 while (!encontrado && !entrada.EndOfStream)
                 {
-                    linea = entrada.ReadLine();
-                    encontrado = linea.StartsWith(nickname);
+                    linea = entrada.ReadLine().ToLower();
+                    encontrado = linea.StartsWith(nickname.ToLower());
                 }
 
                 entrada.Close();
