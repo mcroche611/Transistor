@@ -154,23 +154,26 @@ namespace Transistor
                     }
                 }
 
-                field.Fx.PlayOutro();
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("CONGRATULATIONS!!! GAME COMPLETE! CLOUDBANK IS NOW FREE");
-
-                menu.SaveData(level, profile);
-
-                Console.WriteLine();
-                Console.WriteLine("         Press M to exit to menu, Q to exit game");
-
-                string answer2 = Console.ReadLine().ToLower();
-                if (answer2 == "m")
+                if (!quit)
                 {
-                    goToMenu = true;
-                }
-                else if (answer2 == "q")
-                {
-                    quit = true;
+                    field.Fx.PlayOutro();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("CONGRATULATIONS!!! GAME COMPLETE! CLOUDBANK IS NOW FREE");
+
+                    menu.SaveData(level, profile);
+
+                    Console.WriteLine();
+                    Console.WriteLine("         Press M to exit to menu, Q to exit game");
+
+                    string answer2 = Console.ReadLine().ToLower();
+                    if (answer2 == "m")
+                    {
+                        goToMenu = true;
+                    }
+                    else if (answer2 == "q")
+                    {
+                        quit = true;
+                    }
                 }
             }
         }

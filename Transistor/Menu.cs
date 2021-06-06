@@ -111,7 +111,7 @@ namespace Transistor
                             Console.WriteLine(label[i]);
 
                             Console.BackgroundColor = ConsoleColor.Black;
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            Console.ForegroundColor = ConsoleColor.Cyan;
                         }
                         else
                         {
@@ -178,7 +178,7 @@ namespace Transistor
 
             Console.SetCursorPosition(0, 4);
             Console.WriteLine("                                    Transistor");
-            Console.WriteLine("                  From Supergiant Games, by Marta Croche Trigo");
+            Console.WriteLine("                  From Supergiant Games, adapted by Marta Croche Trigo");
         }
 
         private void ShowScreen(int x, int y)
@@ -195,8 +195,9 @@ namespace Transistor
         {
             Console.CursorVisible = true;
             Console.SetCursorPosition(10, 5);
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write("User: ");
-            Console.CursorVisible = false; ;
+            Console.CursorVisible = false;
             string userName = Console.ReadLine();
             return userName;
         }
@@ -272,7 +273,7 @@ namespace Transistor
                     string linea = entrada.ReadLine();
 
                     if (!linea.StartsWith(nickname))
-                        data += linea + Environment.NewLine;
+                        data += linea;
                 }
 
                 entrada.Close();
