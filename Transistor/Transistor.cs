@@ -51,7 +51,7 @@ namespace Transistor
                     field = new Battlefield("Transistor" + level + ".txt");
 
                     TurnDisplay turnDisplay = new TurnDisplay(field, field.numRows, field.numCols);
-                    CaptionDisplay captionDisplay = new CaptionDisplay(field.numRows, field.numCols, level);
+                    CaptionDisplay captionDisplay = new CaptionDisplay(0, field.numCols, level);
                     //bool playing = true;
 
                     int lapCounter = 0;
