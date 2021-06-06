@@ -33,7 +33,7 @@ namespace Transistor
                             Console.WriteLine("Profile not found, starting new game");
                             Console.ReadLine();
                             level = 0;
-                            input = Action.Start;
+                            input = Action.Start; //TOCHECK: why not?
                         }
 
                         levelSelected = true;
@@ -75,7 +75,7 @@ namespace Transistor
 
             int pointer = (int)Action.Continue;
             int[] pos = { 36, 36, 36, 36, 36 };
-            string[] label = { " Load Game ", " New Game ", " Controls ", " Credits ", " Exit " }; //TODO: Select Level part of Load Game with Continue
+            string[] label = { " Load Game ", " New Game ", " Controls ", " Credits ", " Exit " }; 
 
             bool actionSelected = ButtonSelect(ref pointer, pos, label);
 

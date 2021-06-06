@@ -18,7 +18,8 @@ namespace Transistor
         private int[] attacksTurn = { 10, 30, 10, 20 }; //Coste de la barra de Turn de cada ataque
         private int[] attacksDamage = { 5, 15, 5, 30 };
         private bool[] attacksEnabled = { true, true, true, true };
-        private int[] attacksCoolDown = { 5, 30, 5, 40 }; //Cooldown de cada uno de los ataques del jugador
+        private int[] attacksMaxCoolDown = { 5, 30, 5, 40 }; //Cooldown de cada uno de los ataques del jugador
+        private int[] attacksCoolDown = { 0, 0, 0, 0 }; //Cooldown de cada uno de los ataques del jugador
 
         Random rnd = new Random();
         private Coor posTurn; //La posición inicial al comienzo de una fase de planificación
@@ -70,6 +71,17 @@ namespace Transistor
         public bool[] AttacksEnabled
         {
             get => attacksEnabled;
+        }
+
+        public int[] AttacksMaxCoolDown
+        {
+            get => attacksMaxCoolDown;
+        }
+
+        public int[] AttacksCoolDown
+        {
+            get => attacksCoolDown;
+            set => attacksCoolDown = value;
         }
 
         public Player(Battlefield field, Coor pos) : base(field, pos)
@@ -152,7 +164,7 @@ namespace Transistor
 
         private void Crash()
         {
-            if (attackMode != TurnMode.Plan)
+            if (attackMode == TurnMode.Run || (attackMode == TurnMode.Normal && attacksCoolDown[crashNum] <= 0)) //En Run no importa el coolDown, pero en Normal solo ataca si el coolDown ha llegado a 0
             {
                 Next(out Coor newPos);
 
@@ -171,6 +183,9 @@ namespace Transistor
                         p.ReceiveDamage();
                     }
                 }
+
+                if (attackMode == TurnMode.Normal)
+                    attacksCoolDown[crashNum] = attacksMaxCoolDown[crashNum]; //Si el ataque es en modo normal, resetear el coolDown
             }
 
             if (attackMode != TurnMode.Normal)
@@ -179,12 +194,15 @@ namespace Transistor
 
         private void Breach()
         {
-            if (attackMode != TurnMode.Plan)
+            if (attackMode == TurnMode.Run || (attackMode == TurnMode.Normal && attacksCoolDown[breachNum] <= 0))
             {
                 Beam beam = new Beam(field, Pos, Dir, attacksDamage[breachNum]);
 
                 field.ProjectileList.Append(beam);
-            }  
+
+                if (attackMode == TurnMode.Normal)
+                    attacksCoolDown[breachNum] = attacksMaxCoolDown[breachNum]; //Si el ataque es en modo normal, resetear el coolDown
+            }
 
             if (attackMode != TurnMode.Normal)
                 field.TurnPercentage -= attacksTurn[breachNum];
@@ -192,11 +210,14 @@ namespace Transistor
 
         private void Ping()
         {
-            if (attackMode != TurnMode.Plan)
+            if (attackMode == TurnMode.Run || (attackMode == TurnMode.Normal && attacksCoolDown[pingNum] <= 0))
             {
                 Bullet bullet = new Bullet(field, Pos, Dir, attacksDamage[pingNum]);
 
                 field.ProjectileList.Append(bullet);
+
+                if (attackMode == TurnMode.Normal)
+                    attacksCoolDown[pingNum] = attacksMaxCoolDown[pingNum]; //Si el ataque es en modo normal, resetear el coolDown
             }
 
             if (attackMode != TurnMode.Normal)
@@ -205,13 +226,16 @@ namespace Transistor
 
         private void Load()
         {
-            if (attackMode != TurnMode.Plan)
+            if (attackMode == TurnMode.Run || (attackMode == TurnMode.Normal && attacksCoolDown[loadNum] <= 0))
             {
                 if (Next(out Coor newPos)) //Solo si se puede colocar sobre la próxima posición
                 {
                     Load load = new Load(field, newPos, Dir, attacksDamage[loadNum]);
 
                     field.ProjectileList.Append(load);
+
+                    if (attackMode == TurnMode.Normal)
+                        attacksCoolDown[breachNum] = attacksMaxCoolDown[breachNum]; //Si el ataque es en modo normal, resetear el coolDown
                 }
             }
 

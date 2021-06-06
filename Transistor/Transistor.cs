@@ -88,6 +88,14 @@ namespace Transistor
                                 field.TurnPercentage += 2f;
                         }
 
+                        for (int i = 0; i < field.Red.AttacksCoolDown.Length; i++) //modificar coolDowns del jugador
+                        {
+                            if (field.Red.AttacksCoolDown[i] > 0)
+                            {
+                                field.Red.AttacksCoolDown[i]--;
+                            }
+                        }
+
                         // retardo
                         System.Threading.Thread.Sleep(LapTime);
                         lapCounter++;

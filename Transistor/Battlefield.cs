@@ -126,7 +126,7 @@ namespace Transistor
             }
         }
 
-        public void Show(TurnMode mode, char currentAttack) //Llama a uno u otro renderizado de pantalla.
+        public void Show(TurnMode mode, char currentAttack) 
         {
             //Primero dibuja el tablero vacio
             for (int i = 0; i < tile.GetLength(0); i++)
@@ -135,7 +135,6 @@ namespace Transistor
                 {
                     PrintTile(tile[i, j], i, j);
                 }
-                //Console.WriteLine();
             }
 
             // Dibuja los proyectiles
@@ -161,66 +160,7 @@ namespace Transistor
             }
 
             Console.SetCursorPosition(0, numRows + 2);
-
-
-            //if (mode == TurnMode.Normal)
-            //{
-            //    ShowBattle();
-            //}
-            //else if (mode == TurnMode.Plan)
-            //{
-            //    ShowTurn();
-            //}
-            //else
-            //{
-            //    // TODO: execute one by one Turn 
-            //}
         }
-
-        //private void ShowBattle()
-        //{
-        //    //Primero dibuja el tablero vacio
-        //    for (int i = 0; i < tile.GetLength(0); i++)
-        //    {
-        //        for (int j = 0; j < tile.GetLength(1); j++)
-        //        {
-        //            PrintTile(tile[i, j], i, j);
-        //        }
-        //        //Console.WriteLine();
-        //    }
-
-        //    // Dibuja los proyectiles
-        //    for (int k = 0; k < ProjectileList.Count(); k++)
-        //    {
-        //        Projectile projectile = ProjectileList.nEsimo(k);
-        //        PrintAttacks(projectile);
-        //    }
-
-        //    // Dibuja al jugador
-        //    PrintCharacter(Red);
-
-        //    // Dibuja los enemigos
-        //    for (int k = 0; k < EnemyList.Count(); k++)
-        //    {
-        //        Enemy enemy = EnemyList.nEsimo(k);
-        //        PrintCharacter(enemy);
-        //    }
-
-        //    Console.SetCursorPosition(0, numRows + 2);
-
-        //    //if (Debug)
-        //    //{
-        //    //    Console.BackgroundColor = ConsoleColor.Black;
-        //    //    Console.ForegroundColor = ConsoleColor.White;
-
-        //    //    Console.WriteLine("Comida Restante: {0}", numComida);
-        //    //    for (int i = 0; i < pers.Length; i++)
-        //    //    {
-        //    //        Console.ForegroundColor = colors[i];
-        //    //        Console.WriteLine("{0} --> Pos: ({1}, {2})      Dir: ({3}, {4}) ", pers[i].name, pers[i].pos.fil, pers[i].pos.col, pers[i].dir.fil, pers[i].dir.col);
-        //    //    }
-        //    //}
-        //}
 
         public void MoveEnemies(int lapCounter, TurnMode mode = TurnMode.Normal)
         {
@@ -235,18 +175,6 @@ namespace Transistor
             }
 
             enemyList.BorraEliminados();
-            /*
-            // Chequea si algún enemigo ha sido destruido y si es así, lo elimina
-            for (int k = 0; k < EnemyList.Count(); k++)
-            {
-                Enemy enemy = EnemyList.nEsimo(k);
-                
-                if (enemy.Destroyed)
-                {
-                    enemyList.Delete(enemy);
-                }
-            }
-            */
         }
 
         public void EnemiesAttack(TurnMode mode = TurnMode.Normal) //parámetro para pasar al Attack() de Character que necesita mode para Player
@@ -266,7 +194,7 @@ namespace Transistor
 
                 bool needMove = mode == TurnMode.Normal || (mode == TurnMode.Run && projectile.PlayerOwned);
 
-                if (needMove)// && !projectile.Destroyed)
+                if (needMove)
                 {
                     projectile.Move();
                     projectile.CheckDamage();
@@ -274,24 +202,7 @@ namespace Transistor
             }
 
             projectileList.BorraEliminados();
-            /*
-            for (int k = 0; k < ProjectileList.Count(); k++)
-            {
-                Projectile projectile = ProjectileList.nEsimo(k);
-                
-                if (projectile.Destroyed)
-                {
-                    ProjectileList.BorraElto(projectile);
-                    k = 0; //TODO: Ver si esto funciona
-                }
-            }
-            */
         }
-
-        //private void ShowTurn()
-        //{
-
-        //}
 
         private void PrintTile(Tile tile, int row, int col)
         {
