@@ -154,7 +154,7 @@ namespace Transistor
                     }
                 }
 
-                if (!quit)
+                if (!quit && !goToMenu)
                 {
                     fx.PlayOutro();
 

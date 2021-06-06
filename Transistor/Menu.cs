@@ -267,6 +267,7 @@ namespace Transistor
         public void SaveData(int nivel, string nickname)
         {
             string data = string.Empty;
+            nickname = nickname.ToLower();
 
             if (nivel < t.MAXLEVEL)
 
@@ -277,7 +278,7 @@ namespace Transistor
 
                 while (!entrada.EndOfStream)
                 {
-                    string linea = entrada.ReadLine();
+                    string linea = entrada.ReadLine().ToLower();
 
                     if (!linea.StartsWith(nickname))
                         data += linea + Environment.NewLine;
