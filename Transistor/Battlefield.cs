@@ -141,7 +141,7 @@ namespace Transistor
             for (int k = 0; k < ProjectileList.Count(); k++)
             {
                 Projectile projectile = ProjectileList.nEsimo(k);
-                PrintAttacks(projectile);
+                PrintProjectiles(projectile);
             }
 
             // Dibuja al jugador
@@ -253,14 +253,12 @@ namespace Transistor
             }
         }
 
-        private void PrintAttacks(Projectile p)
+        private void PrintProjectiles(Projectile p)
         {
             if (!enemyList.IsEnemy(p.Pos))
             {
                 Console.SetCursorPosition(2 * p.Pos.col, p.Pos.row);
-                Console.ForegroundColor = p.FgColor;
-
-                Console.BackgroundColor = p.BgColor;
+                SetColor(p.BgColor, p.FgColor);
                 Console.Write(p.Symbols);
 
                 Console.BackgroundColor = ConsoleColor.Black;

@@ -133,7 +133,7 @@ namespace Transistor
     {
         public Beam(Battlefield field, Coor pos, Coor dir, int damage) : base(field, pos, dir, damage)
         {
-            Symbols = "^^";
+            Symbols = "[]";
             FgColor = ConsoleColor.Black;
             BgColor = ConsoleColor.Cyan;
             playerOwned = true;
@@ -204,6 +204,15 @@ namespace Transistor
                     for (int k = -col; k <= col; k++)
                     {
                         newPos = Pos + new Coor(j, k);
+
+                        //Pinta el área de la explosión momentáneamente
+                        if (newPos != field.Red.Pos && !field.EnemyList.IsEnemy(newPos) && field.tile[newPos.row, newPos.col] == Battlefield.Tile.Empty) 
+                        {
+                            Console.SetCursorPosition(2 * newPos.col, newPos.row);
+                            Console.BackgroundColor = ConsoleColor.DarkMagenta;
+                            Console.Write("  ");
+                        }
+                            
 
                         if (field.EnemyList.IsEnemy(newPos)) //No hace daño ni al jugador ni a otros load
                         {
