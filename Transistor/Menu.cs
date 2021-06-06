@@ -9,6 +9,13 @@ namespace Transistor
     {
         public enum Action { Continue, Start, Controls, Credits, Exit };
 
+        Transistor t;
+
+        public Menu(Transistor transistor)
+        {
+            t = transistor;
+        }
+
         public int RunMenu(out string profile, ref bool quit)
         {
             int level = 0;
@@ -213,7 +220,7 @@ namespace Transistor
 
             Console.WriteLine(text);
             Console.WriteLine();
-            Console.WriteLine("                     Press any key to continue");
+            Console.WriteLine("                         Press any key to continue");
             Console.ReadLine();
         }
 
@@ -228,7 +235,7 @@ namespace Transistor
 
             Console.WriteLine(text);
             Console.WriteLine();
-            Console.WriteLine("                     Press any key to continue");
+            Console.WriteLine("                         Press any key to continue");
             Console.ReadLine();
         }
 
@@ -262,6 +269,8 @@ namespace Transistor
         public void SaveData(int nivel, string nickname)
         {
             string data = string.Empty;
+
+            if (nivel < t.MAXLEVEL)
 
             if (File.Exists("profiles"))
             {

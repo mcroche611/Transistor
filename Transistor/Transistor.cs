@@ -13,10 +13,11 @@ namespace Transistor
         TurnMode mode;
         Input dirInput;
         const int LapTime = 20;
-        const int MAXLEVEL = 9;
         bool quit = false;
         bool goToMenu = false;
         Battlefield field;
+        Menu menu;
+        public int MAXLEVEL = 9;
         SoundFX fx = new SoundFX();
 
         private char currentAttack = ' ';
@@ -38,7 +39,7 @@ namespace Transistor
                 quit = false;
                 goToMenu = false;
 
-                Menu menu = new Menu();
+                Menu menu = new Menu(this);
                 fx.PlayMenuIntro();
                 int level = menu.RunMenu(out string profile, ref quit);
 
@@ -123,15 +124,15 @@ namespace Transistor
 
                         if (field.Red.Life <= 0)
                         {
-                            field.Fx.PlayGameOver();
+                            fx.PlayGameOver();
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("GAME OVER");
                             Console.WriteLine();
-                            Console.WriteLine("         Press M to exit to menu, Q to exit game, and any key to retry");
+                            Console.WriteLine("             Press M to exit to menu, Q to exit game, and any key to retry");
                         }
                         else // Nivel completado
                         {
-                            field.Fx.PlayLevelCompleted();
+                            fx.PlayLevelCompleted();
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("LEVEL CLEARED");
 
@@ -139,7 +140,7 @@ namespace Transistor
                             level++;
 
                             Console.WriteLine();
-                            Console.WriteLine("         Press M to exit to menu, Q to exit game, and any key to continue to next level");
+                            Console.WriteLine("             Press M to exit to menu, Q to exit game, and any key to continue to next level");
 
                         }
                         string answer = Console.ReadLine().ToLower();
@@ -156,9 +157,14 @@ namespace Transistor
 
                 if (!quit)
                 {
-                    field.Fx.PlayOutro();
+                    fx.PlayOutro();
+
+                    Console.Clear();
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("CONGRATULATIONS!!! GAME COMPLETE! CLOUDBANK IS NOW FREE");
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine("         CONGRATULATIONS!!! GAME COMPLETE! CLOUDBANK IS NOW FREE");
 
                     menu.SaveData(level, profile);
 
@@ -251,7 +257,7 @@ namespace Transistor
                     case "Spacebar":
                         if (field.TurnPercentage >= 100)
                         {
-                            field.Fx.PlayTurn1();
+                            fx.PlayTurn1();
                             field.Red.PosTurn = field.Red.Pos;
                             mode = TurnMode.Plan;
                         }
@@ -330,7 +336,7 @@ namespace Transistor
                         currentAttack = ' ';
                         break;
                     case "Spacebar":
-                        field.Fx.PlayTurn2();
+                        fx.PlayTurn2();
                         field.Red.Pos = field.Red.PosTurn;
                         field.TurnPercentage = 100;
                         mode = TurnMode.Run;
