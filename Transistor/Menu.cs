@@ -198,12 +198,17 @@ namespace Transistor
 
         public string AskName()
         {
-            Console.CursorVisible = true;
-            Console.SetCursorPosition(10, 5);
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.Write("User: ");
-            Console.CursorVisible = false;
-            string userName = Console.ReadLine();
+            string userName="";
+            while (userName == null || userName == "")
+            {
+                Console.Clear();
+                Console.CursorVisible = true;
+                Console.SetCursorPosition(10, 5);
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write("User: ");
+                Console.CursorVisible = false;
+                userName = Console.ReadLine();
+            }
             return userName;
         }
 
@@ -276,33 +281,34 @@ namespace Transistor
             string data = string.Empty;
             nickname = nickname.ToLower();
 
-            if (nivel < t.MAXLEVEL)
-
-            if (File.Exists("profiles"))
+            if (nivel <= t.MAXLEVEL)
             {
-                //Guardamos todos los datos que no sean los del usuario actual
-                StreamReader entrada = new StreamReader("profiles");
-
-                while (!entrada.EndOfStream)
+                if (File.Exists("profiles"))
                 {
-                    string linea = entrada.ReadLine().ToLower();
+                    //Guardamos todos los datos que no sean los del usuario actual
+                    StreamReader entrada = new StreamReader("profiles");
 
-                    if (!linea.StartsWith(nickname))
-                        data += linea + Environment.NewLine;
+                    while (!entrada.EndOfStream)
+                    {
+                        string linea = entrada.ReadLine().ToLower();
+
+                        if (!linea.StartsWith(nickname))
+                            data += linea + Environment.NewLine;
+                    }
+
+                    entrada.Close();
                 }
 
-                entrada.Close();
+                //Escribimos todos los datos de nuevo sin los del usuario actual
+                StreamWriter salida = new StreamWriter("profiles", false);
+
+                salida.Write(data);
+
+                //Escribimos los datos del usuario actual en minúsculas
+                salida.WriteLine(nickname.ToLower() + ": " + nivel);
+
+                salida.Close();
             }
-
-            //Escribimos todos los datos de nuevo sin los del usuario actual
-            StreamWriter salida = new StreamWriter("profiles", false);
-
-            salida.Write(data);
-
-            //Escribimos los datos del usuario actual en minúsculas
-            salida.WriteLine(nickname.ToLower() + ": " + nivel);
-
-            salida.Close();
         }
 
         public string ReadFile(string fileName)
