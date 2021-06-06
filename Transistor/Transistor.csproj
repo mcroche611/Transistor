@@ -10,7 +10,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="fx\Cinematic Emotional.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="fx\ColorofMusic.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="fx\Guardian of power.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="fx\mixkit-arcade-game-complete-or-approved-mission-205.wav">
@@ -19,13 +25,34 @@
     <None Update="fx\mixkit-arcade-retro-game-over-213.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="fx\mixkit-bit-war-suprise-item-3162.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="fx\mixkit-boxer-getting-hit-2055.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="fx\mixkit-completion-of-a-level-2063.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="fx\mixkit-falling-on-undergrowth-390.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="fx\mixkit-fantasy-explosion-and-debris-1684.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="fx\mixkit-magic-glitter-shot-2353.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="fx\mixkit-martial-arts-fast-punch-2047.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="fx\mixkit-martial-arts-punch-2052.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="fx\mixkit-retro-arcade-casino-notification-211.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="fx\mixkit-sci-fi-laser-in-space-sound-2825.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="fx\mixkit-short-laser-gun-shot-1670.wav">
@@ -35,6 +62,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Credits.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="fx\mixkit-shot-light-explosion-1682.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="fx\mixkit-video-game-power-up-3164.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="niveles\Transistor0.txt">
