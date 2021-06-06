@@ -1,9 +1,25 @@
 				
 				
 				
-			Controls
-			----------------------------------------------------
-			Cursors for movement
-			Spacebar to begin and end planning phase
-			Numbers 1-4 for attacks
-			Enter to save planned attack
+		Controls
+		--------------------------------------------------------------------------------------------
+		Make sure the height and length of your window are set at least 40 and 110 respectively.
+		Press M to exit to the menu, and Esc to close the game.
+
+			Basics:
+		Use the Arrow Keys to move.
+		Press the Number Keys 1-4 to attack.
+
+			Turn:
+		Press the Spacebar to begin and end planning movements and attacks with Turn.
+		(This will only work when the Turn bar is completely full).
+		During Turn, press the Number Keys 1-4 to select an attack.
+		Press Enter to plan said attack.
+		Press Backspace during Turn to undo a movement or attack.
+
+			Player attacks:
+		Crash can only be used on enemies in an adjacent tile, attacking in their direction.
+		After placing a Load (4), it will explode when it is attacked.
+		Breach and Load's attacks can break through some walls.
+		When your Life Bar hits zero, it will be restored and an attack will become unusable for the
+		remainder of the level. You will lose the game when all four of the attacks are deactivated.
