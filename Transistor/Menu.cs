@@ -26,7 +26,7 @@ namespace Transistor
             {
                 Console.Clear();
 
-                Menu.Action input = SelectAction(out bool loaded, out string savedFile, out level, profile);
+                Menu.Action input = SelectAction(out level);
 
                 switch (input)
                 {
@@ -42,7 +42,6 @@ namespace Transistor
                                 Console.WriteLine("Profile not found, starting new game");
                                 Console.ReadLine();
                                 level = 0;
-                                input = Action.Start; //TOCHECK: why not?
                             }
 
                             levelSelected = true;
@@ -73,10 +72,8 @@ namespace Transistor
             return level;
         }
 
-        public Action SelectAction(out bool loaded, out string savedFile, out int level, string profile)
+        public Action SelectAction(out int level)
         {
-            loaded = false;
-            savedFile = string.Empty;
             level = 0;
 
             //Menú principal: Jugar, Cargar, Editor de niveles, Salir
@@ -87,7 +84,8 @@ namespace Transistor
             int[] pos = { 36, 36, 36, 36, 36 };
             string[] label = { " Load Game ", " New Game ", " Controls ", " Credits ", " Exit " }; 
 
-            bool actionSelected = ButtonSelect(ref pointer, pos, label);
+            //bool actionSelected =
+            ButtonSelect(ref pointer, pos, label);
 
             //Si ha elegido continuar la partida
             if ((Action)pointer == Action.Continue)

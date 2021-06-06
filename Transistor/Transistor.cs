@@ -16,7 +16,6 @@ namespace Transistor
         bool quit = false;
         bool goToMenu = false;
         Battlefield field;
-        Menu menu;
         public int MAXLEVEL = 9;
         SoundFX fx = new SoundFX();
 
@@ -331,7 +330,7 @@ namespace Transistor
                 switch (key)
                 {
                     case "Enter":
-                        field.PrintAim(field.Red, currentAttack);
+                        field.PrintAim(currentAttack);
                         field.Red.Attack(mode, currentAttack);
                         currentAttack = ' ';
                         break;

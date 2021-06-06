@@ -249,7 +249,7 @@ namespace Transistor
 
             if (mode == TurnMode.Plan && c is Player && currentAttack != ' ')
             {
-                PrintAim(c, currentAttack);
+                PrintAim(currentAttack);
             }
         }
 
@@ -294,7 +294,7 @@ namespace Transistor
             }
         }
 
-        public void PrintAim(Character c, char attack)
+        public void PrintAim(char attack)
         {
             Coor newPos;
 

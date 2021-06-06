@@ -49,7 +49,7 @@ namespace Transistor
         {
             int col;
             string header = new string(' ', 35);
-            int row = 0;
+            int row = topRow;
             int initcol = maxColumns + 1;
 
             col = initcol;
