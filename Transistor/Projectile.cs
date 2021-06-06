@@ -21,7 +21,7 @@ namespace Transistor
             Pos = pos;
             Dir = dir;
             playerOwned = false;
-            this.damage = damage; //TODO: asignar valor personalizado
+            this.damage = damage; 
             destroyed = false;
         }
 
@@ -221,6 +221,10 @@ namespace Transistor
                             {
                                 Enemy e = field.EnemyList.GetEnemyInPos(newPos);
                                 e.ReceiveDamage(damage);
+                            }
+                            else if (field.tile[newPos.row, newPos.col] == Battlefield.Tile.Wall)
+                            {
+                                field.DestroyWall(newPos);
                             }
                         }
                     }
