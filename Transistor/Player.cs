@@ -16,8 +16,8 @@ namespace Transistor
 
         private int moveTurn = 2;
         private int[] attacksTurn = { 20, 40, 10, 50 }; //Coste de la barra de Turn de cada ataque
-        private int[] attacksDamage = { 50, 100, 60, 250 };
-        private bool[] attacksEnabled = { true, true, true, true };
+        private int[] attacksDamage = { 50, 100, 60, 250 }; //Daño que realiza cada ataque
+        private bool[] attacksEnabled = { true, true, true, true }; //Ataques disponibles
         private int[] attacksMaxCoolDown = { 5, 30, 2, 40 }; //Cooldown de cada uno de los ataques del jugador
         private int[] attacksCoolDown = { 0, 0, 0, 0 }; //Cooldown de cada uno de los ataques del jugador
 
@@ -90,7 +90,6 @@ namespace Transistor
             get => attacksCoolDown;
             set => attacksCoolDown = value;
         }
-        
 
         public Player(Battlefield field, Coor pos) : base(field, pos)
         {
@@ -172,7 +171,8 @@ namespace Transistor
 
         private void Crash()
         {
-            if (attackMode == TurnMode.Run || (attackMode == TurnMode.Normal && attacksCoolDown[crashNum] <= 0)) //En Run no importa el coolDown, pero en Normal solo ataca si el coolDown ha llegado a 0
+            //En Run no importa el coolDown, pero en Normal solo ataca si el coolDown ha llegado a 0
+            if (attackMode == TurnMode.Run || (attackMode == TurnMode.Normal && attacksCoolDown[crashNum] <= 0)) 
             {
                 field.Fx.PlayCrash();
 
@@ -184,7 +184,7 @@ namespace Transistor
                 {
                     e.ReceiveDamage(attacksDamage[crashNum]);
                 }
-                else if (field.ProjectileList.IsProjectile(newPos) && field.ProjectileList.GetProjectileInPos(newPos) is Load) //TOCHECK: Como todos lo tienen pero solo lo usa Load, hace falta validarlo?
+                else if (field.ProjectileList.IsProjectile(newPos) && field.ProjectileList.GetProjectileInPos(newPos) is Load) 
                 {
                     Projectile p = field.ProjectileList.GetProjectileInPos(newPos);
 
@@ -195,7 +195,7 @@ namespace Transistor
                 }
 
                 if (attackMode == TurnMode.Normal)
-                    attacksCoolDown[crashNum] = attacksMaxCoolDown[crashNum]; //Si el ataque es en modo normal, resetear el coolDown
+                    attacksCoolDown[crashNum] = attacksMaxCoolDown[crashNum]; //Si el ataque es en modo normal, resetea el coolDown
             }
 
             if (attackMode != TurnMode.Normal)
@@ -204,6 +204,7 @@ namespace Transistor
 
         private void Breach()
         {
+            //En Run no importa el coolDown, pero en Normal solo ataca si el coolDown ha llegado a 0
             if (attackMode == TurnMode.Run || (attackMode == TurnMode.Normal && attacksCoolDown[breachNum] <= 0))
             {
                 field.Fx.PlayBreach();
@@ -213,7 +214,7 @@ namespace Transistor
                 field.ProjectileList.Append(beam);
 
                 if (attackMode == TurnMode.Normal)
-                    attacksCoolDown[breachNum] = attacksMaxCoolDown[breachNum]; //Si el ataque es en modo normal, resetear el coolDown
+                    attacksCoolDown[breachNum] = attacksMaxCoolDown[breachNum]; //Si el ataque es en modo normal, resetea el coolDown
             }
 
             if (attackMode != TurnMode.Normal)
@@ -222,6 +223,7 @@ namespace Transistor
 
         private void Ping()
         {
+            //En Run no importa el coolDown, pero en Normal solo ataca si el coolDown ha llegado a 0
             if (attackMode == TurnMode.Run || (attackMode == TurnMode.Normal && attacksCoolDown[pingNum] <= 0))
             {
                 field.Fx.PlayPing();
@@ -231,7 +233,7 @@ namespace Transistor
                 field.ProjectileList.Append(bullet);
 
                 if (attackMode == TurnMode.Normal)
-                    attacksCoolDown[pingNum] = attacksMaxCoolDown[pingNum]; //Si el ataque es en modo normal, resetear el coolDown
+                    attacksCoolDown[pingNum] = attacksMaxCoolDown[pingNum]; //Si el ataque es en modo normal, resetea el coolDown
             }
 
             if (attackMode != TurnMode.Normal)
@@ -240,6 +242,7 @@ namespace Transistor
 
         private void Load()
         {
+            //En Run no importa el coolDown, pero en Normal solo ataca si el coolDown ha llegado a 0
             if (attackMode == TurnMode.Run || (attackMode == TurnMode.Normal && attacksCoolDown[loadNum] <= 0))
             {
                 if (Next(out Coor newPos)) //Solo si se puede colocar sobre la próxima posición
@@ -251,7 +254,7 @@ namespace Transistor
                     field.ProjectileList.Append(load);
 
                     if (attackMode == TurnMode.Normal)
-                        attacksCoolDown[loadNum] = attacksMaxCoolDown[loadNum]; //Si el ataque es en modo normal, resetear el coolDown
+                        attacksCoolDown[loadNum] = attacksMaxCoolDown[loadNum]; //Si el ataque es en modo normal, resetea el coolDown
                 }
             }
 
@@ -259,6 +262,7 @@ namespace Transistor
                 field.TurnPercentage -= attacksTurn[loadNum];
         }
 
+        // Devuelve la próxima acción de la string de movimientos
         public char GetActionTurn()
         {
             char c = '\0'; 
@@ -314,6 +318,7 @@ namespace Transistor
             }
         }
 
+        //Deshace los ataques y el coste de turn, y deja indicado si hay que deshacer un movimiento
         public Input UndoAction()
         {
             Input dirInput = Input.Same;
@@ -345,12 +350,13 @@ namespace Transistor
                     }
                 }      
 
-                turnMoves = turnMoves.Substring(0, turnMoves.Length - 1); //Quita la letra de la string
+                turnMoves = turnMoves.Substring(0, turnMoves.Length - 1); //Quita la letra del string
             }
 
             return dirInput;
         }
 
+        //Deshace un movimiento
         public void UndoMove()
         {
             if (field.NextDir(-dir, pos, ' ', out Coor newPos))
@@ -361,6 +367,7 @@ namespace Transistor
             field.TurnPercentage += moveTurn;
         }
 
+        //Cuenta el número de ataques disponibles restantes
         private int CountAttacks()
         {
             int numAttacks = 0;

@@ -11,9 +11,8 @@ namespace Transistor
         protected string symbols;
         protected ConsoleColor bgColor;
         protected ConsoleColor fgColor;
-        protected int life; //TODO: maxLife
+        protected int life; 
         protected bool destroyed;
-        private bool hit;
         protected int speed;
         protected Battlefield field;
         bool posChanged = true;
@@ -47,23 +46,7 @@ namespace Transistor
 
         public ConsoleColor BgColor
         {
-            get
-            {
-                ConsoleColor color;
-
-                if (hit)
-                {
-                    color = ConsoleColor.White;
-                    hit = false;
-                }
-                else
-                {
-                    color = bgColor;
-                }
-
-                return color;
-            }
-
+            get => bgColor;
             set => bgColor = value;
         }
 
@@ -118,11 +101,6 @@ namespace Transistor
             get => destroyed;
         }
 
-        public bool Hit 
-        { 
-            get => hit; 
-            set => hit = value;
-        }
         public int Life
         {
             get => life;
@@ -138,7 +116,7 @@ namespace Transistor
         {
             field.Fx.PlayDamage();
 
-            life -= damage;
+            life -= damage; //resta el daño recibido a su vida
 
             if (life <= 0)
             {

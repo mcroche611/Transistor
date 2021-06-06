@@ -9,7 +9,9 @@ namespace Transistor
     {
         public enum Tile { Empty, Wall, BorderWall };
         public Tile[,] tile; //matriz de casillas del nivel.
-        public int numRows, numCols; //OJO TODO: Hacer propiedades
+        private int numCols;
+        private int numRows;
+
         public SoundFX Fx = new SoundFX();
         private float turnPercentage = 100f;
 
@@ -21,6 +23,8 @@ namespace Transistor
         internal Player Red { get => red;}
         internal ProjectileList ProjectileList { get => projectileList;}
         public float TurnPercentage { get => turnPercentage; set => turnPercentage = value; }
+        public int NumRows { get => numRows; set => numRows = value; }
+        public int NumCols { get => numCols; set => numCols = value; }
 
         public Battlefield(string file)
         {
@@ -34,6 +38,7 @@ namespace Transistor
             numRows = 0;
             numCols = 0;
 
+            //Lee el nivel del archivo
             while (!streamReader.EndOfStream && !levelComplete)
             {
                 string line = streamReader.ReadLine();
@@ -66,6 +71,7 @@ namespace Transistor
             FillField(s, ref tile);
         }
 
+        //Rellena la matriz de casillas
         private void FillField(string s, ref Tile[,] tile)
         {
             int col = 0, row = 0;
@@ -83,6 +89,7 @@ namespace Transistor
             }
         }
 
+        //Asigna cada casilla y personaje
         private void CharToTileAndCharacter(char symbol, ref Tile tile, int row, int col)
         {
             switch (symbol)
@@ -126,6 +133,7 @@ namespace Transistor
             }
         }
 
+        //Pinta el tablero, personajes y proyectiles en pantalla
         public void Show(TurnMode mode, char currentAttack) 
         {
             //Primero dibuja el tablero vacio
@@ -146,11 +154,6 @@ namespace Transistor
 
             // Dibuja al jugador
             PrintCharacter(Red, mode, currentAttack);
-
-            //if (mode == TurnMode.Plan && currentAttack != ' ')
-            //{
-            //    PrintAim(Red, currentAttack);
-            //}
 
             // Dibuja los enemigos
             for (int k = 0; k < EnemyList.Count(); k++)
@@ -174,7 +177,7 @@ namespace Transistor
                 }
             }
 
-            enemyList.BorraEliminados();
+            enemyList.DeleteDestroyed();
         }
 
         public void EnemiesAttack(TurnMode mode = TurnMode.Normal) //parámetro para pasar al Attack() de Character que necesita mode para Player
@@ -201,7 +204,7 @@ namespace Transistor
                 }
             }
 
-            projectileList.BorraEliminados();
+            projectileList.DeleteDestroyed();
         }
 
         private void PrintTile(Tile tile, int row, int col)
@@ -233,7 +236,7 @@ namespace Transistor
         {
             if (c.PosChanged)
             {
-                Console.SetCursorPosition(2 * c.Pos.col, c.Pos.row); //TODO: método que englobe estas tres líneas
+                Console.SetCursorPosition(2 * c.Pos.col, c.Pos.row);
                 SetColor(c.BgColor, c.FgColor);
                 Console.Write(c.Symbols);
 
@@ -241,7 +244,6 @@ namespace Transistor
                 Console.BackgroundColor = ConsoleColor.Black;
             }
 
-            //TODO: Design Choice, si se sitúan dentro se ven una vez por mov, si no, parpadean de forma constante
             if (c is Jerk)
             {
                 PrintRange(c);
@@ -265,6 +267,7 @@ namespace Transistor
             }
         }
 
+        //Dibuja el área de ataque del enemigo Jerk
         private void PrintRange(Character c)
         {
             int range = 2;
@@ -294,6 +297,7 @@ namespace Transistor
             }
         }
 
+        //Dibuja el ataque posible durante la planificación de Turn
         public void PrintAim(char attack)
         {
             Coor newPos;
@@ -344,7 +348,7 @@ namespace Transistor
                         if (red.Next(out newPos))
                         {
                             Console.SetCursorPosition(2 * newPos.col, newPos.row);
-                            SetColor(ConsoleColor.DarkMagenta, ConsoleColor.White); //TODO: set to color of projectile
+                            SetColor(ConsoleColor.DarkMagenta, ConsoleColor.White); 
                             Console.Write("  ");
                         }
                     }
@@ -352,27 +356,7 @@ namespace Transistor
             }
         }
 
-        //private int Range(Coor dir, Coor pos, char attack, out Coor rangePos)
-        //{
-        //    int newRange = 0;
-        //    bool outOfBoard = false;
-        //    rangePos = pos;
-
-        //    while (!outOfBoard)
-        //    {
-        //        if (NextDir(dir, pos + new Coor(dir.row * newRange, dir.col * newRange), attack, out rangePos))
-        //        {
-        //            newRange++;
-        //        }
-        //        else
-        //        {
-        //            outOfBoard = true;
-        //        }
-        //    }
-
-        //    return newRange;
-        //}
-
+        //Devuelve si está libre la siguiente posición para un ataque
         public bool NextDir(Coor dir, Coor pos, char attack, out Coor newPos)
         {
             newPos = pos + dir;
@@ -391,6 +375,7 @@ namespace Transistor
             return possible;
         }
 
+        //Devuelve si hay un objeto en la posición
         private bool ElementInPos(Coor pos)
         {
             bool elementFound = false;
@@ -405,11 +390,6 @@ namespace Transistor
             return elementFound;
         }
 
-        public Player GetPlayer() //TOCHECK: vale con la property solo, no?
-        {
-            return Red;
-        }
-
         internal void DestroyWall(Coor pos)
         {
             tile[pos.row, pos.col] = Tile.Empty;
@@ -417,7 +397,7 @@ namespace Transistor
 
         protected void SetColor(ConsoleColor bgColor = ConsoleColor.Black, ConsoleColor fgColor = ConsoleColor.White)
         {
-            Console.BackgroundColor = bgColor; //TODO: A la hora de pintar
+            Console.BackgroundColor = bgColor;
             Console.ForegroundColor = fgColor;
         }
 

@@ -29,10 +29,6 @@ namespace Transistor
         private int maxColumns;
         int BarLength = 20;
         Battlefield field;
-        //bool crashEnabled = true;
-        //bool breachEnabled = true;
-        //bool loadEnabled = true;
-        //bool pingEnabled = true;
         
 
 
@@ -43,11 +39,6 @@ namespace Transistor
             this.maxColumns = maxColumns*2;
             BarLength =(int) (this.maxColumns * 0.7f);
         }
-
-        //public bool CrashEnabled { get => crashEnabled; set => crashEnabled = value; }
-        //public bool BreachEnabled { get => breachEnabled; set => breachEnabled = value; }
-        //public bool LoadEnabled { get => loadEnabled; set => loadEnabled = value; }
-        //public bool PingEnabled { get => pingEnabled; set => pingEnabled = value; }
 
         public void Show(TurnMode mode, float turnPercentage, float lifePercentage)
         {
@@ -72,11 +63,7 @@ namespace Transistor
                     break;
             }
 
-            //row = 1;
-            //col = maxColumns + 1;
-
-            ///// Pintar barra de Turn
-            ///
+            ///// Pintar barra de Turn /////
 
             col = 0;
             SetColor(bgColor);
@@ -102,8 +89,8 @@ namespace Transistor
             SetColor();
             Console.Write(header);
 
-            // Pintar ataques
-            ///////////////////////////////////
+            ///////////////// Pintar ataques ////////////////////
+
             row++;
             col = 5;
 
@@ -133,6 +120,7 @@ namespace Transistor
             SetColor(ConsoleColor.Black, ConsoleColor.Black);
         }
 
+        // Pinta la barra correspondiente
         private void ShowBar(string barName, float barPercentage, int row, int col, ConsoleColor barColor, ConsoleColor bgColor = ConsoleColor.Black)
         {
             string header = new string(' ', maxColumns);
@@ -164,6 +152,7 @@ namespace Transistor
             Console.Write(new string(' ', resto));
         }
 
+        // Pinta la casilla de ataque
         private void ShowAttackLabel(int row, int col, string label, int attackNumber, ConsoleColor attackColor)
         {
             ConsoleColor boxBackground;

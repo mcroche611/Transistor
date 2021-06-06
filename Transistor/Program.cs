@@ -6,6 +6,7 @@ namespace Transistor
     {
         static void Main(string[] args)
         {
+            //Ejecución del juego
             Transistor game = new Transistor();
             game.Run();
         }

@@ -83,7 +83,7 @@ namespace Transistor
             Symbols = "^^";
             BgColor = ConsoleColor.Yellow;
             FgColor = ConsoleColor.Black;
-            Speed = 1; // mitad que Player
+            Speed = 1; // doble de velocidad que Player
         }
 
         public override void Move(TurnMode mode = TurnMode.Normal)
@@ -92,7 +92,7 @@ namespace Transistor
             {
                 if (!Pos.Aligned(field.Red.Pos)) //Si no está ya en línea con el Player
                 {
-                    base.Move(mode); //note-to-self: rn they are dumb and run and will shoot straight into walls.
+                    base.Move(mode); 
                 }
             }
             else
@@ -219,9 +219,9 @@ namespace Transistor
 
         public override void Move(TurnMode mode = TurnMode.Normal)
         {
-            dirPred = field.Red.Dir;
+            dirPred = field.Red.Dir; //se asigna la dirección del jugador en este momento
 
-            if (coolDown > 0)
+            if (coolDown > 0) //reduce el coolDown
                 coolDown--;
 
             base.Move();
@@ -278,7 +278,7 @@ namespace Transistor
             Symbols = "&&";
             BgColor = ConsoleColor.DarkCyan; 
             FgColor = ConsoleColor.Black;
-            Speed = 4; // mitad que Player
+            Speed = 4; // mitad de velocidad que Player
         }
 
         public override void Move(TurnMode mode = TurnMode.Normal)
@@ -314,7 +314,7 @@ namespace Transistor
                         {
                             field.Red.ReceiveDamage(damage);
                         }
-                        else if (field.ProjectileList.IsProjectile(newPos) && field.ProjectileList.GetProjectileInPos(newPos) is Load) //TOCHECK: Como todos lo tienen pero solo lo usa Load, hace falta validarlo?
+                        else if (field.ProjectileList.IsProjectile(newPos) && field.ProjectileList.GetProjectileInPos(newPos) is Load) 
                         {
                             Projectile p = field.ProjectileList.GetProjectileInPos(newPos);
 
@@ -339,7 +339,7 @@ namespace Transistor
             Symbols = "!!";
             BgColor = ConsoleColor.Red;
             FgColor = ConsoleColor.Black;
-            Speed = 1; // mitad que Player
+            Speed = 1; // doble de velocidad que Player
         }
 
         public override void Move(TurnMode mode = TurnMode.Normal)
@@ -365,9 +365,9 @@ namespace Transistor
                     if (newPos == field.Red.Pos)
                     {
                         field.Red.ReceiveDamage(damage);
-                        coolDown = maxCoolDown;  //TOCHECK: Equilibrado coolDown
+                        coolDown = maxCoolDown;  
                     }
-                    else if (field.ProjectileList.IsProjectile(newPos) && field.ProjectileList.GetProjectileInPos(newPos) is Load) //TOCHECK: Como todos lo tienen pero solo lo usa Load, hace falta validarlo?
+                    else if (field.ProjectileList.IsProjectile(newPos) && field.ProjectileList.GetProjectileInPos(newPos) is Load)
                     {
                         Projectile p = field.ProjectileList.GetProjectileInPos(newPos);
 

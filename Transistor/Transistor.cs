@@ -50,9 +50,8 @@ namespace Transistor
                     Console.Clear();
                     field = new Battlefield("Transistor" + level + ".txt");
 
-                    TurnDisplay turnDisplay = new TurnDisplay(field, field.numRows, field.numCols);
-                    CaptionDisplay captionDisplay = new CaptionDisplay(0, field.numCols, level);
-                    //bool playing = true;
+                    TurnDisplay turnDisplay = new TurnDisplay(field, field.NumRows, field.NumCols);
+                    CaptionDisplay captionDisplay = new CaptionDisplay(0, field.NumCols, level);
 
                     int lapCounter = 0;
                     mode = TurnMode.Normal;
@@ -61,18 +60,19 @@ namespace Transistor
                     captionDisplay.Show();
 
                     //Bucle principal de juego
-                    while (field.EnemyList.Count() > 0 && field.Red.Life > 0 && !quit && !goToMenu) //La partida continúa hasta que no queden enemigos o no queden vidas
+                    //La partida continúa hasta que no queden enemigos o no queden vidas
+                    while (field.EnemyList.Count() > 0 && field.Red.Life > 0 && !quit && !goToMenu) 
                     {
                         // input de usuario
                         if (lapCounter % field.Red.Speed == 0)
                         {
                             dirInput = ReadInput();
 
-                            if (dirInput == Input.Changed)
+                            if (dirInput == Input.Changed) //Mueve al jugador
                             {
                                 field.Red.Move(mode);
                             }
-                            else if (dirInput == Input.Undone)
+                            else if (dirInput == Input.Undone) //Deshace un movimiento
                             {
                                 field.Red.UndoMove();
                             }
@@ -183,6 +183,7 @@ namespace Transistor
             }
         }
 
+        //Recibe el input de cada modo de juego
         private Input ReadInput()
         {
             Input dirInput = Input.Same;
@@ -195,7 +196,7 @@ namespace Transistor
             {
                 dirInput = ReadInputTurn();
             }
-            else
+            else //En Run, pasa al ReadInput la acción a realizar
             {
                 char c = field.Red.GetActionTurn();
 
@@ -203,7 +204,7 @@ namespace Transistor
                 {
                     dirInput = ReadInputRun(c);
                 }
-                else
+                else //Al acabar el string de movimientos, vuelve al modo Normal
                 {
                     mode = TurnMode.Normal;
                 }
@@ -222,19 +223,19 @@ namespace Transistor
                 switch (tecla)
                 {
                     case "LeftArrow":
-                        field.GetPlayer().Dir = Coor.LEFT;
+                        field.Red.Dir = Coor.LEFT;
                         dirInput = Input.Changed;
                         break;
                     case "RightArrow":
-                        field.GetPlayer().Dir = Coor.RIGHT;
+                        field.Red.Dir = Coor.RIGHT;
                         dirInput = Input.Changed;
                         break;
                     case "UpArrow":
-                        field.GetPlayer().Dir = Coor.UP;
+                        field.Red.Dir = Coor.UP;
                         dirInput = Input.Changed;
                         break;
                     case "DownArrow":
-                        field.GetPlayer().Dir = Coor.DOWN;
+                        field.Red.Dir = Coor.DOWN;
                         dirInput = Input.Changed;
                         break;
                     case "D1":
@@ -269,10 +270,6 @@ namespace Transistor
                     case "M": // Salir al menú
                         goToMenu = true;
                         break;
-                    case "N":
-                        //NextLevel (hack)
-                        //next = SKIP; //En vez de if(SKIP) next = true;
-                        break;
                 }
             }
             //Limpiamos el buffer de teclado
@@ -295,19 +292,19 @@ namespace Transistor
                     switch (key)
                     {
                         case "LeftArrow":
-                            field.GetPlayer().Dir = Coor.LEFT;
+                            field.Red.Dir = Coor.LEFT;
                             dirInput = Input.Changed;
                             break;
                         case "RightArrow":
-                            field.GetPlayer().Dir = Coor.RIGHT;
+                            field.Red.Dir = Coor.RIGHT;
                             dirInput = Input.Changed;
                             break;
                         case "UpArrow":
-                            field.GetPlayer().Dir = Coor.UP;
+                            field.Red.Dir = Coor.UP;
                             dirInput = Input.Changed;
                             break;
                         case "DownArrow":
-                            field.GetPlayer().Dir = Coor.DOWN;
+                            field.Red.Dir = Coor.DOWN;
                             dirInput = Input.Changed;
                             break;
                         case "D1":
@@ -332,8 +329,10 @@ namespace Transistor
                 switch (key)
                 {
                     case "Enter":
+                        // Deja planeado el ataque correspondiente
                         field.PrintAim(currentAttack);
                         field.Red.Attack(mode, currentAttack);
+                        // Deselecciona el ataque
                         currentAttack = ' ';
                         break;
                     case "Spacebar":
@@ -346,7 +345,7 @@ namespace Transistor
                         mode = TurnMode.Run;
                         currentAttack = ' ';
                         break;
-                    case "Backspace":
+                    case "Backspace": //Deshace la última acción planeada
                         dirInput = field.Red.UndoAction();
                         break;
                     case "Escape": // Salir del juego
@@ -373,19 +372,19 @@ namespace Transistor
                 switch (action)
                 {
                     case 'i':
-                        field.GetPlayer().Dir = Coor.LEFT;
+                        field.Red.Dir = Coor.LEFT;
                         dirInput = Input.Changed;
                         break;
                     case 'r':
-                        field.GetPlayer().Dir = Coor.RIGHT;
+                        field.Red.Dir = Coor.RIGHT;
                         dirInput = Input.Changed;
                         break;
                     case 'u':
-                        field.GetPlayer().Dir = Coor.UP;
+                        field.Red.Dir = Coor.UP;
                         dirInput = Input.Changed;
                         break;
                     case 'd':
-                        field.GetPlayer().Dir = Coor.DOWN;
+                        field.Red.Dir = Coor.DOWN;
                         dirInput = Input.Changed;
                         break;
                     case 'c':
@@ -396,7 +395,6 @@ namespace Transistor
                         break;
                     case 'p':
                         field.Red.Attack(mode, action);
-                        currentAttack = ' ';
                         break;
                     case 'l':
                         field.Red.Attack(mode, action);

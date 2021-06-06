@@ -104,7 +104,7 @@ namespace Transistor
             }
         }
 
-        public void BorraEliminados()
+        public void DeleteDestroyed()
         {
             Node aux = first;
             Node prev = null;

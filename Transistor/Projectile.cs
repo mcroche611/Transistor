@@ -91,13 +91,13 @@ namespace Transistor
             {
                 destroyed = true;
             }
-            else if (field.ProjectileList.IsProjectile(Pos) && field.ProjectileList.GetProjectileInPos(Pos) is Load) //TOCHECK: Como todos lo tienen pero solo lo usa Load, hace falta validarlo?
+            else if (field.ProjectileList.IsProjectile(Pos) && field.ProjectileList.GetProjectileInPos(Pos) is Load)
             {
                 Projectile p = field.ProjectileList.GetProjectileInPos(Pos);
 
                 if (p is Load)
                 {
-                    p.ReceiveDamage();
+                    p.ReceiveDamage(); //Daño a Load
                     destroyed = true;
                 }
             }
@@ -146,21 +146,21 @@ namespace Transistor
                 Enemy e = field.EnemyList.GetEnemyInPos(Pos);
                 e.ReceiveDamage(damage);
             }   
-            else if (field.tile[Pos.row, Pos.col] == Battlefield.Tile.BorderWall)
+            else if (field.tile[Pos.row, Pos.col] == Battlefield.Tile.BorderWall) //se destruye al dar con una pared límite
             {
                 destroyed = true;
             }
-            else if (field.tile[Pos.row, Pos.col] == Battlefield.Tile.Wall)
+            else if (field.tile[Pos.row, Pos.col] == Battlefield.Tile.Wall) //destruye las paredes con las que choque
             {
                 field.DestroyWall(Pos);
             }
-            else if (field.ProjectileList.IsProjectile(Pos) && field.ProjectileList.GetProjectileInPos(Pos) is Load) //TOCHECK: Como todos lo tienen pero solo lo usa Load, hace falta validarlo?
+            else if (field.ProjectileList.IsProjectile(Pos) && field.ProjectileList.GetProjectileInPos(Pos) is Load)
             {
                 Projectile p = field.ProjectileList.GetProjectileInPos(Pos);
 
                 if (p is Load)
                 {
-                    p.ReceiveDamage();
+                    p.ReceiveDamage(); //Daña a Load
                     destroyed = true;
                 }
             }
@@ -209,7 +209,7 @@ namespace Transistor
 
                         if (field.InLimits(newPos))
                         {
-                            //Pinta el área de la explosión momentáneamente
+                            //Pinta el área de la explosión momentáneamente en las casillas libres
                             if (newPos != field.Red.Pos && !field.EnemyList.IsEnemy(newPos) && field.tile[newPos.row, newPos.col] == Battlefield.Tile.Empty)
                             {
                                 Console.SetCursorPosition(2 * newPos.col, newPos.row);
@@ -222,7 +222,7 @@ namespace Transistor
                                 Enemy e = field.EnemyList.GetEnemyInPos(newPos);
                                 e.ReceiveDamage(damage);
                             }
-                            else if (field.tile[newPos.row, newPos.col] == Battlefield.Tile.Wall)
+                            else if (field.tile[newPos.row, newPos.col] == Battlefield.Tile.Wall) //Destruye las paredes que alcance su explosión
                             {
                                 field.DestroyWall(newPos);
                             }
@@ -232,9 +232,9 @@ namespace Transistor
 
                 destroyed = true;
             }
-            //TODO: Hace falta validar/impedir que el jugador no tire el load() sobre un muro???
         }
 
+        //Explota al ser atacado
         public override void ReceiveDamage()
         {
             exploded = true;
@@ -264,13 +264,13 @@ namespace Transistor
             {
                 destroyed = true;
             }
-            else if (field.ProjectileList.IsProjectile(Pos) && field.ProjectileList.GetProjectileInPos(Pos) is Load) //TOCHECK: Como todos lo tienen pero solo lo usa Load, hace falta validarlo?
+            else if (field.ProjectileList.IsProjectile(Pos) && field.ProjectileList.GetProjectileInPos(Pos) is Load) 
             {
                 Projectile p = field.ProjectileList.GetProjectileInPos(Pos);
 
                 if (p is Load)
                 {
-                    p.ReceiveDamage();
+                    p.ReceiveDamage(); //Hace daño a Load
                     destroyed = true;
                 }
             }

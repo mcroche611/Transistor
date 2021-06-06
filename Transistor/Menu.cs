@@ -72,11 +72,12 @@ namespace Transistor
             return level;
         }
 
+        //Selecciona una acción del menú principal
         public Action SelectAction(out int level)
         {
             level = 0;
 
-            //Menú principal: Jugar, Cargar, Editor de niveles, Salir
+            //Menú principal:
 
             ShowTitleScreen();
 
@@ -84,7 +85,6 @@ namespace Transistor
             int[] pos = { 36, 36, 36, 36, 36 };
             string[] label = { " Load Game ", " New Game ", " Controls ", " Credits ", " Exit " }; 
 
-            //bool actionSelected =
             ButtonSelect(ref pointer, pos, label);
 
             //Si ha elegido continuar la partida
@@ -96,6 +96,7 @@ namespace Transistor
             return (Action)pointer;
         }
 
+        // Muestra los botones seleccionados del menú
         private bool ButtonSelect(ref int pointer, int[] pos, string[] label)
         {
             bool actionSelected = false;
@@ -105,7 +106,7 @@ namespace Transistor
                 //Escribe botones
                 for (int i = 0; i < label.Length; i++)
                 {
-                    if (i != 0 || (i == 0 && File.Exists("profiles"))) //Que no se escriba el primer botón si no hay ningún Profile guardado
+                    if (i != 0 || (i == 0 && File.Exists("profiles"))) //No se escribe el primer botón si no hay ningún Profile guardado
                     {
                         if (pointer == i)
                         {
@@ -196,6 +197,7 @@ namespace Transistor
                 }
         }
 
+        // Pregunta el nombre del profile de la partida
         public string AskName()
         {
             string userName="";
@@ -223,7 +225,7 @@ namespace Transistor
 
             Console.WriteLine(text);
             Console.WriteLine();
-            Console.WriteLine("                         Press any key to continue");
+            Console.WriteLine("                 Press any key to continue");
             Console.ReadLine();
         }
 
@@ -246,16 +248,17 @@ namespace Transistor
         {
             try
             {
-                if (IsProfile(nickname, out string linea))
+                if (IsProfile(nickname, out string linea)) //Si hay un profile con ese nickname
                     return int.Parse(linea.Remove(0, nickname.Length + 1).TrimStart());
                 else return -1;
             }
             catch (Exception e)
             {
-                return -1;
+                return -1; //Si no es un nickname válido
             }
         }
 
+        // Determina si hay un profile con ese nombre
         static bool IsProfile(string nickname, out string linea)
         {
             bool encontrado = false;
@@ -276,6 +279,7 @@ namespace Transistor
             return encontrado;
         }
 
+        // Guarda el último nivel superado por un jugador
         public void SaveData(int nivel, string nickname)
         {
             string data = string.Empty;
