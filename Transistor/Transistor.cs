@@ -6,10 +6,12 @@ using System.IO;
 namespace Transistor
 {
     enum TurnMode { Normal, Plan, Run }
+    enum Input { Changed, Same, Undone };
 
     class Transistor
     {
         TurnMode mode;
+        Input dirInput;
         const int LapTime = 20;
         const int MAXLEVEL = 9;
         bool quit = false;
@@ -40,14 +42,14 @@ namespace Transistor
                 fx.PlayMenuIntro();
                 int level = menu.RunMenu(out string profile, ref quit);
 
-                
+
                 while (!quit && level <= MAXLEVEL && !goToMenu)
                 {
                     goToMenu = false;
                     fx.PlayNewLevel();
                     Console.Clear();
                     field = new Battlefield("Transistor" + level + ".txt");
-                    
+
                     TurnDisplay turnDisplay = new TurnDisplay(field, field.numRows, field.numCols);
                     CaptionDisplay captionDisplay = new CaptionDisplay(field.numRows, field.numCols, level);
                     //bool playing = true;
@@ -64,9 +66,15 @@ namespace Transistor
                         // input de usuario
                         if (lapCounter % field.Red.Speed == 0)
                         {
-                            if (ReadInput())
+                            dirInput = ReadInput();
+
+                            if (dirInput == Input.Changed)
                             {
-                                field.GetPlayer().Move(mode);
+                                field.Red.Move(mode);
+                            }
+                            else if (dirInput == Input.Undone)
+                            {
+                                field.Red.UndoMove();
                             }
                         }
 
@@ -154,41 +162,51 @@ namespace Transistor
 
                 Console.WriteLine();
                 Console.WriteLine("         Press M to exit to menu, Q to exit game");
-            }
 
-            bool ReadInput()
-            {
-                bool dirInput = false;
-
-                if (mode == TurnMode.Normal)
+                string answer2 = Console.ReadLine().ToLower();
+                if (answer2 == "m")
                 {
-                    dirInput = ReadInputNormal();
+                    goToMenu = true;
                 }
-                else if (mode == TurnMode.Plan)
+                else if (answer2 == "q")
                 {
-                    dirInput = ReadInputTurn();
+                    quit = true;
                 }
-                else
-                {
-                    char c = field.Red.GetActionTurn();
-
-                    if (c != '\0')
-                    {
-                        dirInput = ReadInputRun(c);
-                    }
-                    else
-                    {
-                        mode = TurnMode.Normal;
-                    }
-                }
-
-                return dirInput;
             }
         }
 
-        bool ReadInputNormal()
+        private Input ReadInput()
         {
-            bool dirInput = false;
+            Input dirInput = Input.Same;
+
+            if (mode == TurnMode.Normal)
+            {
+                dirInput = ReadInputNormal();
+            }
+            else if (mode == TurnMode.Plan)
+            {
+                dirInput = ReadInputTurn();
+            }
+            else
+            {
+                char c = field.Red.GetActionTurn();
+
+                if (c != '\0')
+                {
+                    dirInput = ReadInputRun(c);
+                }
+                else
+                {
+                    mode = TurnMode.Normal;
+                }
+            }
+
+            return dirInput;
+        }
+
+        private Input ReadInputNormal()
+        {
+            Input dirInput = Input.Same;
 
             if (Console.KeyAvailable)
             {
@@ -197,19 +215,19 @@ namespace Transistor
                 {
                     case "LeftArrow":
                         field.GetPlayer().Dir = Coor.LEFT;
-                        dirInput = true;
+                        dirInput = Input.Changed;
                         break;
                     case "RightArrow":
                         field.GetPlayer().Dir = Coor.RIGHT;
-                        dirInput = true;
+                        dirInput = Input.Changed;
                         break;
                     case "UpArrow":
                         field.GetPlayer().Dir = Coor.UP;
-                        dirInput = true;
+                        dirInput = Input.Changed;
                         break;
                     case "DownArrow":
                         field.GetPlayer().Dir = Coor.DOWN;
-                        dirInput = true;
+                        dirInput = Input.Changed;
                         break;
                     case "D1":
                         if (field.Red.AttacksEnabled[0])
@@ -234,7 +252,7 @@ namespace Transistor
                             mode = TurnMode.Plan;
                         }
                         break;
-                    case "Q": // Salir del juego
+                    case "Escape": // Salir del juego
                         quit = true;
                         break;
                     case "M": // Salir al menú
@@ -253,9 +271,9 @@ namespace Transistor
             return dirInput;
         }
 
-        bool ReadInputTurn()
+        private Input ReadInputTurn()
         {
-            bool dirInput = false;
+            Input dirInput = Input.Same;
 
             if (Console.KeyAvailable)
             {
@@ -267,19 +285,19 @@ namespace Transistor
                     {
                         case "LeftArrow":
                             field.GetPlayer().Dir = Coor.LEFT;
-                            dirInput = true;
+                            dirInput = Input.Changed;
                             break;
                         case "RightArrow":
                             field.GetPlayer().Dir = Coor.RIGHT;
-                            dirInput = true;
+                            dirInput = Input.Changed;
                             break;
                         case "UpArrow":
                             field.GetPlayer().Dir = Coor.UP;
-                            dirInput = true;
+                            dirInput = Input.Changed;
                             break;
                         case "DownArrow":
                             field.GetPlayer().Dir = Coor.DOWN;
-                            dirInput = true;
+                            dirInput = Input.Changed;
                             break;
                         case "D1":
                             if (field.Red.AttacksEnabled[0])
@@ -313,7 +331,10 @@ namespace Transistor
                         mode = TurnMode.Run;
                         currentAttack = ' ';
                         break;
-                    case "Q": // Salir del juego
+                    case "Backspace":
+                        dirInput = field.Red.UndoAction();
+                        break;
+                    case "Escape": // Salir del juego
                         quit = true;
                         break;
                     case "M": // Salir al menú
@@ -328,9 +349,9 @@ namespace Transistor
             return dirInput;
         }
 
-        bool ReadInputRun(char action)
+        private Input ReadInputRun(char action)
         {
-            bool dirInput = false;
+            Input dirInput = Input.Same;
 
             if (field.TurnPercentage > 0)
             {
@@ -338,19 +359,19 @@ namespace Transistor
                 {
                     case 'i':
                         field.GetPlayer().Dir = Coor.LEFT;
-                        dirInput = true;
+                        dirInput = Input.Changed;
                         break;
                     case 'r':
                         field.GetPlayer().Dir = Coor.RIGHT;
-                        dirInput = true;
+                        dirInput = Input.Changed;
                         break;
                     case 'u':
                         field.GetPlayer().Dir = Coor.UP;
-                        dirInput = true;
+                        dirInput = Input.Changed;
                         break;
                     case 'd':
                         field.GetPlayer().Dir = Coor.DOWN;
-                        dirInput = true;
+                        dirInput = Input.Changed;
                         break;
                     case 'c':
                         field.Red.Attack(mode, action);

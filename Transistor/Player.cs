@@ -298,6 +298,53 @@ namespace Transistor
             }
         }
 
+        public Input UndoAction()
+        {
+            Input dirInput = Input.Same;
+
+            if (turnMoves.Length > 0)
+            {
+                char lastAction = turnMoves[turnMoves.Length - 1];
+
+                if (lastAction == 'u' || lastAction == 'd' || lastAction == 'i' || lastAction == 'r')
+                {
+                    dirInput = Input.Undone;
+                }
+                else
+                {
+                    switch (turnMoves[turnMoves.Length - 1])
+                    {
+                        case 'c':
+                            field.TurnPercentage += attacksTurn[crashNum];
+                            break;
+                        case 'b':
+                            field.TurnPercentage += attacksTurn[breachNum];
+                            break;
+                        case 'p':
+                            field.TurnPercentage += attacksTurn[pingNum];
+                            break;
+                        case 'l':
+                            field.TurnPercentage += attacksTurn[loadNum];
+                            break;
+                    }
+                }      
+
+                turnMoves = turnMoves.Substring(0, turnMoves.Length - 1); //Quita la letra de la string
+            }
+
+            return dirInput;
+        }
+
+        public void UndoMove()
+        {
+            if (field.NextDir(-dir, pos, ' ', out Coor newPos))
+            {
+                Pos = newPos;
+            }
+
+            field.TurnPercentage += moveTurn;
+        }
+
         private int CountAttacks()
         {
             int numAttacks = 0;

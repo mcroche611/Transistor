@@ -110,7 +110,7 @@ namespace Transistor
 
         public bool PosChanged
         {
-            get => posChanged ;
+            get => posChanged;
         }
 
         public bool Destroyed

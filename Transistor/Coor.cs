@@ -54,6 +54,16 @@ namespace Transistor
                 return new Coor(c1.row + c2.row, c1.col + c2.col);
         }
 
+        public static Coor operator -(Coor c1, Coor c2)
+        {
+            if (c1 is null)
+                return -c2;
+            else if (c2 is null)
+                return c1;
+            else
+                return new Coor(c1.row - c2.row, c1.col - c2.col);
+        }
+
         public static Coor operator -(Coor c)
         {
             return new Coor(-c.row, -c.col);

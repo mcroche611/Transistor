@@ -375,7 +375,7 @@ namespace Transistor
         //    return newRange;
         //}
 
-        private bool NextDir(Coor dir, Coor pos, char attack, out Coor newPos)
+        public bool NextDir(Coor dir, Coor pos, char attack, out Coor newPos)
         {
             newPos = pos + dir;
 
