@@ -154,7 +154,7 @@ namespace Transistor
                     }
                 }
 
-                field.Fx.PlayLevelCompleted();
+                field.Fx.PlayOutro();
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("CONGRATULATIONS!!! GAME COMPLETE! CLOUDBANK IS NOW FREE");
 
@@ -248,6 +248,7 @@ namespace Transistor
                     case "Spacebar":
                         if (field.TurnPercentage >= 100)
                         {
+                            field.Fx.PlayTurn1();
                             field.Red.PosTurn = field.Red.Pos;
                             mode = TurnMode.Plan;
                         }
@@ -326,6 +327,7 @@ namespace Transistor
                         currentAttack = ' ';
                         break;
                     case "Spacebar":
+                        field.Fx.PlayTurn2();
                         field.Red.Pos = field.Red.PosTurn;
                         field.TurnPercentage = 100;
                         mode = TurnMode.Run;

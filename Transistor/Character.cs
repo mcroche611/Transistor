@@ -136,9 +136,9 @@ namespace Transistor
 
         public virtual void ReceiveDamage(int damage)
         {
+            field.Fx.PlayDamage();
+
             life -= damage;
-            //hit = true;
-            field.Fx.PlayShot1();
 
             if (life <= 0)
             {

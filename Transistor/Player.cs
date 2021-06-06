@@ -166,6 +166,8 @@ namespace Transistor
         {
             if (attackMode == TurnMode.Run || (attackMode == TurnMode.Normal && attacksCoolDown[crashNum] <= 0)) //En Run no importa el coolDown, pero en Normal solo ataca si el coolDown ha llegado a 0
             {
+                field.Fx.PlayCrash();
+
                 Next(out Coor newPos);
 
                 Enemy e = field.EnemyList.GetEnemyInPos(newPos);
@@ -196,6 +198,8 @@ namespace Transistor
         {
             if (attackMode == TurnMode.Run || (attackMode == TurnMode.Normal && attacksCoolDown[breachNum] <= 0))
             {
+                field.Fx.PlayBreach();
+
                 Beam beam = new Beam(field, Pos, Dir, attacksDamage[breachNum]);
 
                 field.ProjectileList.Append(beam);
@@ -212,6 +216,8 @@ namespace Transistor
         {
             if (attackMode == TurnMode.Run || (attackMode == TurnMode.Normal && attacksCoolDown[pingNum] <= 0))
             {
+                field.Fx.PlayPing();
+
                 Bullet bullet = new Bullet(field, Pos, Dir, attacksDamage[pingNum]);
 
                 field.ProjectileList.Append(bullet);
@@ -230,6 +236,8 @@ namespace Transistor
             {
                 if (Next(out Coor newPos)) //Solo si se puede colocar sobre la próxima posición
                 {
+                    field.Fx.PlayLoad();
+
                     Load load = new Load(field, newPos, Dir, attacksDamage[loadNum]);
 
                     field.ProjectileList.Append(load);

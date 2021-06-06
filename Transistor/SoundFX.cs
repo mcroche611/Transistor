@@ -11,37 +11,76 @@ namespace Transistor
         bool enabled = true;
         const string fxFolder = @"fx\";
         SoundPlayer sp = new SoundPlayer();
-        SoundPlayer spHit1 = new SoundPlayer(fxFolder + "mixkit-boxer-getting-hit-2055.wav");
-        SoundPlayer spPunch2 = new SoundPlayer(fxFolder + "mixkit-martial-arts-punch-2052.wav");
-        SoundPlayer spLaser1 = new SoundPlayer(fxFolder + "mixkit-short-laser-gun-shot-1670.wav");
-        SoundPlayer spTecno1 = new SoundPlayer(fxFolder + "mixkit-bit-war-suprise-item-3162.wav");
-        SoundPlayer spTecno2 = new SoundPlayer(fxFolder + "mixkit-video-game-power-up-3164.wav");
-        SoundPlayer spLaser2 = new SoundPlayer(fxFolder + "mixkit-sci-fi-laser-in-space-sound-2825.wav");
-        SoundPlayer spGlitter = new SoundPlayer(fxFolder + "mixkit-magic-glitter-shot-2353.wav");
-        SoundPlayer spChirp = new SoundPlayer(fxFolder + "mixkit-retro-arcade-casino-notification-211.wav");
+        SoundPlayer spHit = new SoundPlayer(fxFolder + "mixkit-martial-arts-punch-2052.wav");
+        SoundPlayer spPing = new SoundPlayer(fxFolder + "mixkit-short-laser-gun-shot-1670.wav");
+        SoundPlayer spCrash = new SoundPlayer(fxFolder + "mixkit-bit-war-suprise-item-3162.wav");
+        SoundPlayer spLoad = new SoundPlayer(fxFolder + "mixkit-video-game-power-up-3164.wav");
+        SoundPlayer spBreach = new SoundPlayer(fxFolder + "mixkit-sci-fi-laser-in-space-sound-2825.wav");
+        SoundPlayer spTurn1 = new SoundPlayer(fxFolder + "mixkit-magic-glitter-shot-2353.wav");
+        SoundPlayer spTurn2 = new SoundPlayer(fxFolder + "mixkit-retro-arcade-casino-notification-211.wav");
+        SoundPlayer spExplosion = new SoundPlayer(fxFolder + "mixkit-fantasy-explosion-and-debris-1684.wav");
 
-        public void PlayDamage1()
+        public void PlayDamage()
         {
             if (enabled)
             {
-                spHit1.Play();
-            }
-            
-        }
-
-        public void PlayDamage2()
-        {
-            if (enabled)
-            {
-                spPunch2.Play();
+                spHit.Play();
             }
         }
 
-        public void PlayShot1()
+        public void PlayPing()
         {
             if (enabled)
             {
-                spLaser1.Play();
+                spPing.Play();
+            }
+        }
+
+        public void PlayLoad()
+        {
+            if (enabled)
+            {
+                spLoad.Play();
+            }
+        }
+
+        public void PlayBreach()
+        {
+            if (enabled)
+            {
+                spBreach.Play();
+            }
+        }
+
+        public void PlayCrash()
+        {
+            if (enabled)
+            {
+                spCrash.Play();
+            }
+        }
+
+        public void PlayTurn1()
+        {
+            if (enabled)
+            {
+                spTurn1.Play();
+            }
+        }
+
+        public void PlayTurn2()
+        {
+            if (enabled)
+            {
+                spTurn2.Play();
+            }
+        }
+
+        public void PlayExplosion()
+        {
+            if (enabled)
+            {
+                spExplosion.Play();
             }
         }
 

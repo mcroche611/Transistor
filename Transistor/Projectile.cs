@@ -188,6 +188,8 @@ namespace Transistor
         {
             if (exploded)
             {
+                field.Fx.PlayExplosion();
+
                 Coor newPos;
 
                 int maxRange = 3;
