@@ -282,7 +282,7 @@ namespace Transistor
                     string linea = entrada.ReadLine();
 
                     if (!linea.StartsWith(nickname))
-                        data += linea;
+                        data += linea + Environment.NewLine;
                 }
 
                 entrada.Close();

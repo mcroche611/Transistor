@@ -293,7 +293,7 @@ namespace Transistor
         {
             Coor newPos;
 
-            int maxRange = 3; //Radio del área en el que hace daño al jugador
+            int maxRange = 2; //Radio del área en el que hace daño al jugador
 
             if (coolDown <= 0)
             {

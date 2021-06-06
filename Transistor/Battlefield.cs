@@ -267,7 +267,7 @@ namespace Transistor
 
         private void PrintRange(Character c)
         {
-            int range = 3;
+            int range = 2;
 
             for (int j = -range; j <= range; j++)
             {
@@ -419,6 +419,11 @@ namespace Transistor
         {
             Console.BackgroundColor = bgColor; //TODO: A la hora de pintar
             Console.ForegroundColor = fgColor;
+        }
+
+        public bool InLimits(Coor pos)
+        {
+            return (pos.row < tile.GetLength(0) && pos.col < tile.GetLength(1) && pos.row > 0 && pos.col > 0);
         }
     }
 }

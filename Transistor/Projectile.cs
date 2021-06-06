@@ -207,19 +207,21 @@ namespace Transistor
                     {
                         newPos = Pos + new Coor(j, k);
 
-                        //Pinta el área de la explosión momentáneamente
-                        if (newPos != field.Red.Pos && !field.EnemyList.IsEnemy(newPos) && field.tile[newPos.row, newPos.col] == Battlefield.Tile.Empty) 
+                        if (field.InLimits(newPos))
                         {
-                            Console.SetCursorPosition(2 * newPos.col, newPos.row);
-                            Console.BackgroundColor = ConsoleColor.DarkMagenta;
-                            Console.Write("  ");
-                        }
-                            
+                            //Pinta el área de la explosión momentáneamente
+                            if (newPos != field.Red.Pos && !field.EnemyList.IsEnemy(newPos) && field.tile[newPos.row, newPos.col] == Battlefield.Tile.Empty)
+                            {
+                                Console.SetCursorPosition(2 * newPos.col, newPos.row);
+                                Console.BackgroundColor = ConsoleColor.DarkMagenta;
+                                Console.Write("  ");
+                            }
 
-                        if (field.EnemyList.IsEnemy(newPos)) //No hace daño ni al jugador ni a otros load
-                        {
-                            Enemy e = field.EnemyList.GetEnemyInPos(newPos);
-                            e.ReceiveDamage(damage);
+                            if (field.EnemyList.IsEnemy(newPos)) //No hace daño ni al jugador ni a otros load
+                            {
+                                Enemy e = field.EnemyList.GetEnemyInPos(newPos);
+                                e.ReceiveDamage(damage);
+                            }
                         }
                     }
                 }
