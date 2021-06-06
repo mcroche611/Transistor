@@ -11,13 +11,12 @@ namespace Transistor
     {
         TurnMode mode;
         const int LapTime = 20;
-        const int MAXLEVEL = 10;
+        const int MAXLEVEL = 9;
         bool quit = false;
         bool goToMenu = false;
         Battlefield field;
         SoundFX fx = new SoundFX();
 
-        //enum Action { Controls, Continue, Start, Credits, Exit };
         private char currentAttack = ' ';
 
         public char CurrentAttack
@@ -42,7 +41,7 @@ namespace Transistor
                 int level = menu.RunMenu(out string profile, ref quit);
 
                 
-                while (!quit && level < MAXLEVEL && !goToMenu)
+                while (!quit && level <= MAXLEVEL && !goToMenu)
                 {
                     goToMenu = false;
                     fx.PlayNewLevel();

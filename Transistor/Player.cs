@@ -18,6 +18,7 @@ namespace Transistor
         private int[] attacksTurn = { 10, 30, 10, 20 }; //Coste de la barra de Turn de cada ataque
         private int[] attacksDamage = { 5, 15, 5, 30 };
         private bool[] attacksEnabled = { true, true, true, true };
+        private int[] attacksCoolDown = { 5, 30, 5, 40 }; //Cooldown de cada uno de los ataques del jugador
 
         Random rnd = new Random();
         private Coor posTurn; //La posición inicial al comienzo de una fase de planificación
@@ -143,7 +144,6 @@ namespace Transistor
                     break;
             }
 
-
             if (mode == TurnMode.Plan) //Guarda el ataque a ejecutar durante Run si el juego está en mode Plan
             {
                 turnMoves += attack;
@@ -181,7 +181,7 @@ namespace Transistor
         {
             if (attackMode != TurnMode.Plan)
             {
-                Beam beam = new Beam(field, Pos + Dir, Dir, attacksDamage[breachNum]);
+                Beam beam = new Beam(field, Pos, Dir, attacksDamage[breachNum]);
 
                 field.ProjectileList.Append(beam);
             }  
@@ -194,7 +194,7 @@ namespace Transistor
         {
             if (attackMode != TurnMode.Plan)
             {
-                Bullet bullet = new Bullet(field, Pos + Dir, Dir, attacksDamage[pingNum]);
+                Bullet bullet = new Bullet(field, Pos, Dir, attacksDamage[pingNum]);
 
                 field.ProjectileList.Append(bullet);
             }

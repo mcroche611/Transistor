@@ -23,15 +23,9 @@ namespace Transistor
 
                 switch (input)
                 {
-                    case Menu.Action.Controls: //Se quiere cargar una partida comenzada
-                        ShowControlsScreen(); //TODO: Leer de Archivo?
-                        break;
-                    //goto case Action.Continue;
-
                     case Menu.Action.Continue: //Juego
                         Console.Clear();
                         profile = AskName();
-
                         level = LastLevelPlayed(profile) + 1;
 
                         if (level == -1)
@@ -43,23 +37,25 @@ namespace Transistor
                         }
 
                         levelSelected = true;
-
-                        break;
-
-                    case Menu.Action.Exit: //Termina la ejecución
-                        quit = true;
-                        levelSelected = true;
                         break;
 
                     case Action.Start:
                         Console.Clear();
                         profile = AskName();
                         levelSelected = true;
+                        break;
 
+                    case Menu.Action.Controls: //Se quieren ver los controles del juego
+                        ShowControlsScreen();
                         break;
 
                     case Action.Credits:
                         ShowCreditsScreen();
+                        break;
+
+                    case Menu.Action.Exit: //Termina la ejecución
+                        quit = true;
+                        levelSelected = true;
                         break;
                 }
             }
@@ -87,58 +83,6 @@ namespace Transistor
             if ((Action)pointer == Action.Continue)
             {
                 Console.Clear();
-                /*
-                //Coger de archivo qué Profiles hay ya guardados y ponerlos como opciones
-                ShowTitleScreen();
-
-                //Elige si crear un nivel o jugar un nivel creado
-                pointer = 0;
-                string[] label2 = { " Continue ", " Select Level ", " Back " };
-                actionSelected = false;
-
-                if (File.Exists("profiles")) //Si hay alguna partida guardada
-                {
-                    do
-                    {
-                        //Escribe botones
-                        actionSelected = ButtonSelect(ref pointer, pos, label2);
-
-                        //ProcessInputMenu(ReadInputMenu(), ref pointer, ref actionSelected, 3);
-
-                        if (actionSelected)
-                        {
-                            switch (pointer)
-                            {
-                                case 0:
-                                    //Jugar nivel actual
-                                    pointer = (int)Action.Continue;
-                                    level = LastLevelPlayed(profile) + 1;
-                                    break;
-
-                                case 1:
-                                    //Seleccionar nivel de los jugador
-                                    loaded = true;
-                                    level = LastLevelPlayed(profile) + 1;
-                                    Console.Clear();
-                                    pointer = (int)Action.Continue;
-                                    break;
-
-                                case 2:
-                                    //Vuelve al menu
-                                    pointer = (int)SelectAction(out loaded, out savedFile, out level, profile);
-                                    break;
-                            }
-                        }
-
-                    } while (!actionSelected);
-                
-                }
-                else
-                {
-                    pointer = (int)Action.Start; //New Game
-                    level = 0;
-                }
-                */
             }
 
             return (Action)pointer;
@@ -153,7 +97,7 @@ namespace Transistor
                 //Escribe botones
                 for (int i = 0; i < label.Length; i++)
                 {
-                    if (i != 0 || (i == 0 && File.Exists("profiles")))
+                    if (i != 0 || (i == 0 && File.Exists("profiles"))) //Que no se escriba el primer botón si no hay ningún Profile guardado
                     {
                         if (pointer == i)
                         {
@@ -336,8 +280,8 @@ namespace Transistor
 
             salida.Write(data);
 
-            //Escribimos los datos del usuario actual
-            salida.WriteLine(nickname + ": " + nivel);
+            //Escribimos los datos del usuario actual en minúsculas
+            salida.WriteLine(nickname.ToLower() + ": " + nivel);
 
             salida.Close();
         }
@@ -351,6 +295,8 @@ namespace Transistor
                 StreamReader file = new StreamReader(fileName);
 
                 content = file.ReadToEnd();
+
+                file.Close();
             }
 
             return content;
