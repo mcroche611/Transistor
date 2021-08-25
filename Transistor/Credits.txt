@@ -3,8 +3,8 @@
 					
 			Credits:
 			-----------------------------------------------------
-			Original Game: Supergiant Games.
+			Original Game: Transistor by Supergiant Games
 			Adaptation and coding: Marta Croche Trigo.
-			Sound Effects: mixkit.co.
-			Menu Music: Guardian of Power by Gregoire Lourme.
-			Ending Music:  Cinematic Emotional Trailer by Marc Corominas Pujado.
+			Sound Effects: mixkit.co
+			Menu Music: "In Action" by Crowander is licensed under CC BY-NC 4.0
+			Ending Music:  "Left Unsaid-section 1" by Soularflair is licensed under CC BY-NC-ND 4.0

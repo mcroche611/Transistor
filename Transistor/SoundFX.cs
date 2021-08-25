@@ -115,7 +115,7 @@ namespace Transistor
         {
             if (enabled)
             {
-                sp.SoundLocation = fxFolder + "Guardian of power.wav";
+                sp.SoundLocation = fxFolder + "Crowander - In Action.wav";
                 sp.Play();
             }
         }
@@ -124,7 +124,7 @@ namespace Transistor
         {
             if (enabled)
             {
-                sp.SoundLocation = fxFolder + "Cinematic Emotional.wav";
+                sp.SoundLocation = fxFolder + "Soularflair - Left Unsaid-section 1.wav";
                 sp.Play();
             }
         }
